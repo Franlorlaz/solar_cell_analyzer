@@ -6,9 +6,5 @@ __pycache__/
 # Environments
 venv/
 
-# Spyder project settings
-.spyderproject
-.spyproject
-
 # IDEs
 .idea/
