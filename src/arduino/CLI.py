@@ -1,3 +1,4 @@
+"""Command Line Interface"""
 
 message = 'Hello!'
 
