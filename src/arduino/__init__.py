@@ -1,4 +1,3 @@
-"""Example doc.
+"""Arduino Controller Module."""
 
-This is a documentation.
-"""
+from .devices.Arduino import Arduino

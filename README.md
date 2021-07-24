@@ -109,6 +109,6 @@ the method `connect()` specifying as first argument the device to connect.
 The object returned by this method is the same in attribute `ser`. You can
 also set the argument `disconnect_before` to disconnect the current device 
 before connecting to the new one. This argument is optional and by default
-is `False`
+is `False`.
 
 -------------------------------------------------------------------------------
