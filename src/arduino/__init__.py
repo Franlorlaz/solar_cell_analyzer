@@ -1,1 +1,4 @@
-"""Example doc"""
+"""Example doc.
+
+This is a documentation.
+"""
