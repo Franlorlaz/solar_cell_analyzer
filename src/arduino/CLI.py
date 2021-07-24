@@ -1,4 +1,7 @@
-"""Command Line Interface"""
+"""Command Line Interface
+
+Now this contains just an example code.
+"""
 
 message = 'Hello!'
 
