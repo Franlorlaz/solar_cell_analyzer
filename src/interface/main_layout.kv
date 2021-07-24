@@ -1,0 +1,962 @@
+#:import utils kivy.utils
+#:import Factory kivy.factory.Factory
+
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+#                         WIDGETS PERSONALIZADOS
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+
+<LineaDivisoria@Widget>:
+    size_hint_y: None
+    thickness: 1.5
+    margin: 2
+    height: self.thickness + 2 * self.margin
+    color: 1., .0, .0
+    canvas:
+        Color:
+            rgb: 0.85,0.85,0.85
+        Rectangle:
+            pos: self.x + self.margin, self.y + self.margin + 1
+            size: self.width - 2 * self.margin , self.thickness
+
+<MyButton@Button>:
+    id: BB
+    color: .2,.2,.2
+    background_normal: ''
+    background_color: 0.7,0.7,0.7
+    background_down: ''
+    on_press: BB.background_color=utils.get_color_from_hex('#22BCF5')   # Press state color
+    on_release: BB.background_color=0.7,0.7,0.7     # Normal state color
+    font_size: 15
+
+<SpinnerOption>:                #Opciones para el desplegable del Spinner
+    size_hint: 1, None
+    height: 25
+    color: 1,1,1
+    background_normal: ''
+    background_color: utils.get_color_from_hex('#0DA4EA')
+
+
+<MySpinner@Spinner>:            #Opciones para el boton del Spinner
+    color: 1,1,1
+    background_normal: ''
+    background_color: 0.4,0.4,0.4
+    font_size: 15
+    on_press: self.background_color=utils.get_color_from_hex('#22BCF5')     # Press state color
+    on_release: self.background_color=0.4,0.4,0.4   # Normal state color
+
+<MyTextInput@TextInput>:        #Opciones para text input (No lo estoy usando)
+    color: 1,1,1
+    background_normal: ''
+    background_color: 0.4,0.4,0.4
+
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+#                              POPUPS
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+
+<LinealPopup@Popup>:
+    auto_dismiss: False
+    title: 'Lineal Configuration'
+    size_hint: 0.7,0.82
+    pos_hint: {'center_x':0.5, 'top':0.92}
+
+    BoxLayout:
+        size: root.width, root.height
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FloatLayout:
+            Label:
+                text: 'Lineal'
+                pos_hint:{'center_x':0.5,'center_y':0.95}
+                bold: True
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+            Label:
+                id: label_Par1
+                text_size: label_Par1.size
+                text: 'V start:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.85}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.85}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par1
+                text_size: Unidades_Par1.size
+                text: '(V)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.85}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par2
+                text_size: label_Par2.size
+                text: 'V stop:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.77}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.77}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par2
+                text_size: Unidades_Par2.size
+                text: '(V)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.77}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par3
+                text_size: label_Par3.size
+                text: 'Points:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.69}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.69}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par3
+                text_size: Unidades_Par3.size
+                text: ' '
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.69}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par4
+                text_size: label_Par4.size
+                text: 'Speedt:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.55}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.55}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par4
+                text_size: Unidades_Par4.size
+                text: '(s)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.55}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par5
+                text_size: label_Par5.size
+                text: 'Delay:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.47}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.47}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par5
+                text_size: Unidades_Par5.size
+                text: '(s)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.47}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par6
+                text_size: label_Par6.size
+                text: 'Cmpl:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.39}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.39}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par6
+                text_size: Unidades_Par6.size
+                text: '(A)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.39}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par7
+                text_size: label_Par7.size
+                text: 'Light Power:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.25}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.25}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par7
+                text_size: Unidades_Par7.size
+                text: '(W/cm2)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.25}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par8
+                text_size: label_Par8.size
+                text: 'Area:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.17}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.17}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par8
+                text_size: Unidades_Par8.size
+                text: '(cm2)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.17}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:0.8,None
+            height:30
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+            MyButton:
+                text: 'Salir'
+                on_release: root.dismiss()
+                size_hint:0.4,0.75
+
+                pos_hint:{'x':0.4,'center_y':0.5}
+
+            BoxLayout:
+                size_hint:0.2,0.75
+
+            MyButton:
+                text: 'Guardar'
+                on_release: root.dismiss()
+                size_hint:0.4,0.75
+                pos_hint:{'x':0.6,'center_y':0.5}
+
+
+<HysteresisPopup@Popup>:
+    auto_dismiss: False
+    title: 'Hysteresis Configuration'
+    size_hint: 0.7,0.82
+    pos_hint: {'center_x':0.5, 'top':0.92}
+
+    BoxLayout:
+        size: root.width, root.height
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FloatLayout:
+
+
+            Label:
+                text: 'Hysteresis'
+                pos_hint:{'center_x':0.5,'center_y':0.95}
+                bold: True
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+            Label:
+                id: label_Par1
+                text_size: label_Par1.size
+                text: 'Param 1:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.85}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.85}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par1
+                text_size: Unidades_Par1.size
+                text: '(Ud1)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.85}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par2
+                text_size: label_Par2.size
+                text: 'Param 2:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.77}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.77}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par2
+                text_size: Unidades_Par2.size
+                text: '(Ud2)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.77}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:0.8,None
+            height:30
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+            MyButton:
+                text: 'Salir'
+                on_release: root.dismiss()
+                size_hint:0.4,0.75
+
+                pos_hint:{'x':0.4,'center_y':0.5}
+
+            BoxLayout:
+                size_hint:0.2,0.75
+
+            MyButton:
+                text: 'Guardar'
+                on_release: root.dismiss()
+                size_hint:0.4,0.75
+                pos_hint:{'x':0.6,'center_y':0.5}
+
+<ExaminePopup@MyPopup>:
+    auto_dismiss: False
+    title: 'Examinar...'
+    size_hint: 0.7,0.7
+    pos_hint: {'center_x':0.5, 'top':0.92}
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            dirselect: True
+            #on_selection: seccion3.selected(filechooser.selection)
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.dismiss()
+
+            Button:
+                text: "Load"
+                on_release: root.selected()
+
+
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+#                           LAYOUT PRINCIPAL
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+<MainScreen>:
+    orientation: 'vertical'
+    padding: 20
+    spacing: 10
+    canvas:
+        Color:
+            rgb: 0.25,0.25,0.25
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    Seccion1
+    LineaDivisoria
+    Seccion2
+    LineaDivisoria
+    Seccion3
+
+
+<Seccion1>:                 # ---------------------------------------
+    size_hint: 1.0, 1.0
+    orientation: 'vertical'
+    padding: 2
+    spacing: 5
+
+
+    FloatLayout:                          # Subseccion Superior: Modo
+        padding: 0
+        spacing: 0
+        size_hint: 1, 0.5
+        orientation: 'horizontal'
+        canvas:
+            Color:
+                rgb: 0.25,0.25,0.25
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            size_hint: None, None
+            width:30
+            height:20
+            pos_hint: {'center': (.15, .5)}
+            text: 'Modo: '
+            halign: 'left'
+            bold: True
+            font_size: 15
+            color: 0.8,0.8,0.8
+
+        MySpinner:
+            id: mode_spinner
+            size_hint: 0.35, 0.5
+            pos_hint: {'center': (.4, .5)}
+            text: '- - Elegir modo - -'
+            values: 'Lineal', 'Histéresis'
+            #on_text:
+                #if mode_spinner.text == 'Lineal': lambda mode: mode='Lineal()'
+                #elif mode_spinner.text == 'Histéresis': lambda mode: mode='Hysteresis()'
+                #else: root.kitchen()
+
+        MyButton:
+            size_hint: 0.30, 0.6
+            pos_hint:  {'center': (.75, .5)}
+            text: 'Configuración'
+            on_release: Factory.HysteresisPopup().open()
+            #on_release: Factory.mode_spinner.text.capitalize().open()
+
+    FloatLayout:                        # Subseccion Inferior: Repetir
+        padding: 0
+        spacing: 0
+        orientation: 'horizontal'
+        canvas:
+            Color:
+                rgb: 0.25,0.25,0.25
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            size_hint: None, None
+            width:30
+            height:20
+            pos_hint: {'center': (.15, .90)}
+            text: '  Repetir:'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            bold: True
+            font_size: 15
+
+
+        CheckBox:
+            group: 'repetir_seleccion'
+            #on_active: root.checkbox_click(self, self.active,'No')
+            pos_hint:  {'center': (.15, .65)}
+            size_hint: None,None
+            width: 25
+            height: 25
+
+        CheckBox:
+            group: 'repetir_seleccion'
+            #on_active: root.checkbox_click(self, self.active,'Cada_electrodo')
+            pos_hint:  {'center': (.15, .4)}
+            size_hint: None,None
+            width: 25
+            height: 25
+
+        CheckBox:
+            group: 'repetir_seleccion'
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            pos_hint:  {'center': (.15, .15)}
+            size_hint: None,None
+            width: 25
+            height: 25
+
+
+        Label:
+            id: label_no
+            text_size: label_no.size
+            text: 'No'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            font_size: 15
+            pos_hint:  {'center': (.39, .68)}
+            size_hint: None,None
+            width: 200
+            height: 25
+
+        Label:
+            id: label_cada_electrodo
+            text_size: label_cada_electrodo.size
+            text: 'Cada electrodo'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            font_size: 15
+            pos_hint:  {'center': (.39, .43)}
+            size_hint: None,None
+            width: 200
+            height: 25
+
+        Label:
+            id: label_medida_completa
+            text_size: label_medida_completa.size
+            text: 'Medida completa'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            font_size: 15
+            pos_hint:  {'center': (.39, .18)}
+            size_hint: None,None
+            width: 200
+            height: 25
+
+        Label:
+            pos_hint:  {'center': (.65, .55)}
+            text:'Nº repeticiones'
+            color: 0.8,0.8,0.8
+            halign: 'right'
+            font_size: 14
+
+        TextInput:
+            pos_hint:  {'center': (.85, .55)}
+            size_hint: None,None
+            width: 60
+            height: 25
+            font_size: 12
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6
+
+        Label:
+            pos_hint:  {'center': (.65, .3)}
+            text:'t (final-inicial) (min)'
+            color: 0.8,0.8,0.8
+            halign: 'right'
+            font_size: 14
+
+        TextInput:
+            pos_hint:  {'center': (.85, .3)}
+            size_hint: None,None
+            width: 60
+            height: 25
+            font_size: 12
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6
+
+
+<Seccion2>:                 # ---------------------------------------
+    canvas:
+        Color:
+            rgb: 0.25,0.25,0.25
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    RelativeLayout:
+        Label:
+            text: 'Selección de electrodos a medir:'
+            pos: 0,70
+            bold: True
+            color: 0.8,0.8,0.8
+            font_size: 15
+
+        Label:
+            text: 'A'
+            pos: -105,40
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        Label:
+            text: 'B'
+            pos: -70,40
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        Label:
+            text: 'C'
+            pos: -35,40
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        Label:
+            text: 'D'
+            pos: 0,40
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        Label:
+            text: 'Celda 1:'
+            pos: -160,15
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        Label:
+            text: 'Celda 2:'
+            pos: -160,-10
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        Label:
+            text: 'Celda 3:'
+            pos: -160,-35
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        Label:
+            text: 'Celda 4:'
+            pos: -160,-60
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        CheckBox:
+            id: check_1a
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 144,95
+
+        CheckBox:
+            id: check_1b
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 179,95
+
+        CheckBox:
+            id: check_1c
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 214,95
+
+        CheckBox:
+            id: check_1d
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 249,95
+
+        CheckBox:
+            id: check_2a
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 144,70
+
+        CheckBox:
+            id: check_2b
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 179,70
+
+        CheckBox:
+            id: check_2c
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 214,70
+
+        CheckBox:
+            id: check_2d
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 249,70
+
+        CheckBox:
+            id: check_3a
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 144,45
+
+        CheckBox:
+            id: check_3b
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 179,45
+
+        CheckBox:
+            id: check_3c
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 214,45
+
+        CheckBox:
+            id: check_3d
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 249,45
+
+        CheckBox:
+            id: check_4a
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 144,20
+
+        CheckBox:
+            id: check_4b
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 179,20
+
+        CheckBox:
+            id: check_4c
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 214,20
+
+        CheckBox:
+            id: check_4d
+            #on_active: root.checkbox_click(self, self.active,'Medida_completa')
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 249,20
+
+        Label:
+            text: 'Nombre'
+            pos: 115,40
+            bold: False
+            color: 0.8,0.8,0.8
+            font_size: 14
+
+        TextInput:
+            id: textinput_1
+            size_hint: None,None
+            width: 180
+            height: 25
+            pos: 280,90
+            font_size: 11
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6
+
+        TextInput:
+            id: textinput_2
+            size_hint: None,None
+            width: 180
+            height: 25
+            pos: 280,65
+            font_size: 11
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6
+
+        TextInput:
+            id: textinput_3
+            size_hint: None,None
+            width: 180
+            height: 25
+            pos: 280,40
+            font_size: 11
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6
+
+        TextInput:
+            id: textinput_4
+            size_hint: None,None
+            width: 180
+            height: 25
+            pos: 280,15
+            font_size: 11
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6
+
+
+
+
+<Seccion3>:                 # ---------------------------------------
+    id: seccion3_screen
+    canvas:
+        Color:
+            rgb: 0.40,0.40,0.40
+        Rectangle:
+            size: 395,25
+            pos: 85,115
+
+    RelativeLayout:
+        Label:
+            text: 'Directorio de guardado:'
+            pos: -110,60
+            bold: True
+            color: 0.8,0.8,0.8
+            font_size: 15
+
+        MyButton:
+            text:'Examinar...'
+            pos:340,130
+            size_hint: None, None
+            width:120
+            height: 25
+            on_release: Factory.ExaminePopup().open()
+
+
+        Label:
+            id: directory_label
+            text: '- - Directorio - -'
+            color: 0.8,0.8,0.8
+            font_size: 15
+            pos: 0,23
+
+        MyButton:
+            text:'Comenzar'
+            pos:150,40
+            size_hint: None, None
+            width:200
+            height: 30
+
