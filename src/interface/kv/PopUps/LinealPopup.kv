@@ -1,0 +1,292 @@
+<LinealPopup@Popup>:
+    id: lineal_popup
+    auto_dismiss: False
+    title: 'Lineal Configuration'
+    size_hint: 0.7,0.82
+    pos_hint: {'center_x':0.5, 'top':0.92}
+
+    BoxLayout:
+        size: root.width, root.height
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FloatLayout:
+            Label:
+                text: 'Lineal'
+                pos_hint:{'center_x':0.5,'center_y':0.95}
+                bold: True
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+            Label:
+                id: label_Par1
+                text_size: label_Par1.size
+                text: 'V start:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.85}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                id: param_v_start
+                pos_hint:{'center_x':0.5,'center_y':0.85}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par1
+                text_size: Unidades_Par1.size
+                text: '(V)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.85}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par2
+                text_size: label_Par2.size
+                text: 'V stop:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.77}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.77}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par2
+                text_size: Unidades_Par2.size
+                text: '(V)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.77}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par3
+                text_size: label_Par3.size
+                text: 'Points:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.69}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.69}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par3
+                text_size: Unidades_Par3.size
+                text: ' '
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.69}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par4
+                text_size: label_Par4.size
+                text: 'Speedt:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.55}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.55}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par4
+                text_size: Unidades_Par4.size
+                text: '(s)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.55}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par5
+                text_size: label_Par5.size
+                text: 'Delay:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.47}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.47}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par5
+                text_size: Unidades_Par5.size
+                text: '(s)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.47}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par6
+                text_size: label_Par6.size
+                text: 'Cmpl:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.39}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.39}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par6
+                text_size: Unidades_Par6.size
+                text: '(A)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.39}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par7
+                text_size: label_Par7.size
+                text: 'Light Power:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.25}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.25}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par7
+                text_size: Unidades_Par7.size
+                text: '(W/cm2)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.25}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            Label:
+                id: label_Par8
+                text_size: label_Par8.size
+                text: 'Area:'
+                color: 0.8,0.8,0.8
+                halign: 'right'
+                font_size: 15
+                pos_hint:{'center_x':0.2,'center_y':0.17}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+            TextInput:
+                pos_hint:{'center_x':0.5,'center_y':0.17}
+                size_hint: None,None
+                width: 80
+                height: 25
+                font_size: 12
+
+            Label:
+                id: Unidades_Par8
+                text_size: Unidades_Par8.size
+                text: '(cm2)'
+                color: 0.8,0.8,0.8
+                halign: 'left'
+                font_size: 15
+                pos_hint:{'center_x':0.8,'center_y':0.17}
+                size_hint: None,None
+                width: 100
+                height: 15
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:0.8,None
+            height:30
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+            MyButton:
+                text: 'Salir'
+                on_release: root.dismiss()
+                size_hint:0.4,0.75
+
+                pos_hint:{'x':0.4,'center_y':0.5}
+
+            BoxLayout:
+                size_hint:0.2,0.75
+
+            MyButton:
+                text: 'Guardar'
+                on_release: root.dismiss()
+                size_hint:0.4,0.75
+                pos_hint:{'x':0.6,'center_y':0.5}
+                on_press: app.root.imprimir_label()

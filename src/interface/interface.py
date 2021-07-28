@@ -1,41 +1,41 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun 28 16:08:13 2021
+Created on Jun 2021
 @author: Laura Garrido Regife
-@e-mail: laugarreg@alum.us.es
+@e-mail: lgarridoregife@gmail.com
+
+DESCRIPTION:
+
 """
 # ***************************************************
 # ***************************************************
-#           IMPORTACION Y VERSION DE KIVY
+#                   KIVY VERSION
+# ***************************************************
+# ***************************************************
 import kivy
-
 kivy.require('2.0.0')
-# ***************************************************
-# ***************************************************
 
 
 # ***************************************************
 # ***************************************************
-#         IMPORTACION DE LIBRERIAS DE KIVY
+#                IMPORT FROM KIVY
 # ***************************************************
 # ***************************************************
-
-# Libreria principal para Apps
+# Base class for creating Kivy Apps
 from kivy.app import App
 
-# Modulo para el tamaño de inicio de la ventana
+# Window's size setting
 from kivy.config import Config
-
-# Configuracion del tamaño inicial de la ventana de la App
 Config.set('graphics', 'resizable', False)
-Config.set('graphics', 'width', 700)
-Config.set('graphics', 'height', 650)
-Config.set('input', 'mouse', 'mouse,multitouch_on_demand')  # Quita el punto rojo del boton secundario
+Config.set('graphics', 'width', 550)
+Config.set('graphics', 'height', 600)
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')  # Remove red circle when right-click
 
 # Modulos
 from kivy.uix import widget
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
@@ -48,32 +48,37 @@ from kivy.uix.switch import Switch
 from kivy.uix.label import Label
 from kivy.uix.filechooser import FileChooser
 from kivy.uix.dropdown import DropDown
-from kivy.uix.popup import Popup
 
+# TODO: (Utilidades usadas en .kv's) Por ahora esto no hace nada, porque igualmente hay que ponerlas en main_kv.kv para que funcione.
+# import kivy.utils
+# from kivy.factory import Factory
+
+# Builder is a global Kivy instance used in widgets that you can use
+# to load other kv files in addition to the default ones.
+from kivy.lang import Builder
+import os
+from os import listdir
+from os.path import isfile, join
+
+# Loads all kv file in kv/ dir
+kv_path = os.getcwd() + '/kv/'
+kv_load_dir = [f for f in listdir(kv_path)]
+for dir in kv_load_dir:
+    kv_load_list = [f for f in listdir(kv_path + dir) if isfile(join(kv_path + dir, f))]
+    for file in kv_load_list:
+        if file.endswith('.kv'):
+            Builder.load_file(kv_path + dir + '/' + file)
 
 # ***************************************************
 # ***************************************************
-#                     MAIN CODE
+#                     MAIN LAYOUT
 # ***************************************************
 # ***************************************************
+from kivy.clock import Clock
 class MainScreen(BoxLayout):
-    None
-
-
-class Seccion1(BoxLayout):
-    None
-
-
-class Seccion2(BoxLayout):
-    None
-
-
-class Seccion3(BoxLayout):
-    None
-
-
-class MyButton():
-
+    def imprimir_label(self):
+        print('Guardado de lineal')
+        #print(self.ids)
 
 class MyPopup(Popup):
     def selected(self):
@@ -81,28 +86,27 @@ class MyPopup(Popup):
         name = self.ids.filechooser.selection
         print(name)
 
-        # Update label
+        # Update label #NO FUNCIONA
         self.ids.directory_label.text = name
-
 
 # ***************************************************
 # ***************************************************
 #                     APP
 # ***************************************************
 # ***************************************************
-class Main_layout(App):
-    title = 'Keithley'
-
-    # Definicion del constructor
+class Main_kv(App):
+    title = 'Solar Cell Analyzer'
     def build(self):
         return MainScreen()
 
+    def current_mode_state(self,mode):
+        print(mode + ' selected.')
+        # conf_mode = mode
 
 # ***************************************************
 # ***************************************************
 #                     RUNNING
 # ***************************************************
 # ***************************************************
-# Convencion para correr la App en ciertas plataformas
 if __name__ == '__main__':
-    Main_layout().run()
+    Main_kv().run()

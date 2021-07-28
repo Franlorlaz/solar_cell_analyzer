@@ -1,0 +1,27 @@
+<ExaminePopup@MyPopup>:
+    auto_dismiss: False
+    title: 'Examinar...'
+    size_hint: 0.7,0.7
+    pos_hint: {'center_x':0.5, 'top':0.92}
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        FileChooserListView:
+            id: filechooser
+            dirselect: True
+            #on_selection: seccion3.selected(filechooser.selection)
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: "Cancel"
+                on_release: root.dismiss()
+
+            Button:
+                text: "Load"
+                on_release: root.selected()
