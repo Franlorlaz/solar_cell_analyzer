@@ -4,8 +4,8 @@
 
 | arduino        | esp32       | keithley    | interface   |
 |----------------|-------------|-------------|-------------|
-| `pyserial 3.5` | `paquete 1` | `paquete 1` | `paquete 1` |
-|                | `paquete 2` | `paquete 2` | `paquete 2` |
+| `pyserial 3.5` | `paquete 1` | `paquete 1` | `kivy 2.0`  |
+|                | `paquete 2` | `paquete 2` |             |
 
 
 # Arduino module
