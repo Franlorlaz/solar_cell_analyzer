@@ -14,7 +14,6 @@ kivy.require('2.0.0')
 # ***************************************************
 # ***************************************************
 
-
 # ***************************************************
 # ***************************************************
 #         IMPORTACION DE LIBRERIAS DE KIVY
@@ -29,8 +28,8 @@ from kivy.config import Config
 
 # Configuracion del tamaño inicial de la ventana de la App
 Config.set('graphics', 'resizable', False)
-Config.set('graphics', 'width', 700)
-Config.set('graphics', 'height', 650)
+Config.set('graphics', 'width', 550)
+Config.set('graphics', 'height', 600)
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')  # Quita el punto rojo del boton secundario
 
 # Modulos
@@ -73,6 +72,7 @@ class Seccion3(BoxLayout):
 
 
 class MyButton():
+    None
 
 
 class MyPopup(Popup):
