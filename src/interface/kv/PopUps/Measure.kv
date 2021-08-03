@@ -1,0 +1,76 @@
+<MeasurePopup>:
+    id_measurepopup:
+        prueba
+    auto_dismiss: False
+    title: 'Midiendo...'
+    size_hint: 0.85,0.7
+    pos_hint: {'center_x':0.5, 'top':0.92}
+
+    BoxLayout:
+        id: prueba
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: 50
+            GridLayout:
+                cols: 5
+                rows: 2
+
+                Label:
+                    bold: True
+                    text: 'PCE'
+
+                Label:
+                    bold: True
+                    text: 'FF'
+
+                Label:
+                    bold: True
+                    text: 'Pmax'
+
+                Label:
+                    bold: True
+                    text: 'Jsc'
+
+                Label:
+                    bold: True
+                    text: 'Voc'
+
+                Label:
+                    bold: True
+                    text: '(%)'
+
+                Label:
+                    bold: True
+                    text: '(-)'
+
+                Label:
+                    bold: True
+                    text: '(W/cm2)'
+
+                Label:
+                    bold: True
+                    text: '(A/cm2)'
+
+                Label:
+                    bold: True
+                    text: '(V)'
+
+            LineaDivisoria
+
+        Label:
+            text: 'Medida 1, Medida 2, Medida 3'
+        Label:
+            text: 'Medida 1, Medida 2, Medida 3'
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: "Stop"
+                on_release: root.dismiss()

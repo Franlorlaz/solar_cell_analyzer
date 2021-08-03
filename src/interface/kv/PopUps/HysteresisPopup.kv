@@ -1,5 +1,8 @@
-<HysteresisPopup@Popup>:
-    id: hysteresis_popup
+<HysteresisPopup>:
+    id_hysteresispopup:
+        param_v_start, param_v_stop, param_points, \
+        param_speed, param_delay, param_cmpl, \
+        param_light_power, param_area
     auto_dismiss: False
     title: 'Hysteresis Configuration'
     size_hint: 0.7,0.82
@@ -32,6 +35,8 @@
                 height: 15
 
             TextInput:
+                id: param_v_start
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.85}
                 size_hint: None,None
                 width: 80
@@ -63,6 +68,8 @@
                 height: 15
 
             TextInput:
+                id: param_v_stop
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.77}
                 size_hint: None,None
                 width: 80
@@ -94,6 +101,8 @@
                 height: 15
 
             TextInput:
+                id: param_points
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.69}
                 size_hint: None,None
                 width: 80
@@ -115,7 +124,7 @@
             Label:
                 id: label_Par4
                 text_size: label_Par4.size
-                text: 'Speedt:'
+                text: 'Speed:'
                 color: 0.8,0.8,0.8
                 halign: 'right'
                 font_size: 15
@@ -125,6 +134,8 @@
                 height: 15
 
             TextInput:
+                id: param_speed
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.55}
                 size_hint: None,None
                 width: 80
@@ -156,6 +167,8 @@
                 height: 15
 
             TextInput:
+                id: param_delay
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.47}
                 size_hint: None,None
                 width: 80
@@ -187,6 +200,8 @@
                 height: 15
 
             TextInput:
+                id: param_cmpl
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.39}
                 size_hint: None,None
                 width: 80
@@ -218,6 +233,8 @@
                 height: 15
 
             TextInput:
+                id: param_light_power
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.25}
                 size_hint: None,None
                 width: 80
@@ -249,6 +266,8 @@
                 height: 15
 
             TextInput:
+                id: param_area
+                input_filter: 'float'
                 pos_hint:{'center_x':0.5,'center_y':0.17}
                 size_hint: None,None
                 width: 80
@@ -288,3 +307,4 @@
                 on_release: root.dismiss()
                 size_hint:0.4,0.75
                 pos_hint:{'x':0.6,'center_y':0.5}
+                on_press: root.dict_hysteresis()

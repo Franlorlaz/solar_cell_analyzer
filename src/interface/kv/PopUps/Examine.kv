@@ -1,4 +1,6 @@
-<ExaminePopup@MyPopup>:
+<ExaminePopup>:
+    id_examinepopup:
+        filechooser
     auto_dismiss: False
     title: 'Examinar...'
     size_hint: 0.7,0.7
@@ -9,10 +11,11 @@
         pos: root.pos
         orientation: "vertical"
 
-        FileChooserListView:
+        #FileChooserListView:
+        FileChooserIconView:
             id: filechooser
+            path: "C:\\"
             dirselect: True
-            #on_selection: seccion3.selected(filechooser.selection)
 
         BoxLayout:
             size_hint_y: None
@@ -24,4 +27,4 @@
 
             Button:
                 text: "Load"
-                on_release: root.selected()
+                on_release: print(app.root.act_label_dir())
