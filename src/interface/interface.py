@@ -74,6 +74,7 @@ for dir in kv_load_dir:
 #                     MAIN LAYOUT
 # ***************************************************
 # ***************************************************
+import json
 #TODO: Pasar todas las clases a archivos independientes en /py y cargarlas como los archivos de /kv
 from kivy.properties import ObjectProperty
 
@@ -103,6 +104,10 @@ class LinealPopup(Popup):
                        'config': params_lineal}
         print(dict_lineal)
 
+        # Create mode.json
+        with open('mode.json', 'w') as f:
+            json.dump(dict_lineal, f, indent=2)
+
 class HysteresisPopup(Popup):
     id_hysteresispopup = ObjectProperty(None)
 
@@ -127,6 +132,10 @@ class HysteresisPopup(Popup):
         dict_hysteresis = {'mode': 'Hysteresis',
                        'config': params_hysteresis}
         print(dict_hysteresis)
+
+        # Create mode.json
+        with open('mode.json', 'w') as f:
+            json.dump(dict_hysteresis, f, indent=2)
 
 class ExaminePopup(Popup):
     id_examinepopup = ObjectProperty(None)
@@ -187,6 +196,10 @@ class Section3(BoxLayout):
             'cells': cells_dict
         }
         print(interface_dict)
+
+        # Create interface.json
+        with open('interface.json', 'w') as f:
+            json.dump(interface_dict, f, indent=2)
 
         # Crea el popup de medida y lo abre
         midiendo = MeasurePopup()
