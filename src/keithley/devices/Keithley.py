@@ -27,6 +27,7 @@ from .KeithleySimulator import KeithleySimulator
 
 
 class Keithley:
+    """Keithley main class."""
 
     def __init__(self, port=None, v_1=1.2, v_2=-0.1, points=200,
                  speed=0.240, delay=0.001, cmpl=0.05, **kwargs):

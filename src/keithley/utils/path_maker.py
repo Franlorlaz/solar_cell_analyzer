@@ -1,3 +1,4 @@
+"""Functions to make folders and files."""
 
 import os
 
@@ -29,7 +30,7 @@ def make_folder(folder, new=False):
     return folder
 
 
-def make_file(file, extension='.txt', new=False, header=False):
+def make_file(file, new=False, header=False, extension='.txt'):
     """A function to make files.
 
     If new=False, it does not create a new file if it just exist.
@@ -37,11 +38,17 @@ def make_file(file, extension='.txt', new=False, header=False):
     a number is added at the end of the file's name).
 
     :param file: File's name (str). It contains all the path without extension.
-    :param extension: File's extension. Default: .txt
+    :param extension: File's extension. Default: .txt. If extension is given
+    in "file", set extension=None
     :param new: Indicate what happens if file already exists.
     :param header: Indicate if a header is written in the file or not.
     :return: Path to file created (str).
     """
+    if not extension:
+        split = file.split('.')
+        extension = '.' + split[-1]
+        file = '.'.join(split[:-1])
+
     if new:
         i = 0
         new_file = file + extension

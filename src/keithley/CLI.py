@@ -7,7 +7,7 @@ $ python3 keithley/CLI.py connect --port <str>
 >> lineal
 >> hysteresis
 >> save data <file>
->> save pv_param <file>
+>> save pv_param <file> <name>
 >> disconnect
 """
 
@@ -17,6 +17,8 @@ import json
 from pathlib import Path
 
 from devices.Keithley import Keithley
+from utils.pv_param import calculate_pv_param, save_pv_param
+from utils.path_maker import make_file
 
 
 class KeithleyShell(cmd.Cmd):
@@ -27,9 +29,18 @@ class KeithleyShell(cmd.Cmd):
     prompt = '>> '
 
     def __init__(self, keithley_object, **kwargs):
-        """Initialize the shell with connection to the device."""
+        """Initialize the shell."""
         super().__init__(**kwargs)
+
         self.keithley = keithley_object
+
+        self.config = None
+        self.pv_param = None
+
+        self.dir_config = Path(__file__ + '/../../config')
+        self.dir_measures = Path(__file__ + '/../../measures')
+        print('Config directory: ', self.dir_config.resolve())
+        print('Measures directory: ', self.dir_measures.resolve())
 
     @staticmethod
     def do_exit(_arg):
@@ -64,10 +75,11 @@ class KeithleyShell(cmd.Cmd):
         }
         Example: >> config my_folder/mode.json
         """
-        config_json = Path(str(arg))  # TODO: set a root directory.
+        config_json = self.dir_config.joinpath(str(arg)).resolve()
         with open(config_json, 'r') as file:
             config = json.load(file)
         self.keithley.set_config(config['config'])
+        self.config = config['config']
 
     def do_lineal(self, arg):
         """Run the lineal mode and calcule photovoltaic parameters."""
@@ -77,9 +89,13 @@ class KeithleyShell(cmd.Cmd):
         self.keithley.set_trigger()
         self.keithley.set_display()
         data = self.keithley.run()
-        # TODO: calcule pv_param.
-        # TODO: print pv_param.
-        # TODO: save pv_param in an internal property.
+
+        area = self.config['area']
+        light_power = self.config['light_power']
+        pv_param = calculate_pv_param(data, area=area, light_power=light_power)
+        for key, value in pv_param.items():
+            print(key, value, sep=': ')
+        self.pv_param = [pv_param]
 
     def do_hysteresis(self, arg):
         """Run the hysteresis mode and calcule photovoltaic parameters."""
@@ -89,23 +105,53 @@ class KeithleyShell(cmd.Cmd):
         self.keithley.set_trigger()
         self.keithley.set_display()
         data = self.keithley.run()
-        # TODO: calcule pv_param.
-        # TODO: print pv_param.
-        # TODO: save pv_param in an internal property.
+
+        points = self.keithley.points
+        pv_param_1 = calculate_pv_param(data[0:points, :])
+        pv_param_2 = calculate_pv_param(data[points:, :])
+        for key, value in pv_param_1.items():
+            print(key, (value + pv_param_2[key]) / 2, sep=': ')
+        self.pv_param = [pv_param_1, pv_param_2]
+
+    @staticmethod
+    def do_checker(arg):
+        print(type(__file__), __file__, sep='  :  ')
 
     def do_save(self, arg):
         """Save data measure or photovoltaic parameters calculated.
 
+        Usage: >> save <option> <file> <name>
+        where <option> is "data" or "pv_param", <file> if the path to the
+        file where to save (with file extension) and <name> is the sample
+        name (used only with "save pv_param", for "save data",
+        <name> parameter is ignored).
+
         Example 1: >> save data file/for/data.txt
-        Example 2: >> save pv_param file/for/param.txt
+        Example 2: >> save pv_param file/for/param.txt sample_A
         """
-        # TODO: set a root directory.
-        option = arg[0]  # TODO: check if this is correct.
-        file = arg[1]
+        arg = arg.strip().split()
+
+        if len(arg) < 2:
+            print('Missing arguments.')
+            print('Correct usage: >> save <option> <file> <name>')
+            return
+
+        elif len(arg) == 2:
+            arg.append('')
+
+        option = arg[0]
+        file = self.dir_measures.joinpath(arg[1])
+        name = arg[2]
+
         if option == 'data':
-            self.keithley.save(file)  # TODO: check if file exist.
+            file = make_file(file, new=True, extension=None)
+            self.keithley.save(file)
+
         elif option == 'pv_param':
-            pass  # TODO: implement this.
+            file = make_file(file, header=True, extension=None)
+            for pv_param in self.pv_param:
+                save_pv_param(file, name, param=pv_param)
+
         else:
             print(f'Unrecognized save option: {arg}')
 
