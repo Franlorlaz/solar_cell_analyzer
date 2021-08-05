@@ -65,7 +65,7 @@ class KeithleyShell(cmd.Cmd):
         "config": {
             "v_1": 1.2,
             "v_2": -0.1,
-            "points": 200,
+            "points": 401,
             "speed": 0.240,
             "delay": 0.001,
             "cmpl": 0.05,
@@ -73,7 +73,7 @@ class KeithleyShell(cmd.Cmd):
             "area": 0.14,
             }
         }
-        Example: >> config my_folder/mode.json
+        Example: >> config default/mode.json
         """
         config_json = self.dir_config.joinpath(str(arg)).resolve()
         with open(config_json, 'r') as file:
@@ -88,7 +88,7 @@ class KeithleyShell(cmd.Cmd):
         self.keithley.source_sweep_mode()
         self.keithley.set_trigger()
         self.keithley.set_display()
-        data = self.keithley.run()
+        data = self.keithley.run(mode='lineal')
 
         area = self.config['area']
         light_power = self.config['light_power']
@@ -104,7 +104,7 @@ class KeithleyShell(cmd.Cmd):
         self.keithley.source_list_mode()
         self.keithley.set_trigger()
         self.keithley.set_display()
-        data = self.keithley.run()
+        data = self.keithley.run(mode='hysteresis')
 
         points = self.keithley.points
         pv_param_1 = calculate_pv_param(data[0:points, :])
@@ -113,18 +113,14 @@ class KeithleyShell(cmd.Cmd):
             print(key, (value + pv_param_2[key]) / 2, sep=': ')
         self.pv_param = [pv_param_1, pv_param_2]
 
-    @staticmethod
-    def do_checker(arg):
-        print(type(__file__), __file__, sep='  :  ')
-
     def do_save(self, arg):
         """Save data measure or photovoltaic parameters calculated.
 
         Usage: >> save <option> <file> <name>
-        where <option> is "data" or "pv_param", <file> if the path to the
-        file where to save (with file extension) and <name> is the sample
-        name (used only with "save pv_param", for "save data",
-        <name> parameter is ignored).
+        where <option> is "data" or "pv_param",
+        <file> is the path to the file where to save (with file extension) and
+        <name> is the sample name (used only with "save pv_param",
+        <name> parameter is ignored for "save data").
 
         Example 1: >> save data file/for/data.txt
         Example 2: >> save pv_param file/for/param.txt sample_A
@@ -144,11 +140,11 @@ class KeithleyShell(cmd.Cmd):
         name = arg[2]
 
         if option == 'data':
-            file = make_file(file, new=True, extension=None)
+            file = make_file(str(file.resolve()), new=True, extension=None)
             self.keithley.save(file)
 
         elif option == 'pv_param':
-            file = make_file(file, header=True, extension=None)
+            file = make_file(str(file.resolve()), header=True, extension=None)
             for pv_param in self.pv_param:
                 save_pv_param(file, name, param=pv_param)
 

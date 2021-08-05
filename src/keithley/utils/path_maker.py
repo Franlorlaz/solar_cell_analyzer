@@ -66,7 +66,7 @@ def make_file(file, new=False, header=False, extension='.txt'):
 
     else:
         file += extension
-        if not os.path.exists('"' + file + '"'):
+        if not os.path.exists(file):  # os.path.exists('"' + file + '"')
             txt = open(file, 'w')
             if header:
                 txt.write(

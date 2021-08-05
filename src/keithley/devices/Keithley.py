@@ -29,7 +29,7 @@ from .KeithleySimulator import KeithleySimulator
 class Keithley:
     """Keithley main class."""
 
-    def __init__(self, port=None, v_1=1.2, v_2=-0.1, points=200,
+    def __init__(self, port=None, v_1=1.2, v_2=-0.1, points=401,
                  speed=0.240, delay=0.001, cmpl=0.05, **kwargs):
         """Initialize Keithley object."""
         self.port = port
@@ -95,7 +95,7 @@ class Keithley:
         """Set keithley configuration.
 
         :param config: A dictionary with this structure:
-        {"v_1": 1.2, "v_2": -0.1, "points": 200, "speed": 0.240,
+        {"v_1": 1.2, "v_2": -0.1, "points": 401, "speed": 0.240,
         "delay": 0.001, "cmpl": 0.05, "light_power": 1.0, "area": 0.14}
         :param data_length: Specify the data length (int, optional).
         :return: None
@@ -161,7 +161,7 @@ class Keithley:
         if not speed:
             speed = self.speed
 
-        inst.write(':TRIG:COUN %f' % points)  # Trigger count
+        inst.write(':TRIG:COUN %d' % points)  # Trigger count
         inst.write(':TRIG:DEL %f' % speed)  # Trigger delay
 
     def set_display(self):
@@ -171,18 +171,23 @@ class Keithley:
         inst.write(':DISP:WIND:TEXT:DATA "hello world"')  # display message
         inst.write(':DISP:CND')  # Return to source-measure display state
 
-    def run(self):
+    def run(self, mode='lineal'):
         """Run keithley program, read data and finish.
 
+        :param mode: Running mode. Used only when simulating keithley.
         :return: A numpy array with data measured (V, I, t).
         """
         inst = self.inst
         points = self._data_length
 
+        container = np.array
+        if not self.port:
+            container = mode
+
         # inst.write(':TRAC:TST:FORM DELT')  # timestamp format: ABSolute/DELTa
         inst.write(':FORM:ELEM VOLT,CURR,TIME')  # query elements in data
         inst.write(':OUTP ON')  # open output
-        data = inst.query_ascii_values(':READ?', container=np.array)
+        data = inst.query_ascii_values(':READ?', container=container)
         # inst.query(':TRAC:TST:FORM?')  # read timestamp format
         # inst.query(':SYST:TIME?')      # returns the current timestamp value
         inst.write(':OUTP OFF')  # close output
@@ -207,11 +212,13 @@ class Keithley:
         if not points:
             points = self.points
             self._data_length = points
+        if not self.port:
+            self.inst.simulate_sweep_mode(v_1, v_2, points)
 
         inst.write(':SOUR:SWE:SPAC LIN')          # Linear sweep
         inst.write(':SOUR:VOLT:STAR %f' % v_1)    # start voltage
         inst.write(':SOUR:VOLT:STOP %f' % v_2)    # stop voltage
-        inst.write(':SOUR:SWE:POIN %f' % points)  # Sweep points
+        inst.write(':SOUR:SWE:POIN %d' % points)  # Sweep points
 
     def source_list_mode(self, voltage=None, points=None):
         """Configure source in list mode.
@@ -230,10 +237,12 @@ class Keithley:
         if not voltage:
             voltage = Keithley._list_voltage_hysteresis(self.v_1, self.v_2,
                                                         points)
+        if not self.port:
+            self.inst.simulate_list_mode(voltage, points)
 
         inst.write(':SOUR:VOLT:MODE LIST')           # Volts list mode
         inst.write(':SOUR:LIST:VOLT %s' % voltage)   # Volts list
-        # inst.write(':SOUR:LIST:POIN %f' % points)  # Sweep points
+        # inst.write(':SOUR:LIST:POIN %d' % points)  # Sweep points
 
     @staticmethod
     def _list_voltage_hysteresis(v_1, v_2, points):
@@ -265,7 +274,7 @@ class Keithley:
         :param data: A numpy array with data measured (V, I, t).
         :param data_length: Specify the data length (int).
         :param config: A dictionary with this structure:
-        {"v_1": 1.2, "v_2": -0.1, "points": 200, "speed": 0.240,
+        {"v_1": 1.2, "v_2": -0.1, "points": 401, "speed": 0.240,
         "delay": 0.001, "cmpl": 0.05, "light_power": 1.0, "area": 0.14}
         :return: None
         """
