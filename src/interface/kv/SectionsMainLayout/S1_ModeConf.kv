@@ -47,8 +47,8 @@
             pos_hint:  {'center': (.75, .5)}
             text: 'Configuración'
             on_press:
-                if mode_spinner.text == 'Lineal': Factory.LinealPopup().open()
-                elif mode_spinner.text == 'Histéresis': Factory.HysteresisPopup().open()
+                if mode_spinner.text == 'Lineal': app.root.LinealPopup.open()               #Factory.LinealPopup().open()
+                elif mode_spinner.text == 'Histéresis': app.root.HysteresisPopup.open()     #Factory.HysteresisPopup().open()
 
 
     # Subsection: Repetition configuration

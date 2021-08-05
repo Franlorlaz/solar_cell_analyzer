@@ -31,6 +31,7 @@ Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'width', 550)
 Config.set('graphics', 'height', 600)
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')  # Remove red circle when right-click
+Config.set('kivy','window_icon','icon.png')
 
 # Moduls
 from kivy.uix import widget
@@ -49,7 +50,7 @@ from kivy.uix.label import Label
 from kivy.uix.filechooser import FileChooser
 from kivy.uix.dropdown import DropDown
 
-# TODO: (Utilidades usadas en .kv's) Por ahora esto no hace nada, porque igualmente hay que ponerlas en main_kv.kv para que funcione.
+# TODO: (Utilidades usadas en .kv's) Aqui no hace nada (pueden quitarse), porque igualmente hay que ponerlas en main_kv.kv para que funcione.
 # import kivy.utils
 # from kivy.factory import Factory
 
@@ -145,9 +146,15 @@ class ExaminePopup(Popup):
         name = self.ids.filechooser.selection
         print(name)
 
-#TODO: Pantalla imprimir resultados -> Crear labels con datos del fichero de medida y actualizar boton Stop->Volver y titulo del popup al acabar mediads
+#TODO: Pantalla imprimir resultados -> Actualizar (iniciadas a cero) labels con datos del fichero de medida y actualizar boton Stop->Volver y titulo del popup al acabar medidas
 class MeasurePopup(Popup):
     id_measurepopup = ObjectProperty(None)
+
+    def display_measure(self):
+        with open('prueba_medidas.dat', 'r') as f:
+            lines = f.readlines()
+            print('Contents: ', lines)
+        self.ids.prueba_1.text = lines[0]
 
 class Section1(BoxLayout):
     id_section1 = ObjectProperty(None)
@@ -190,7 +197,7 @@ class Section3(BoxLayout):
             cells_dict[par] = i_cell
 
         interface_dict = {
-            'saving_directory': self.parent.ids.section3.ids.directory_label.text,
+            'saving_directory': str(self.parent.ids.section3.ids.directory_label.text),
             'mode': mode_dict,
             'repeat': repeat_dict,
             'cells': cells_dict
@@ -205,29 +212,32 @@ class Section3(BoxLayout):
         midiendo = MeasurePopup()
         midiendo.open()
 
+        midiendo.display_measure()
 
 class MainScreen(BoxLayout):
-    def act_label_dir(self):
-        # TODO: Actualizar label del directorio -> ¿Como acceder a widget del popup cuando esta cerrado?
-        self.ids.section3.ids.directory_label.text = self.ids.id_examinepopup.ids.filechooser.text
-            #self.ids.section1.ids.mode_spinner.text
-            #self.ids.id_examinepopup.ids.filechooser.text
-            # FUNCIONA ACTUALIZANDO AL MODO DEL SPINNER PERO NO AL DIRECTORIO DEL POPUP
+    def __init__(self, **kwargs):
+        super(MainScreen, self).__init__(**kwargs)
+        self.LinealPopup = LinealPopup()
+        self.HysteresisPopup = HysteresisPopup()
+        self.ExaminePopup = ExaminePopup()
+        self.MeasurePopup = MeasurePopup()
 
-        print('Etiqueta de directorio actualizada')
+    def act_label_dir(self):
+        self.ids.section3.ids.directory_label.text = str(self.ExaminePopup.ids.filechooser.selection)
+        self.ExaminePopup.dismiss()
 
 # ***************************************************
 # ***************************************************
 #                     APP
 # ***************************************************
 # ***************************************************
-#TODO: (Secundario??) Mantener los valores de la ventana de configuracion despues de salvar los datos y cerrarla
-#TODO: Action bar para Arduino/Keithley/ESP32
+#TODO: Action bar para Arduino/Keithley/ESP32 -> Pruebas en Spyder
 class Main_kv(App):
     title = 'Solar Cell Analyzer'
     def build(self):
-        # Config.set('kivy','window_icon','path/to/icon.ico') #TODO: Icono de Fran
-        #self.icon = 'myicon.png' #Icono en el mismo directorio que el archivo principal
+        # TODO: Icono de Fran
+        # Config.set('kivy','window_icon','path/to/icon.ico')
+        #self.icon = r'icon.png' #Icono en el mismo directorio que el archivo principal, sino especificar ruta
         return MainScreen()
 
     # Testeo del modo seleccionado en el spineer de Section 1 -> Ya se puede eliminar
@@ -242,3 +252,8 @@ class Main_kv(App):
 # ***************************************************
 if __name__ == '__main__':
     Main_kv().run()
+
+
+# app --> Main_kv(App)
+# app.root --> MainScreen(BoxLayout)
+# root --> Widget(Widget)
