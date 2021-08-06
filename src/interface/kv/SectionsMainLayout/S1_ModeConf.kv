@@ -1,0 +1,171 @@
+# Section 1: Mode and repetition configuration
+<Section1>:
+    id_section1:
+        mode_spinner, \
+        no_repetition, electrode_repetition, all_repetition, \
+        number_repetition, time_repetition
+    size_hint: 1.0, 1.0
+    orientation: 'vertical'
+    padding: 2
+    spacing: 5
+
+
+    # Subsection: Mode configuration
+    FloatLayout:
+        padding: 0
+        spacing: 0
+        size_hint: 1, 0.5
+        orientation: 'horizontal'
+        canvas:
+            Color:
+                rgb: 0.25,0.25,0.25
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            size_hint: None, None
+            width:30
+            height:20
+            pos_hint: {'center': (.15, .5)}
+            text: 'Modo: '
+            halign: 'left'
+            bold: True
+            font_size: 15
+            color: 0.8,0.8,0.8
+
+        MySpinner:
+            id: mode_spinner
+            size_hint: 0.35, 0.5
+            pos_hint: {'center': (.4, .5)}
+            text: '- - Elegir modo - -'
+            values: 'Lineal', 'Histéresis'
+            #on_text: app.current_mode_state(mode_spinner.text)  # Para testeo, se puede eliminar
+
+        MyButton:
+            size_hint: 0.30, 0.6
+            pos_hint:  {'center': (.75, .5)}
+            text: 'Configuración'
+            on_press:
+                if mode_spinner.text == 'Lineal': app.root.LinealPopup.open()               #Factory.LinealPopup().open()
+                elif mode_spinner.text == 'Histéresis': app.root.HysteresisPopup.open()     #Factory.HysteresisPopup().open()
+
+
+    # Subsection: Repetition configuration
+    FloatLayout:
+        padding: 0
+        spacing: 0
+        orientation: 'horizontal'
+        canvas:
+            Color:
+                rgb: 0.25,0.25,0.25
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            size_hint: None, None
+            width:30
+            height:20
+            pos_hint: {'center': (.15, .90)}
+            text: '  Repetir:'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            bold: True
+            font_size: 15
+
+        CheckBox:
+            id: no_repetition
+            group: 'repetir_seleccion'
+            pos_hint:  {'center': (.15, .65)}
+            size_hint: None,None
+            width: 25
+            height: 25
+
+        CheckBox:
+            id: electrode_repetition
+            group: 'repetir_seleccion'
+            pos_hint:  {'center': (.15, .4)}
+            size_hint: None,None
+            width: 25
+            height: 25
+
+        CheckBox:
+            id: all_repetition
+            group: 'repetir_seleccion'
+            pos_hint:  {'center': (.15, .15)}
+            size_hint: None,None
+            width: 25
+            height: 25
+
+        Label:
+            id: label_no
+            text_size: label_no.size
+            text: 'No'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            font_size: 15
+            pos_hint:  {'center': (.39, .68)}
+            size_hint: None,None
+            width: 200
+            height: 25
+
+        Label:
+            id: label_cada_electrodo
+            text_size: label_cada_electrodo.size
+            text: 'Cada electrodo'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            font_size: 15
+            pos_hint:  {'center': (.39, .43)}
+            size_hint: None,None
+            width: 200
+            height: 25
+
+        Label:
+            id: label_medida_completa
+            text_size: label_medida_completa.size
+            text: 'Medida completa'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            font_size: 15
+            pos_hint:  {'center': (.39, .18)}
+            size_hint: None,None
+            width: 200
+            height: 25
+
+        Label:
+            pos_hint:  {'center': (.65, .55)}
+            text:'Nº repeticiones'
+            color: 0.8,0.8,0.8
+            halign: 'right'
+            font_size: 14
+
+        TextInput:
+            id: number_repetition
+            input_filter: 'float'
+            pos_hint:  {'center': (.85, .55)}
+            size_hint: None,None
+            width: 60
+            height: 25
+            font_size: 12
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6
+
+        Label:
+            pos_hint:  {'center': (.65, .3)}
+            text:'t (final-inicial) (min)'
+            color: 0.8,0.8,0.8
+            halign: 'right'
+            font_size: 14
+
+        TextInput:
+            id: time_repetition
+            input_filter: 'float'
+            pos_hint:  {'center': (.85, .3)}
+            size_hint: None,None
+            width: 60
+            height: 25
+            font_size: 12
+            #background_normal: ''
+            #background_color: 0.6,0.6,0.6

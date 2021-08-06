@@ -1,0 +1,30 @@
+{
+  "saving_directory": "['C:\\\\Windows']",
+  "mode": {
+    "name": "Lineal",
+    "config": "path/to/file/mode.json"
+  },
+  "repeat": {
+    "type": "no_repetition",
+    "times": "1423",
+    "wait": "123"
+  },
+  "cells": {
+    "cell_1": {
+      "name": "zfg",
+      "electrodes": []
+    },
+    "cell_2": {
+      "name": "",
+      "electrodes": []
+    },
+    "cell_3": {
+      "name": "",
+      "electrodes": []
+    },
+    "cell_4": {
+      "name": "",
+      "electrodes": []
+    }
+  }
+}
