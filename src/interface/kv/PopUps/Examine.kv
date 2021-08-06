@@ -1,0 +1,30 @@
+<ExaminePopup>:
+    id_examinepopup:
+        filechooser
+    auto_dismiss: False
+    title: 'Examinar...'
+    size_hint: 0.7,0.7
+    pos_hint: {'center_x':0.5, 'top':0.92}
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        #FileChooserListView:
+        FileChooserIconView:
+            id: filechooser
+            path: "C:\\"
+            dirselect: True
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+
+            Button:
+                text: "Cancel"
+                on_release: root.dismiss()
+
+            Button:
+                text: "Load"
+                on_release: app.root.act_label_dir()

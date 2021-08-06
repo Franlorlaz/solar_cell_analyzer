@@ -1,0 +1,14 @@
+<MySpinner@Spinner>:            # Options for Spinner's button
+    color: 1,1,1
+    background_normal: ''
+    background_color: 0.4,0.4,0.4
+    font_size: 15
+    on_press: self.background_color=utils.get_color_from_hex('#22BCF5')     # Press state color
+    on_release: self.background_color=0.4,0.4,0.4   # Normal state color
+
+<SpinnerOption>:                # Options for Spinner's drop-down
+    size_hint: 1, None
+    height: 25
+    color: 1,1,1
+    background_normal: ''
+    background_color: utils.get_color_from_hex('#0DA4EA')

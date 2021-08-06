@@ -1,0 +1,13 @@
+{
+  "mode": "Lineal",
+  "config": {
+    "param_v_start": "2330",
+    "param_v_stop": "",
+    "param_points": "",
+    "param_speed": "",
+    "param_delay": "",
+    "param_cmpl": "",
+    "param_light_power": "",
+    "param_area": ""
+  }
+}
