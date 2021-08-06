@@ -12,3 +12,6 @@ venv/
 
 # IDEs
 .idea/
+
+# Local files
+src/measures/*
