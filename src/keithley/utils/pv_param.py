@@ -1,6 +1,7 @@
 """Managing PhotoVolatic parameters."""
 
 import numpy as np
+from pathlib import Path
 
 
 def save_pv_param(file_name, name, param):
@@ -22,6 +23,7 @@ def save_pv_param(file_name, name, param):
     P_sol = param['P_sol']
     A = param['A']
 
+    file_name = Path(file_name).resolve()
     with open(file_name, 'a') as file:
         file.write('%17s     %8.6E   %8.6E   %8.6E   %8.6E   %8.6E   %8.6E'
                    '   %8.6E\n' % (name, PCE, FF, Pmax, Jsc, Voc, P_sol, A))

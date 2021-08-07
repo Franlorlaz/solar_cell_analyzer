@@ -23,7 +23,7 @@ import numpy as np
 import pyvisa as visa
 from pathlib import Path
 
-from .KeithleySimulator import KeithleySimulator
+from .KeithleySimulator import KeithleySimulator, list_voltage_hysteresis
 
 
 class Keithley:
@@ -111,6 +111,10 @@ class Keithley:
         if data_length:
             self._data_length = data_length
 
+        for key, value in config.items():
+            print(key, value, sep=': ')
+        print(f'Configuration OK')
+
     def set_sensors(self, cmpl=None):
         """Sensors configuration.
 
@@ -182,7 +186,10 @@ class Keithley:
 
         container = np.array
         if not self.port:
-            container = mode
+            config = {'v_1': self.v_1, 'v_2': self.v_2, 'points': self.points,
+                      'speed': self.speed, 'delay': self.delay,
+                      'cmpl': self.cmpl}
+            container = {'mode': mode, 'config': config}
 
         # inst.write(':TRAC:TST:FORM DELT')  # timestamp format: ABSolute/DELTa
         inst.write(':FORM:ELEM VOLT,CURR,TIME')  # query elements in data
@@ -212,8 +219,6 @@ class Keithley:
         if not points:
             points = self.points
             self._data_length = points
-        if not self.port:
-            self.inst.simulate_sweep_mode(v_1, v_2, points)
 
         inst.write(':SOUR:SWE:SPAC LIN')          # Linear sweep
         inst.write(':SOUR:VOLT:STAR %f' % v_1)    # start voltage
@@ -235,37 +240,11 @@ class Keithley:
             points = 2 * self.points - 1
             self._data_length = points
         if not voltage:
-            voltage = Keithley._list_voltage_hysteresis(self.v_1, self.v_2,
-                                                        points)
-        if not self.port:
-            self.inst.simulate_list_mode(voltage, points)
+            voltage = list_voltage_hysteresis(self.v_1, self.v_2, points)
 
         inst.write(':SOUR:VOLT:MODE LIST')           # Volts list mode
         inst.write(':SOUR:LIST:VOLT %s' % voltage)   # Volts list
         # inst.write(':SOUR:LIST:POIN %d' % points)  # Sweep points
-
-    @staticmethod
-    def _list_voltage_hysteresis(v_1, v_2, points):
-        """Generate a string with comma separated values.
-
-        Two lists (string with comma separated values) are generated and
-        merged. The first list is forward (from "v_1" to "v_2" with "points"
-        number of points) and the second, backward (from "v_2" to "v_1" with
-        another "points" points). This list allow execute a hysteresis
-        measurement. The final length of the list is 2*points-1.
-
-        :param v_1: Minimum voltage (float).
-        :param v_2: Maximum voltage (float).
-        :param points: Number of points of the forward/backward list.
-        :return: A string with comma separated values.
-        """
-        step = (v_2 - v_1) / (points - 1)
-        voltage = str(v_1)
-        for j in range(1, points):
-            voltage += ',' + str(v_1 + j * step)
-        for j in range(1, points):
-            voltage += ',' + str(v_1 + (points - 1 - j) * step)
-        return voltage
 
     def save(self, file_name, data=None, data_length=None, config=None):
         """Save data in a file.
@@ -278,7 +257,7 @@ class Keithley:
         "delay": 0.001, "cmpl": 0.05, "light_power": 1.0, "area": 0.14}
         :return: None
         """
-        file_name = Path(file_name)
+        file_name = Path(file_name).resolve()
 
         if not data:
             data = self._data

@@ -2,7 +2,7 @@
 
 
 class ArduinoSimulator:
-    """Serial object simulator for debug purposes."""
+    """Serial class simulator for debug purposes."""
 
     @staticmethod
     def write(text):
