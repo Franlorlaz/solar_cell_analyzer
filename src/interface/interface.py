@@ -60,9 +60,10 @@ from kivy.lang import Builder
 import os
 from os import listdir
 from os.path import isfile, join
+from pathlib import Path
 
 # Loads all kv file in kv/ dir
-kv_path = os.getcwd() + '/kv/'
+kv_path = str(Path(__file__ + '/../kv/').resolve()) + '/'
 kv_load_dir = [f for f in listdir(kv_path)]
 for dir in kv_load_dir:
     kv_load_list = [f for f in listdir(kv_path + dir) if isfile(join(kv_path + dir, f))]
@@ -106,7 +107,7 @@ class LinealPopup(Popup):
         print(dict_lineal)
 
         # Create mode.json
-        with open('mode.json', 'w') as f:
+        with open('interface/mode.json', 'w') as f:
             json.dump(dict_lineal, f, indent=2)
 
 class HysteresisPopup(Popup):
@@ -135,7 +136,7 @@ class HysteresisPopup(Popup):
         print(dict_hysteresis)
 
         # Create mode.json
-        with open('mode.json', 'w') as f:
+        with open('interface/mode.json', 'w') as f:
             json.dump(dict_hysteresis, f, indent=2)
 
 class ExaminePopup(Popup):
@@ -151,10 +152,13 @@ class MeasurePopup(Popup):
     id_measurepopup = ObjectProperty(None)
 
     def display_measure(self):
-        with open('prueba_medidas.dat', 'r') as f:
+        with open('interface/prueba_medidas.dat', 'r') as f:
             lines = f.readlines()
             print('Contents: ', lines)
         self.ids.prueba_1.text = lines[0]
+
+
+
 
 class Section1(BoxLayout):
     id_section1 = ObjectProperty(None)
@@ -164,17 +168,22 @@ class Section2(BoxLayout):
     id_section2 = ObjectProperty(None)
     pass
 
+
+import time
+from kivy.clock import Clock
+
+
 class Section3(BoxLayout):
     id_section3 = ObjectProperty(None)
 
     def Start_button(self):
         mode_dict = dict()
-        #params_mode_dict_lst = ['name','config']
+        # params_mode_dict_lst = ['name','config']
         mode_dict['name'] = self.parent.ids.section1.ids.mode_spinner.text
         mode_dict['config'] = 'path/to/file/mode.json'
 
         repeat_dict = dict()
-        #params_repeat_dict_lst = ['type', 'times', 'wait']
+        # params_repeat_dict_lst = ['type', 'times', 'wait']
         print(list(self.parent.ids.section1.ids))
         for par in ['no_repetition', 'electrode_repetition', 'all_repetition']:
             the_reference = self.parent.ids.section1.ids[par]
@@ -205,14 +214,27 @@ class Section3(BoxLayout):
         print(interface_dict)
 
         # Create interface.json
-        with open('interface.json', 'w') as f:
+        with open('interface/interface.json', 'w') as f:
             json.dump(interface_dict, f, indent=2)
 
         # Crea el popup de medida y lo abre
         midiendo = MeasurePopup()
         midiendo.open()
 
+        self.run()
+        Clock.schedule_once(self.run, 1)
+
         midiendo.display_measure()
+
+    def run(self, *dt):
+        trigger_path = Path(__file__ + '/../../config/tmp/trigger.json')
+        trigger_path = trigger_path.resolve()
+        with open(trigger_path, 'r') as f:
+            trigger = json.load(f)
+        print('----- running: ', dt)
+        if not trigger['stop_button']:
+            Clock.schedule_once(self.run, 1)
+
 
 class MainScreen(BoxLayout):
     def __init__(self, **kwargs):
@@ -225,6 +247,20 @@ class MainScreen(BoxLayout):
     def act_label_dir(self):
         self.ids.section3.ids.directory_label.text = str(self.ExaminePopup.ids.filechooser.selection)
         self.ExaminePopup.dismiss()
+
+    def stop(self):
+        MeasurePopup.dismiss()
+        print(self.MeasurePopup.ids.stop_button.text == 'Volver')
+        if self.MeasurePopup.ids.stop_button.text == 'Stop':
+            trigger = {'stop_button': True}
+            trigger_path = Path(__file__ + '/../../config/tmp/trigger.json')
+            trigger_path = trigger_path.resolve()
+            with open(trigger_path, 'w') as f:
+                json.dump(trigger, f)
+            self.MeasurePopup.ids.stop_button.text = 'Volver'
+
+        elif self.MeasurePopup.ids.stop_button.text == 'Volver':
+            pass
 
 # ***************************************************
 # ***************************************************
