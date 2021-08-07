@@ -1,7 +1,7 @@
 {
   "saving_directory": "- - Directorio - -",
   "mode": {
-    "name": "- - Elegir modo - -",
+    "name": "Lineal",
     "config": "path/to/file/mode.json"
   },
   "repeat": {
