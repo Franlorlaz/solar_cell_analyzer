@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 from ..devices.Keithley import Keithley
-from ..utils.path_maker import make_folder, make_file, set_up_directories
+from ..utils.path_maker import make_file, set_up_directories
 from ..utils.pv_param import calculate_pv_param, save_pv_param
 
 
