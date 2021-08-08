@@ -2,8 +2,7 @@
 
 import json
 from pathlib import Path
-from keithley.modes.lineal import lineal
-from keithley.modes.hysteresis import hysteresis
+from keithley import lineal, hysteresis
 
 
 def test_lineal_mode():

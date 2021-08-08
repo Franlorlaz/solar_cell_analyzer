@@ -1,3 +1,4 @@
+"""Lineal mode."""
 
 from datetime import datetime
 from pathlib import Path
