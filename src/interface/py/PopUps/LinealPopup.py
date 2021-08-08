@@ -1,0 +1,2 @@
+class LinealPopup(Popup):
+    None

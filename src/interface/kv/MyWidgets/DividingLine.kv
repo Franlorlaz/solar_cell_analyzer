@@ -1,0 +1,12 @@
+<LineaDivisoria@Widget>:
+    size_hint_y: None
+    thickness: 1.5
+    margin: 2
+    height: self.thickness + 2 * self.margin
+    color: 1., .0, .0
+    canvas:
+        Color:
+            rgb: 0.85,0.85,0.85
+        Rectangle:
+            pos: self.x + self.margin, self.y + self.margin + 1
+            size: self.width - 2 * self.margin , self.thickness

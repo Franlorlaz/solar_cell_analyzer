@@ -1,7 +1,3 @@
-# Solar Cell analyzer
-
-A desktop application for researchers to measure and analyze solar cells. 
-
 ### Dependencies table
 
 | arduino        | esp32       | keithley          | interface   |
