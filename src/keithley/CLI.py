@@ -107,8 +107,12 @@ class KeithleyShell(cmd.Cmd):
         data = self.keithley.run(mode='hysteresis')
 
         points = self.keithley.points
-        pv_param_1 = calculate_pv_param(data[0:points, :])
-        pv_param_2 = calculate_pv_param(data[points:, :])
+        area = self.config['area']
+        light_power = self.config['light_power']
+        pv_param_1 = calculate_pv_param(data[0:points, :],
+                                        area=area, light_power=light_power)
+        pv_param_2 = calculate_pv_param(data[points:, :],
+                                        area=area, light_power=light_power)
         for key, value in pv_param_1.items():
             print(key, (value + pv_param_2[key]) / 2, sep=': ')
         self.pv_param = [pv_param_1, pv_param_2]

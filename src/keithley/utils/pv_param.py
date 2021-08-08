@@ -1,13 +1,15 @@
 """Managing PhotoVolatic parameters."""
 
 import numpy as np
+from pathlib import Path
 
 
 def save_pv_param(file_name, name, param):
     """A function to save calculated PhotoVoltaic Parameters.
 
-    :param file_name: Specifies the file's name where to save results.
-    :param name: Name of electrode. Must be equal to the file's name of data
+    :param file_name: Specifies the file's name where to save results
+    (path or str object).
+    :param name: Name of electrode. Should be equal to the file's name of data
     measured.
     :param param: A dictionary with values to write. Must have this keys:
     {PCE, FF, Pmax, Jsc, Voc, P_sol, A}.
@@ -22,6 +24,7 @@ def save_pv_param(file_name, name, param):
     P_sol = param['P_sol']
     A = param['A']
 
+    file_name = Path(file_name).resolve()
     with open(file_name, 'a') as file:
         file.write('%17s     %8.6E   %8.6E   %8.6E   %8.6E   %8.6E   %8.6E'
                    '   %8.6E\n' % (name, PCE, FF, Pmax, Jsc, Voc, P_sol, A))
