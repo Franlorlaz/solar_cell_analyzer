@@ -113,6 +113,7 @@ class KeithleySimulator:
         :return: A `numpy.array` with data simulating a measurement (V, I, t).
         """
         voltage = voltage.split(',')
+        voltage = [float(v) for v in voltage]
         voltage, current, t = KeithleySimulator.simulate_solar_cell(voltage)
         data = list(zip(voltage, current, t))
         return array(data)
