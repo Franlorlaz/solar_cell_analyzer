@@ -54,7 +54,7 @@ def make_file(file, new=False, header=False, extension='.txt'):
     if new:
         i = 0
         new_file = file + extension
-        while os.path.exists('"' + str(Path(new_file).resolve()) + '"'):
+        while os.path.exists(Path(new_file).resolve()):
             i += 1
             new_file = file + '_(%d)' % i + extension
         file = Path(new_file).resolve()
@@ -77,3 +77,34 @@ def make_file(file, new=False, header=False, extension='.txt'):
                         '| P_sol (W/cm2)|  area (cm2)   \n')
 
     return str(file)
+
+
+def set_up_directories(cell_name, directory):
+    """Make a folders tree useful for place data files.
+
+    In `directory`, make a folder named `cell_name` and inside, make a
+    folder for every electrode. Inside of every electrode folder, make
+    a folder for every mode.
+
+    :param cell_name: Name for the first folder of the folders tree (str).
+    :param directory: Existing directory where to make the folders tree
+    (str or path object).
+    :return: Base directory (str): directory/cell_name
+    """
+    cell_name = str(cell_name)
+    directory = Path(directory).resolve()
+
+    if not os.path.exists(directory):
+        raise ValueError(f'The selected directory does not exist: {directory}')
+
+    base_dir = directory.joinpath(cell_name)
+    make_folder(base_dir, new=False)
+
+    for elect in ['A', 'B', 'C', 'D']:
+        electrode_dir = base_dir.joinpath(elect)
+        make_folder(electrode_dir, new=False)
+        for mode in ['lineal', 'hysteresis']:
+            mode_dir = electrode_dir.joinpath(mode)
+            make_folder(mode_dir, new=False)
+
+    return str(base_dir.resolve())

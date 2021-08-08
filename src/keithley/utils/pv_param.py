@@ -7,8 +7,9 @@ from pathlib import Path
 def save_pv_param(file_name, name, param):
     """A function to save calculated PhotoVoltaic Parameters.
 
-    :param file_name: Specifies the file's name where to save results.
-    :param name: Name of electrode. Must be equal to the file's name of data
+    :param file_name: Specifies the file's name where to save results
+    (path or str object).
+    :param name: Name of electrode. Should be equal to the file's name of data
     measured.
     :param param: A dictionary with values to write. Must have this keys:
     {PCE, FF, Pmax, Jsc, Voc, P_sol, A}.

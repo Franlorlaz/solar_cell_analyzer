@@ -113,7 +113,7 @@ class Keithley:
 
         for key, value in config.items():
             print(key, value, sep=': ')
-        print(f'Configuration OK')
+        print(f'Keithley configuration OK')
 
     def set_sensors(self, cmpl=None):
         """Sensors configuration.
