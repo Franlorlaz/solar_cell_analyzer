@@ -249,7 +249,6 @@ class MainScreen(BoxLayout):
         self.ExaminePopup.dismiss()
 
     def stop(self):
-        MeasurePopup.dismiss()
         print(self.MeasurePopup.ids.stop_button.text == 'Volver')
         if self.MeasurePopup.ids.stop_button.text == 'Stop':
             trigger = {'stop_button': True}
@@ -260,6 +259,7 @@ class MainScreen(BoxLayout):
             self.MeasurePopup.ids.stop_button.text = 'Volver'
 
         elif self.MeasurePopup.ids.stop_button.text == 'Volver':
+            #self.MeasurePopup.dismiss()
             pass
 
 # ***************************************************
