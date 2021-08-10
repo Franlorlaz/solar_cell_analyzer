@@ -15,9 +15,12 @@ class Section3(BoxLayout):
         # Initialize trigger.json as False
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
         trigger_path = trigger_path.resolve()
-        init_trigger = {'stop_button': False}
+
+        with open(trigger_path, 'r') as f:
+            trigger = json.load(f)
+        trigger['stop_button'] = False
         with open(trigger_path, 'w') as f:
-            json.dump(init_trigger, f)
+            json.dump(trigger, f, indent=2, sort_keys=True)
 
         # Generate de global_dict
         self.make_global_dict()
@@ -26,7 +29,6 @@ class Section3(BoxLayout):
         midiendo = MeasurePopup()
         midiendo.open()
 
-        self.run()
         Clock.schedule_once(self.run, 1) #TODO: Inicializar etiquetas a cero y que se actualicen
         midiendo.display_measure()
 
