@@ -1,40 +1,40 @@
 # Section 3: Save configuration
 <Section3>:
     id_section3: directory_label
+
     canvas:
         Color:
             rgb: 0.40,0.40,0.40
         Rectangle:
             size: 395,25
-            pos: 85,115
+            pos: 85,85
 
     RelativeLayout:
         Label:
-            text: 'Directorio de guardado:'
-            pos: -110,60
+            text: 'Save directory:'
+            pos: -137,42
             bold: True
             color: 0.8,0.8,0.8
             font_size: 15
 
         MyButton:
-            text:'Examinar...'
-            pos:340,130
+            text:'Examine...'
+            pos:340,95
             size_hint: None, None
             width:120
             height: 25
             on_release: app.root.ExaminePopup.open()       #Factory.ExaminePopup().open()
 
-
         Label:
             id: directory_label
-            text: '- - Directorio - -'
+            text: '- - Directory - -'
             color: 0.8,0.8,0.8
             font_size: 15
-            pos: 0,23
+            pos: 0,15
 
         MyButton:
-            text:'Comenzar'
-            pos:150,40
+            text:'Start'
+            pos:150,10
             size_hint: None, None
             width:200
             height: 30
