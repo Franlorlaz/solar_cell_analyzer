@@ -27,8 +27,8 @@ class Section3(BoxLayout):
         midiendo.open()
 
         self.run()
-        Clock.schedule_once(self.run, 1) #TODO: Inicializar etiquetas a cero y que se actualicen
-        midiendo.display_measure()
+        Clock.schedule_once(self.run, 1)
+        midiendo.display_measure() #TODO: Inicializar etiquetas a cero y que se actualicen -> MeasurePopup.py
 
     def make_global_dict(self):
         mode_dict = dict()
@@ -68,7 +68,9 @@ class Section3(BoxLayout):
         print(interface_dict)
 
         # Create interface.json
-        with open('interface/interface.json', 'w') as f:
+        interface_path = Path(__file__ + '/../../../../measures/interface.json')
+        interface_path = interface_path.resolve()
+        with open(interface_path, 'w') as f:
             json.dump(interface_dict, f, indent=2)
 
     def run(self, *dt):

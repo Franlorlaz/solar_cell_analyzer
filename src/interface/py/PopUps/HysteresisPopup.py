@@ -1,6 +1,7 @@
 """" Popup to hysteresis configuration"""
 
 import json
+from pathlib import Path
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 
@@ -30,6 +31,8 @@ class HysteresisPopup(Popup):
                        'config': params_hysteresis}
 
         # Create mode.json
-        with open('interface/mode.json', 'w') as f:
+        mode_path = Path(__file__ + '/../../../../measures/mode.json')
+        mode_path = mode_path.resolve()
+        with open(mode_path, 'w') as f:
             json.dump(dict_hysteresis, f, indent=2)
         print(dict_hysteresis)
