@@ -2,13 +2,19 @@
     color: 1,1,1
     background_normal: ''
     background_color: 0.4,0.4,0.4
+    background_down: ''     # Inicialmente comentado
     font_size: 15
-    on_press: self.background_color=utils.get_color_from_hex('#22BCF5')     # Press state color
-    on_release: self.background_color=0.4,0.4,0.4   # Normal state color
+    on_press: self.background_color= utils.get_color_from_hex('#22BCF5')     # Press state color  #FAC318
+    on_release: self.background_color=0.4,0.4,0.4               # Color del spinner cuando está desplegado
 
 <SpinnerOption>:                # Options for Spinner's drop-down
     size_hint: 1, None
     height: 25
-    color: 1,1,1
+    color: 1,1,1                                                # 0.2,0.2,0.2 (texto del desplegable)
     background_normal: ''
-    background_color: utils.get_color_from_hex('#0DA4EA')
+    background_down: ''
+    background_color: utils.get_color_from_hex('#0DA4EA')       #Color #FAC318
+
+# COLORES:
+    # Amarillo #FAC318
+    # Naranja #FA9318

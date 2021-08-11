@@ -22,6 +22,7 @@ import json
 
 from py.PopUps.LinealPopup import LinealPopup
 from py.PopUps.HysteresisPopup import HysteresisPopup
+from py.PopUps.PolarizationPopup import PolarizationPopup
 from py.PopUps.ExaminePopup import ExaminePopup
 from py.PopUps.MeasurePopup import MeasurePopup
 from py.SectionsMainLayout import Section1
@@ -63,6 +64,7 @@ class MainScreen(BoxLayout):
         super(MainScreen, self).__init__(**kwargs)
         self.LinealPopup = LinealPopup()
         self.HysteresisPopup = HysteresisPopup()
+        self.PolarizationPopup = PolarizationPopup()
         self.ExaminePopup = ExaminePopup()
         self.MeasurePopup = MeasurePopup()
 
@@ -86,7 +88,6 @@ class MainScreen(BoxLayout):
 #                     APP
 # ***************************************************
 # ***************************************************
-#TODO: Action bar para Arduino/Keithley/ESP32 -> Pruebas en Spyder
 class Main_kv(App):
     title = 'Solar Cell Analyzer'
     def build(self):
@@ -102,6 +103,7 @@ class Main_kv(App):
 if __name__ == '__main__':
     Main_kv().run()
 
-
+#TODO: Action bar para Arduino/Keithley/ESP32 -> Pruebas en Spyder
 #TODO: Ventanas de error si no se rellenan los campos de config
 #TODO: Ventanas de error o valores por defectos (notificacion) si no se rellenan los campos principales
+#TODO: Comprobar nombres de archivos de la seccion 2
