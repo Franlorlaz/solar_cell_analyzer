@@ -1,4 +1,4 @@
-"""" Popup to lineal configuration"""
+"""" Popup to hysteresis configuration"""
 
 import json
 from pathlib import Path
@@ -6,11 +6,11 @@ from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 
 
-class LinealPopup(Popup):
-    id_linealpopup = ObjectProperty(None)
+class HysteresisPopup(Popup):
+    id_hysteresispopup = ObjectProperty(None)
 
-    def dict_lineal(self):
-        params_lineal_lst = [
+    def dict_hysteresis(self):
+        params_hysteresis_lst = [
             'param_v_start',
             'param_v_stop',
             'param_points',
@@ -21,19 +21,18 @@ class LinealPopup(Popup):
             'param_area'
         ]
 
-        params_lineal = dict()
-        for par in params_lineal_lst:
+        params_hysteresis = dict()
+        for par in params_hysteresis_lst:
             the_reference = self.ids[par]
-            params_lineal[par] = float(the_reference.text or 0)
+            params_hysteresis[par] = float(the_reference.text or 0)
             the_reference.text = the_reference.text
 
-        dict_lineal = {'mode': 'Lineal',
-                       'config': params_lineal}
+        dict_hysteresis = {'mode': 'Hysteresis',
+                       'config': params_hysteresis}
 
         # Create mode.json
         mode_path = Path(__file__ + '/../../../../measures/mode.json')
         mode_path = mode_path.resolve()
         with open(mode_path, 'w') as f:
-            json.dump(dict_lineal, f, indent=2)
-        print(dict_lineal)
-
+            json.dump(dict_hysteresis, f, indent=2)
+        print(dict_hysteresis)

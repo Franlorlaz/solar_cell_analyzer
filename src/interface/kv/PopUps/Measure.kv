@@ -77,5 +77,9 @@
             Button:
                 id: stop_button
                 text: "Stop"
-                on_release: app.root.stop()
-                on_press: stop_button.text = 'Volver'
+                on_release:
+                    if stop_button.text == 'Stop': stop_button.text = 'Volver'
+                on_press:
+                    if stop_button.text == 'Stop': app.root.stop()
+                    if stop_button.text == 'Volver': root.dismiss()
+
