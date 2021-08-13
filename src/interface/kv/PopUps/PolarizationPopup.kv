@@ -1,5 +1,5 @@
 <PolarizationPopup>:
-    id_polarizationpopup:
+    id_polarization_popup:
         param_v_start, param_v_stop, param_points, \
         param_speed, param_delay, param_cmpl, \
         param_light_power, param_area
@@ -304,7 +304,6 @@
 
             MyButton:
                 text: 'Guardar'
-                on_release: root.dismiss()
                 size_hint:0.4,0.75
                 pos_hint:{'x':0.6,'center_y':0.5}
-                on_press: root.dict_polarization()
+                on_press: root.make_polarization_dict()

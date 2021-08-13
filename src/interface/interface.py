@@ -25,11 +25,12 @@ from py.PopUps.HysteresisPopup import HysteresisPopup
 from py.PopUps.PolarizationPopup import PolarizationPopup
 from py.PopUps.ExaminePopup import ExaminePopup
 from py.PopUps.MeasurePopup import MeasurePopup
+from py.PopUps.ErrorWarning import ErrorWarningPopup
+#from py.SectionsMainLayout.ActionBarS0 import ActionBarS0  #TODO: Si importo la clase actionbar desde fuera se cambia el tamaño de la ventana
 from py.SectionsMainLayout import Section1
 from py.SectionsMainLayout import Section2
 from py.SectionsMainLayout import Section3
 # from py.SectionsMainLayout import MainScreen
-#TODO: Hay que importar los Section_i aunque no se usen explicitamente. MainScreen declarado explicitamente o no funciona.
 
 # ***************************************************
 # ***************************************************
@@ -67,6 +68,7 @@ class MainScreen(BoxLayout):
         self.PolarizationPopup = PolarizationPopup()
         self.ExaminePopup = ExaminePopup()
         self.MeasurePopup = MeasurePopup()
+        self.ErrorWarningPopup = ErrorWarningPopup()
 
     def act_label_dir(self):
         self.ids.section3.ids.directory_label.text = str(self.ExaminePopup.ids.filechooser.selection)
@@ -102,6 +104,3 @@ if __name__ == '__main__':
     Main_kv().run()
 
 #TODO: Action bar para Arduino/Keithley/ESP32 -> Pruebas en Spyder
-#TODO: Ventanas de error si no se rellenan los campos de config
-#TODO: Ventanas de error o valores por defectos (notificacion) si no se rellenan los campos principales
-#TODO: Comprobar nombres de archivos de la seccion 2

@@ -1,0 +1,41 @@
+# ActionBar S0: Superior bar
+<ActionBarS0@ActionBar>:
+    id_actionbar_S0:
+        prueba
+    pos_hint: {'top':1}
+    ActionView:
+        use_separator: True
+        ActionPrevious:
+            title: 'Solar Cell Analyzer'
+            with_previous: False
+            app_icon: 'icon3.png'
+            app_icon_height: 35
+            app_icon_width: 40
+
+        ActionGroup:
+            id: prueba
+            text: 'Arduino'
+            ActionButton:
+                text: 'Port 1'
+            ActionButton:
+                text: 'Port 2'
+            ActionButton:
+                text: 'Port 3'
+
+        ActionGroup:
+            text: 'Keithley'
+            ActionButton:
+                text: 'X'
+            ActionButton:
+                text: 'Y'
+            ActionButton:
+                text: 'Z'
+
+        ActionGroup:
+            text: 'ESP32'
+            ActionButton:
+                text: 'X'
+            ActionButton:
+                text: 'Y'
+            ActionButton:
+                text: 'Z'

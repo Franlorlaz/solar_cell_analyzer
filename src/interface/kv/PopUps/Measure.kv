@@ -1,6 +1,10 @@
 <MeasurePopup>:
     id_measurepopup:
-        prueba_1, prueba_2, \
+        line_11, line_12, line_13, line_14, line_15, line_16, \
+        line_21, line_22, line_23, line_24, line_25, line_26, \
+        line_31, line_32, line_33, line_34, line_35, line_36, \
+        line_41, line_42, line_43, line_44, line_45, line_46, \
+        line_51, line_52, line_53, line_54, line_55, line_56, \
         stop_button
     auto_dismiss: False
     title: 'Midiendo...'
@@ -15,64 +19,169 @@
 
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: None
-            height: 50
+            size_hint_y: 0.1
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.15
+
             GridLayout:
-                cols: 5
+                cols: 6
                 rows: 2
 
                 Label:
                     bold: True
-                    text: 'PCE'
-
-                Label:
-                    bold: True
-                    text: 'FF'
-
-                Label:
-                    bold: True
-                    text: 'Pmax'
-
-                Label:
-                    bold: True
-                    text: 'Jsc'
-
-                Label:
-                    bold: True
-                    text: 'Voc'
-
+                    text: ' '
                 Label:
                     bold: True
                     text: '(%)'
-
                 Label:
                     bold: True
                     text: '(-)'
-
                 Label:
                     bold: True
                     text: '(W/cm2)'
-
                 Label:
                     bold: True
                     text: '(A/cm2)'
-
                 Label:
                     bold: True
                     text: '(V)'
 
+                Label:
+                    bold: True
+                    text: 'Electrode'
+                Label:
+                    bold: True
+                    text: 'PCE'
+                Label:
+                    bold: True
+                    text: 'FF'
+                Label:
+                    bold: True
+                    text: 'Pmax'
+                Label:
+                    bold: True
+                    text: 'Jsc'
+                Label:
+                    bold: True
+                    text: 'Voc'
+
             LineaDivisoria
 
-        Label:
-            id: prueba_1
-            text: 'Medida 1, Medida 2, Medida 3'
-        Label:
-            id: prueba_2
-            text: 'Medida 1, Medida 2, Medida 3'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.15
 
         BoxLayout:
-            size_hint_y: None
-            height: 30
+            orientation: 'vertical'
+            size_hint_y: 0.55
+
+            GridLayout:
+                cols: 6
+                rows: 5
+
+                Label:
+                    id: line_11
+                    text: '---'
+                Label:
+                    id: line_12
+                    text: '0.0'
+                Label:
+                    id: line_13
+                    text: '0.0'
+                Label:
+                    id: line_14
+                    text: '0.0'
+                Label:
+                    id: line_15
+                    text: '0.0'
+                Label:
+                    id: line_16
+                    text: '0.0'
+
+                Label:
+                    id: line_21
+                    text: '---'
+                Label:
+                    id: line_22
+                    text: '0.0'
+                Label:
+                    id: line_23
+                    text: '0.0'
+                Label:
+                    id: line_24
+                    text: '0.0'
+                Label:
+                    id: line_25
+                    text: '0.0'
+                Label:
+                    id: line_26
+                    text: '0.0'
+
+                Label:
+                    id: line_31
+                    text: '---'
+                Label:
+                    id: line_32
+                    text: '0.0'
+                Label:
+                    id: line_33
+                    text: '0.0'
+                Label:
+                    id: line_34
+                    text: '0.0'
+                Label:
+                    id: line_35
+                    text: '0.0'
+                Label:
+                    id: line_36
+                    text: '0.0'
+
+                Label:
+                    id: line_41
+                    text: '---'
+                Label:
+                    id: line_42
+                    text: '0.0'
+                Label:
+                    id: line_43
+                    text: '0.0'
+                Label:
+                    id: line_44
+                    text: '0.0'
+                Label:
+                    id: line_45
+                    text: '0.0'
+                Label:
+                    id: line_46
+                    text: '0.0'
+
+                Label:
+                    id: line_51
+                    text: '---'
+                Label:
+                    id: line_52
+                    text: '0.0'
+                Label:
+                    id: line_53
+                    text: '0.0'
+                Label:
+                    id: line_54
+                    text: '0.0'
+                Label:
+                    id: line_55
+                    text: '0.0'
+                Label:
+                    id: line_56
+                    text: '0.0'
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 0.15
+
+        BoxLayout:
+            size_hint_y: 0.1
 
             Button:
                 id: stop_button
@@ -82,4 +191,3 @@
                 on_press:
                     if stop_button.text == 'Stop': app.root.stop()
                     if stop_button.text == 'Volver': root.dismiss()
-
