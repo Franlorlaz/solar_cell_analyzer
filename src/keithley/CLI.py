@@ -1,7 +1,9 @@
 """Command Line Interface for Keithley Controller.
 
 Usage:
+
 $ python3 keithley/CLI.py ports
+
 $ python3 keithley/CLI.py connect --port <str>
 >> config <file>
 >> lineal
@@ -9,6 +11,19 @@ $ python3 keithley/CLI.py connect --port <str>
 >> save data <file>
 >> save pv_param <file> <name>
 >> disconnect
+
+$ python3 keithley/CLI.py run --config <path>
+Where <path> is the path to a .json file with this data:
+{
+  "mode": "lineal",
+  "cell_name": "no_name",
+  "electrode": "A",
+  "directory": "/path/to/save/measured/data",
+  "config": "/path/to/config/file/mode.json",
+  "keithley": "keithley_port or null",
+  "trigger_path": "/path/to/trigger/file/trigger.json",
+  "param_path": "/path/to/param.txt"
+}
 """
 
 import cmd
@@ -16,9 +31,11 @@ import argparse
 import json
 from pathlib import Path
 
-from devices.Keithley import Keithley
-from utils.pv_param import calculate_pv_param, save_pv_param
-from utils.path_maker import make_file
+from modes.devices.Keithley import Keithley
+from modes.utils.pv_param import calculate_pv_param, save_pv_param
+from modes.utils.path_maker import make_file
+from modes.lineal import lineal
+from modes.hysteresis import hysteresis
 
 
 class KeithleyShell(cmd.Cmd):
@@ -167,8 +184,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Keithley Controller.")
 
     parser.add_argument('action', type=str,
-                        help='Accepted values: {ports, connect}')
+                        help='Accepted values: {ports, connect, run}')
     parser.add_argument('-p', '--port', type=str, help="Device for connection")
+    parser.add_argument('-c', '--config', type=str, help="Config file for run")
     args = parser.parse_args()
 
     if args.action == 'ports':
@@ -183,6 +201,43 @@ if __name__ == '__main__':
             args.port = None
         keithley = Keithley(port=args.port)
         KeithleyShell(keithley).cmdloop()
+
+    elif args.action == 'run':
+        if args.config == 'None':
+            args.config = None
+        if not args.config:
+            raise ValueError('Config file is required.')
+
+        config = Path(args.config).resolve()
+        with open(config, 'r') as f:
+            program = json.load(f)
+        with open(Path(program['config']).resolve(), 'r') as f:
+            config = json.load(f)
+
+        if program['mode'] == 'lineal':
+            pv_param = lineal(program['cell_name'],
+                              program['electrode'].upper(),
+                              program['directory'], config['config'],
+                              keithley=program['keithley'])
+
+        elif program['mode'] == 'hysteresis':
+            pv_param = hysteresis(program['cell_name'],
+                                  program['electrode'].upper(),
+                                  program['directory'], config['config'],
+                                  keithley=program['keithley'])
+        else:
+            pv_param = ''
+
+        param_path = Path(program['param_path']).resolve()
+        with open(param_path, 'a') as f:
+            f.write(str(pv_param))
+
+        trigger_path = Path(program['trigger_path']).resolve()
+        with open(trigger_path, 'r') as f:
+            trigger = json.load(f)
+        trigger['measuring'] = False
+        with open(trigger_path, 'w') as f:
+            json.dump(trigger, f, indent=2)
 
     else:
         print(f'Unrecognized command: {args.action}')
