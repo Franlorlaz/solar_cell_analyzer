@@ -31,11 +31,9 @@ import argparse
 import json
 from pathlib import Path
 
-from modes.devices.Keithley import Keithley
-from modes.utils.pv_param import calculate_pv_param, save_pv_param
-from modes.utils.path_maker import make_file
-from modes.lineal import lineal
-from modes.hysteresis import hysteresis
+from modes.devices import Keithley
+from modes.utils import calculate_pv_param, save_pv_param, make_file
+from modes import lineal, hysteresis
 
 
 class KeithleyShell(cmd.Cmd):

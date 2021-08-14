@@ -88,6 +88,7 @@ class KeithleySimulator:
             raise ValueError(f'Unrecognized keithley mode in '
                              f'"container": query_ascii_values({text}, '
                              f'container={container})')
+        print('Waiting...')
         time.sleep(5)
         return data
 
