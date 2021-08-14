@@ -4,12 +4,19 @@ import json
 from pathlib import Path
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
+from kivy.properties import StringProperty
 from kivy.clock import Clock
 from py.PopUps.MeasurePopup import MeasurePopup
+from py.PopUps.PolarizePopup import PolarizePopup
 from py.PopUps.ErrorWarning import ErrorWarningPopup
 
 class Section3(BoxLayout):
     id_section3 = ObjectProperty(None)
+    init_path = StringProperty('')
+
+    def __init__(self, **kwargs):
+        super(Section3, self).__init__(**kwargs)
+        self.init_path = str(Path(__file__ + '/../../../../measures').resolve())
 
     def Start_button(self):
         # Initialize trigger.json as False
@@ -20,41 +27,44 @@ class Section3(BoxLayout):
             json.dump(init_trigger, f)
 
         # Generate de global_dict
-        run_trigger = self.make_global_dict()
+        polarize_trigger = self.make_global_dict()
 
-        if run_trigger:
+        if polarize_trigger:
+            polarize_measure = PolarizePopup()
+            polarize_measure.open()
+
+        else:
             # Open Measure Popup
-            midiendo = MeasurePopup()
-            midiendo.open()
+            normal_measure = MeasurePopup()
+            normal_measure.open()
 
             self.run()
             Clock.schedule_once(self.run, 1)
-            #midiendo.display_measure()
+            # normal_measure.display_measure()
 
-    # TODO: Ventanas de error o valores por defectos si no se rellenan los campos principales
+
     # TODO: Comprobar nombres de archivos de la seccion 2 (?)
     def make_global_dict(self):
         # Mode configuration
         mode_dict = dict()
-        # params_mode_dict_lst = ['name','config']
         mode_dict['name'] = self.parent.parent.ids.section1.ids.mode_spinner.text
-        if  self.parent.parent.ids.section1.ids.mode_spinner.text== '- - Choose mode - -':
-            error_warning_popup = ErrorWarningPopup()
-            error_warning_popup.open()
-            msg = 'Choose a mode.'
-            error_warning_popup.print_error_msg(msg)
-            return False
         mode_dict['config'] = 'src/measures/mode.json'
+        the_reference = self.parent.parent.ids.section1.ids['polarize_check']
+        if the_reference.active:
+            mode_dict['polarize'] = 'yes'
+            polarize_trigger = True
+        else:
+            mode_dict['polarize'] = 'no'
+            polarize_trigger = False
 
         # Repeat configuration
         repeat_dict = dict()
-        # params_repeat_dict_lst = ['type', 'times', 'wait']
         for par in ['no_repetition', 'electrode_repetition', 'all_repetition']:
             the_reference = self.parent.parent.ids.section1.ids[par]
             if the_reference.active:
                 repeat_dict['type'] = par
-        repeat_dict['times'] = self.parent.parent.ids.section1.ids.number_repetition.text
-        repeat_dict['wait'] = self.parent.parent.ids.section1.ids.time_repetition.text
+        repeat_dict['times'] = int(self.parent.parent.ids.section1.ids.number_repetition.text)
+        repeat_dict['wait'] = float(self.parent.parent.ids.section1.ids.time_repetition.text)
 
         # Cells configuration
         cells_dict = dict()
@@ -74,11 +84,7 @@ class Section3(BoxLayout):
             cells_dict[par] = i_cell
 
         # Global dictionary
-        if str(self.parent.parent.ids.section3.ids.directory_label.text) == '- - Directory - -':
-            save_path = 'Default_path'
-        else:
-            save_path = str(self.parent.parent.ids.section3.ids.directory_label.text)
-
+        save_path = str(self.parent.parent.ids.section3.ids.directory_label.text)
         interface_dict = {
             'saving_directory': save_path,
             'mode': mode_dict,
@@ -92,7 +98,8 @@ class Section3(BoxLayout):
         interface_path = interface_path.resolve()
         with open(interface_path, 'w') as f:
             json.dump(interface_dict, f, indent=2)
-        return True
+
+        return polarize_trigger
 
     def run(self, *dt):
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
