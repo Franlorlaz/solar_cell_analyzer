@@ -12,8 +12,8 @@ $ python3 keithley/CLI.py connect --port <str>
 >> save pv_param <file> <name>
 >> disconnect
 
-$ python3 keithley/CLI.py run --config <path>
-Where <path> is the path to a .json file with this data:
+$ python3 keithley/CLI.py run --program <path>
+Where <path> is the path to a .json file like this:
 {
   "mode": "lineal",
   "cell_name": "no_name",
@@ -31,11 +31,9 @@ import argparse
 import json
 from pathlib import Path
 
-from modes.devices.Keithley import Keithley
-from modes.utils.pv_param import calculate_pv_param, save_pv_param
-from modes.utils.path_maker import make_file
-from modes.lineal import lineal
-from modes.hysteresis import hysteresis
+from modes.devices import Keithley
+from modes.utils import calculate_pv_param, save_pv_param, make_file
+from modes import lineal, hysteresis
 
 
 class KeithleyShell(cmd.Cmd):
@@ -186,7 +184,8 @@ if __name__ == '__main__':
     parser.add_argument('action', type=str,
                         help='Accepted values: {ports, connect, run}')
     parser.add_argument('-p', '--port', type=str, help="Device for connection")
-    parser.add_argument('-c', '--config', type=str, help="Config file for run")
+    parser.add_argument('-r', '--program', type=str,
+                        help="Program file for run")
     args = parser.parse_args()
 
     if args.action == 'ports':
@@ -203,13 +202,14 @@ if __name__ == '__main__':
         KeithleyShell(keithley).cmdloop()
 
     elif args.action == 'run':
-        if args.config == 'None':
-            args.config = None
-        if not args.config:
-            raise ValueError('Config file is required.')
+        if args.program == 'None':
+            args.program = None
+        if not args.program:
+            raise ValueError('Program file is required.')
 
-        config = Path(args.config).resolve()
-        with open(config, 'r') as f:
+        program = Path(__file__ + '/../../config').resolve()
+        program = program.joinpath(args.program).resolve()
+        with open(program, 'r') as f:
             program = json.load(f)
         with open(Path(program['config']).resolve(), 'r') as f:
             config = json.load(f)

@@ -1,4 +1,4 @@
 """Keithley Controller Module."""
 
-from modes.lineal import lineal
-from modes.hysteresis import hysteresis
+from .modes import lineal, hysteresis
+from .modes.devices import Keithley

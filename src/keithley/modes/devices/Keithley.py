@@ -210,7 +210,6 @@ class Keithley:
         :param points: Number of points for the sweep (integer, optional).
         :return: None
         """
-
         inst = self.inst
         if not v_1:
             v_1 = self.v_1
@@ -234,7 +233,6 @@ class Keithley:
         :param points: Number of points passed in "voltage" (int, optional).
         :return: None
         """
-
         inst = self.inst
         if not points:
             points = 2 * self.points - 1

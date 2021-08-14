@@ -157,7 +157,7 @@ class Section3(BoxLayout):
                 with open(program_path.resolve(), 'w') as f:
                     json.dump(program, f, indent=2)
 
-                Popen(['python3', 'keithley/CLI.py', 'run', '--config',
+                Popen(['python3', 'keithley/CLI.py', 'run', '--program',
                        str(program_path.resolve())])
 
                 repeat_all = self.repeat_all
