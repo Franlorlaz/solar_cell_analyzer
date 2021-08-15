@@ -1,1 +1,4 @@
-{"stop_button": false}
+{
+  "measuring": false,
+  "stop_button": true
+}

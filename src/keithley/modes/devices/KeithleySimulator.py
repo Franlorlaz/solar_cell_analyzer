@@ -29,11 +29,11 @@ def list_voltage_hysteresis(v_1, v_2, points):
 
 
 class KeithleySimulator:
-    """PyVISA class simulator for debug purposes"""
+    """PyVISA class simulator for debug purposes."""
 
     @staticmethod
     def write(text):
-        """Simulate `write()` method of a pyvisa object.
+        """Simulate the write method of a pyvisa object.
 
         Simulating: inst.write(text)
 
@@ -46,14 +46,14 @@ class KeithleySimulator:
 
     @staticmethod
     def close():
-        """Simulate `close()` method of a pyvisa object.
+        """Simulate the close method of a pyvisa object.
 
         Simulating: inst.close()
         """
         print('KeithleySimulator: close()')
 
     def query_ascii_values(self, text, container=None):
-        """Simulate `query_ascii_values()` method of a pyvisa object.
+        """Simulate the query_ascii_values method of a pyvisa object.
 
         The `container` parameter must be a dictionary like:
         container = {'mode': <str>,
@@ -88,6 +88,8 @@ class KeithleySimulator:
             raise ValueError(f'Unrecognized keithley mode in '
                              f'"container": query_ascii_values({text}, '
                              f'container={container})')
+        print('Waiting...')
+        time.sleep(5)
         return data
 
     @staticmethod

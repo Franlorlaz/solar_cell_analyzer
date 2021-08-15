@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def save_pv_param(file_name, name, param):
-    """A function to save calculated PhotoVoltaic Parameters.
+    """Save calculated PhotoVoltaic Parameters.
 
     :param file_name: Specifies the file's name where to save results
     (path or str object).
@@ -15,7 +15,6 @@ def save_pv_param(file_name, name, param):
     {PCE, FF, Pmax, Jsc, Voc, P_sol, A}.
     :return: None.
     """
-
     PCE = param['PCE']
     FF = param['FF']
     Pmax = param['Pmax']
@@ -38,7 +37,6 @@ def calculate_pv_param(data, area=0.14, light_power=0.1):
     :param light_power: Light Power in [W/cm2].
     :return: A dict with keys: {PCE, FF, iPmax, Pmax, Jsc, Voc, P_sol, A}.
     """
-
     V = data[:, 0]
     I = data[:, 1]
     A = float(area)

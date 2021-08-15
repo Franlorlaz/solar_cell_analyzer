@@ -3,9 +3,9 @@
 from datetime import datetime
 from pathlib import Path
 
-from ..devices.Keithley import Keithley
-from ..utils.path_maker import make_file, set_up_directories
-from ..utils.pv_param import calculate_pv_param, save_pv_param
+from .devices import Keithley
+from .utils import make_file, set_up_directories
+from .utils import calculate_pv_param, save_pv_param
 
 
 def hysteresis(cell_name, electrode, directory, config, keithley=None):

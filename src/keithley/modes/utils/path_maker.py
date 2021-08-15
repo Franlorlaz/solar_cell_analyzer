@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def make_folder(folder, new=False):
-    """A function to make folders.
+    """Make folders.
 
     If new=False, it does not create a new folder if it just exist.
     If new=True, it creates a new folder anyway (if the folder exist,
@@ -33,7 +33,7 @@ def make_folder(folder, new=False):
 
 
 def make_file(file, new=False, header=False, extension='.txt'):
-    """A function to make files.
+    """Make files.
 
     If new=False, it does not create a new file if it just exist.
     If new=True, it creates a new file anyway (if the file exist,
