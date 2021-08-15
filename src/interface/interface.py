@@ -26,7 +26,6 @@ from py.PopUps.PolarizePopup import PolarizePopup
 from py.PopUps.ExaminePopup import ExaminePopup
 from py.PopUps.MeasurePopup import MeasurePopup
 from py.PopUps.ErrorWarning import ErrorWarningPopup
-#from py.SectionsMainLayout.ActionBarS0 import ActionBarS0  #TODO: Si importo la clase actionbar desde fuera se cambia el tamaño de la ventana
 from py.SectionsMainLayout import Section1
 from py.SectionsMainLayout import Section2
 from py.SectionsMainLayout import Section3
@@ -55,6 +54,7 @@ for dir in kv_load_dir:
             Builder.load_file(kv_path + dir + '/' + file)
 
 
+
 # ***************************************************
 # ***************************************************
 #                     MAIN LAYOUT
@@ -71,7 +71,7 @@ class MainScreen(BoxLayout):
         self.ErrorWarningPopup = ErrorWarningPopup()
 
     def act_label_dir(self):
-        self.ids.section3.ids.directory_label.text = str(self.ExaminePopup.ids.filechooser.selection)
+        self.ids.section3.ids.directory_label.text = str(self.ExaminePopup.ids.filechooser.selection[0])
         self.ExaminePopup.dismiss()
 
     def stop(self):
@@ -84,6 +84,17 @@ class MainScreen(BoxLayout):
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2, sort_keys=True)
         self.MeasurePopup.ids.stop_button.text = 'Volver'
+
+
+from kivy.uix.actionbar import ActionBar
+from kivy.properties import ObjectProperty
+
+
+class ActionBarS0(ActionBar):
+    id_actionbar_S0 = ObjectProperty(None)
+
+    def prueba(self):
+        self.parent.ids.section3.arduino = 'puerto 1'
 
 # ***************************************************
 # ***************************************************

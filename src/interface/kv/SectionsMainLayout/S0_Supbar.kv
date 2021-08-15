@@ -1,5 +1,5 @@
 # ActionBar S0: Superior bar
-<ActionBarS0@ActionBar>:
+<ActionBarS0>:
     id_actionbar_S0:
         prueba
     pos_hint: {'top':1}
@@ -17,6 +17,7 @@
             text: 'Arduino'
             ActionButton:
                 text: 'Port 1'
+                on_press: root.prueba()
             ActionButton:
                 text: 'Port 2'
             ActionButton:

@@ -6,4 +6,6 @@ from kivy.properties import ObjectProperty
 
 class ActionBarS0(ActionBar):
     id_actionbar_S0 = ObjectProperty(None)
-    pass
+
+    def prueba(self):
+        self.parent.ids.section3.arduino = 'puerto 1'

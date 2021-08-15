@@ -2,19 +2,19 @@
   "saving_directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
   "mode": {
     "name": "lineal",
-    "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json"
+    "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
+    "polarize": false
   },
   "repeat": {
     "type": "no_repetition",
     "times": 0,
-    "wait": 1.0
+    "wait": 0.0
   },
   "cells": {
     "cell_1": {
-      "name": "popen",
+      "name": "",
       "electrodes": [
-        "a",
-        "b"
+        "a"
       ]
     },
     "cell_2": {
