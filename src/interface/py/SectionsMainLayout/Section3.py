@@ -1,24 +1,29 @@
 """Section 3: save path configuration and run button"""
 # TODO: Arduino object instantiation
-# TODO: config/tmp/mode.json antes de empezar
-# TODO: config/tmp/param.txt como te pongo los datos ahí
+# TODO: config/tmp/param.txt lista de diccionarios
 
 import json
 from subprocess import Popen
 from pathlib import Path
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
+from kivy.properties import StringProperty
 from kivy.clock import Clock
 from py.PopUps.MeasurePopup import MeasurePopup
+from py.PopUps.PolarizePopup import PolarizePopup
+from py.PopUps.ErrorWarning import ErrorWarningPopup
+from ....arduino import Arduino
 
 
 class Section3(BoxLayout):
     id_section3 = ObjectProperty(None)
+    init_dir = StringProperty('')
 
     def __init__(self, **kwargs):
         super(Section3, self).__init__(**kwargs)
+        self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.keithley = None
-        self.arduino = 'Arduino object: '
+        self.arduino = 'hello world'
 
         self.repeat_electrode = False
         self.repeat_all = False
@@ -27,25 +32,27 @@ class Section3(BoxLayout):
         self.sequence = []
         self.basic_sequence = []
         self.program = []
+        self.measure_popup = MeasurePopup()
 
     def make_interface_dict(self):
-        saving_directory = self.parent.ids.section3.ids.directory_label.text
-        # FIXME: el string es "['/path/directory']" pero
-        #  deberia ser "/path/directory". Esto da problemas.
-        saving_directory = saving_directory[2:-2]
-        # FIXME: solucion provisional. Quitar esta linea cuando se arregle
+        section1 = self.parent.parent.ids.section1
+        section2 = self.parent.parent.ids.section2
+        section3 = self.parent.parent.ids.section3
 
-        mode_name = self.parent.ids.section1.ids.mode_spinner.text
+        saving_directory = section3.ids.directory_label.text
+
+        mode_name = section1.ids.mode_spinner.text
         mode_config = Path(__file__ + '/../../../../config/tmp/mode.json')
+        if section1.ids['polarize_check'].active:
+            polarize = True
+        else:
+            polarize = False
 
-        section1 = self.parent.ids.section1
         types = ['no_repetition', 'electrode_repetition', 'all_repetition']
-        # FIXME: change the list to ['', 'electrode', 'all']
         repeat_type = list(filter(lambda par: section1.ids[par].active, types))
         repeat_times = section1.ids.number_repetition.text
         repeat_wait = section1.ids.time_repetition.text
 
-        section2 = self.parent.ids.section2
         electrodes = ['a', 'b', 'c', 'd']
         cells = {'cell_1': {}, 'cell_2': {}, 'cell_3': {}, 'cell_4': {}}
         for cell, value in cells.items():
@@ -56,7 +63,8 @@ class Section3(BoxLayout):
 
         interface = {'saving_directory': str(saving_directory),
                      'mode': {'name': str(mode_name).lower(),
-                              'config': str(mode_config.resolve())},
+                              'config': str(mode_config.resolve()),
+                              'polarize': bool(polarize)},
                      'repeat': {'type': str(repeat_type[0]),
                                 'times': int(repeat_times),
                                 'wait': float(repeat_wait)},
@@ -70,7 +78,7 @@ class Section3(BoxLayout):
 
         return interface
 
-    def Start_button(self):  # FIXME: change to lower case
+    def start_button(self):
         # Initialize param.txt as empty file
         param_path = Path(__file__ + '/../../../../config/tmp/param.txt')
         param_path = param_path.resolve()
@@ -90,11 +98,18 @@ class Section3(BoxLayout):
         # Generate de global_dict
         data = self.make_interface_dict()
 
+        # Change mode in mode.json
+        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
+        mode_path = mode_path.resolve()
+        with open(mode_path, 'r') as f:
+            mode = json.load(f)
+        mode['mode'] = data['mode']['name']
+        with open(mode_path, 'w') as f:
+            json.dump(mode, f, indent=2)
+
         # variables
         repeat_electrode = data['repeat']['type'] == 'electrode_repetition'
-        # FIXME: change to 'electrode'
         repeat_all = data['repeat']['type'] == 'all_repetition'
-        # FIXME: change to 'all'
 
         # sequence of measures
         sequence = []
@@ -110,9 +125,13 @@ class Section3(BoxLayout):
             sequence *= data['repeat']['times'] + 1
 
         # Open Measure Popup and run
-        midiendo = MeasurePopup()
-        midiendo.open()
-        midiendo.display_measure()
+        polarize = data['mode']['polarize']
+        if polarize:
+            measure = PolarizePopup()
+            measure.open()
+        else:
+            measure = self.measure_popup
+            measure.open()
 
         self.sequence = sequence
         self.basic_sequence = basic_sequence
@@ -122,7 +141,7 @@ class Section3(BoxLayout):
         self.program = []
 
         for iteration in sequence:
-            cell_name = data['cells']['cell_'+iteration[0]]['name']
+            cell_name = data['cells']['cell_' + iteration[0]]['name']
             program = {'mode': str(data['mode']['name']),
                        'cell_name': str(cell_name),
                        'electrode': str(iteration[1]).upper(),
@@ -138,6 +157,8 @@ class Section3(BoxLayout):
     def run(self, *dt):
         wait = 2.0
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
+        param_path = Path(__file__ + '/../../../../config/tmp/param.json')
+        param_path = param_path.resolve()
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
         trigger_path = trigger_path.resolve()
         with open(trigger_path, 'r') as f:
@@ -149,6 +170,12 @@ class Section3(BoxLayout):
             self.have_to_wait = False
 
         if not trigger['measuring'] and not trigger['stop_button']:
+            with open(param_path, 'r') as f:
+                param = json.load(f)
+            if len(param) > 5:
+                param = param[-1, -6]
+            self.measure_popup.display_measure(param)
+
             if self.sequence:
                 iteration = self.sequence.pop(0)
                 program = self.program.pop(0)

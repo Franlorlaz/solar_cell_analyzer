@@ -12,8 +12,6 @@
 # --------------------------------------------------------------------
 <MainScreen>:
     orientation: 'vertical'
-    padding: 20
-    spacing: 10
     canvas:
         Color:
             rgb: 0.25,0.25,0.25
@@ -21,14 +19,25 @@
             size: self.size
             pos: self.pos
 
-    Section1:
-        id: section1
-        size_hint: 1, 0.4
-    LineaDivisoria
-    Section2:
-        id: section2
-        size_hint: 1, 0.35
-    LineaDivisoria
-    Section3:
-        id: section3
-        size_hint: 1, 0.25
+    ActionBarS0:
+        id: actionbar
+        size_hint: 1, None
+        height: 40
+
+    BoxLayout:
+        id: main_layout
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        Section1:
+            id: section1
+            size_hint: 1, 0.4
+        LineaDivisoria
+        Section2:
+            id: section2
+            size_hint: 1, 0.35
+        LineaDivisoria
+        Section3:
+            id: section3
+            size_hint: 1, 0.25

@@ -1,7 +1,7 @@
 {
   "mode": "lineal",
-  "cell_name": "popen",
-  "electrode": "B",
+  "cell_name": "",
+  "electrode": "A",
   "directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
   "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
   "keithley": null,

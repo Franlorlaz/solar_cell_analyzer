@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 from keithley import lineal, hysteresis
+from interface.interface import Main_kv
 
 
 def test_lineal_mode():
@@ -40,5 +41,6 @@ def test_hysteresis_mode():
 
 
 if __name__ == '__main__':
-    test_lineal_mode()
-    test_hysteresis_mode()
+    # test_lineal_mode()
+    # test_hysteresis_mode()
+    # Main_kv().run()
