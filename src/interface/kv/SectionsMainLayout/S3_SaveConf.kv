@@ -6,20 +6,20 @@
         Color:
             rgb: 0.40,0.40,0.40
         Rectangle:
-            size: 395,25
-            pos: 85,85
+            size: 376,25
+            pos: 92,70
 
     RelativeLayout:
         Label:
             text: 'Save directory:'
-            pos: -137,42
+            pos_hint: {'center_x':.25, 'center_y':.85}
             bold: True
             color: 0.8,0.8,0.8
             font_size: 15
 
         MyButton:
             text:'Examine...'
-            pos:340,95
+            pos_hint: {'center_x':.75, 'center_y':.85}
             size_hint: None, None
             width:120
             height: 25
@@ -27,14 +27,14 @@
 
         Label:
             id: directory_label
-            text: '- - Directory - -'
+            text: root.init_path
             color: 0.8,0.8,0.8
             font_size: 15
-            pos: 0,15
+            pos_hint: {'center_x':.5, 'center_y':.6}
 
         MyButton:
             text:'Start'
-            pos:150,10
+            pos_hint: {'center_x':.5, 'center_y':.3}
             size_hint: None, None
             width:200
             height: 30
