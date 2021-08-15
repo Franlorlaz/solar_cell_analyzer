@@ -1,0 +1,43 @@
+# Si quito las importaciones de aqui no funciona aunque esten en el archivo .py
+# Pero con importarlas en el fichero principal, se aplican tambien a los otros .kv
+
+# Import from kivy
+#:import utils kivy.utils
+#:import Factory kivy.factory.Factory
+
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+#                           LAYOUT PRINCIPAL
+# --------------------------------------------------------------------
+# --------------------------------------------------------------------
+<MainScreen>:
+    orientation: 'vertical'
+    canvas:
+        Color:
+            rgb: 0.25,0.25,0.25
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    ActionBarS0:
+        id: actionbar
+        size_hint: 1, None
+        height: 40
+
+    BoxLayout:
+        id: main_layout
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        Section1:
+            id: section1
+            size_hint: 1, 0.4
+        LineaDivisoria
+        Section2:
+            id: section2
+            size_hint: 1, 0.35
+        LineaDivisoria
+        Section3:
+            id: section3
+            size_hint: 1, 0.25

@@ -8,4 +8,5 @@ class ActionBarS0(ActionBar):
     id_actionbar_S0 = ObjectProperty(None)
 
     def prueba(self):
-        self.parent.ids.section3.arduino = 'puerto 1'
+        arduino = self.parent.ids.section3.arduino
+        arduino.connect(None)

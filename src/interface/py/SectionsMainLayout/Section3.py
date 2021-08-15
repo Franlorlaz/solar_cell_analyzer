@@ -1,6 +1,4 @@
 """Section 3: save path configuration and run button"""
-# TODO: Arduino object instantiation
-# TODO: config/tmp/param.txt lista de diccionarios
 
 import json
 from subprocess import Popen
@@ -9,10 +7,10 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 from kivy.clock import Clock
-from py.PopUps.MeasurePopup import MeasurePopup
-from py.PopUps.PolarizePopup import PolarizePopup
-from py.PopUps.ErrorWarning import ErrorWarningPopup
-from ....arduino import Arduino
+from interface.py.PopUps.MeasurePopup import MeasurePopup
+from interface.py.PopUps.PolarizePopup import PolarizePopup
+from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
+from arduino import Arduino
 
 
 class Section3(BoxLayout):
@@ -23,7 +21,7 @@ class Section3(BoxLayout):
         super(Section3, self).__init__(**kwargs)
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.keithley = None
-        self.arduino = 'hello world'
+        self.arduino = Arduino(port=None)
 
         self.repeat_electrode = False
         self.repeat_all = False
