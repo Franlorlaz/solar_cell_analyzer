@@ -77,11 +77,11 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
-        # Initialize param.txt as empty file
-        param_path = Path(__file__ + '/../../../../config/tmp/param.txt')
+        # Initialize param.json as empty file
+        param_path = Path(__file__ + '/../../../../config/tmp/param.json')
         param_path = param_path.resolve()
         with open(param_path, 'w') as f:
-            f.write('')
+            json.dump([], f, indent=2)
 
         # Initialize trigger.json as False
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
@@ -175,12 +175,16 @@ class Section3(BoxLayout):
             self.measure_popup.display_measure(param)
 
             if self.sequence:
+                electrodes = ['A', 'B', 'C', 'D']
                 iteration = self.sequence.pop(0)
                 program = self.program.pop(0)
-
-                print(self.arduino, iteration)  # TODO: switch on relay
                 with open(program_path.resolve(), 'w') as f:
                     json.dump(program, f, indent=2)
+
+                cell_id = int(iteration[0])
+                electrode_id = electrodes.index(iteration[1].upper()) + 1
+                self.arduino.switch_relay(cell=cell_id,
+                                          electrode_id=electrode_id)
 
                 Popen(['python3', 'keithley/CLI.py', 'run', '--program',
                        str(program_path.resolve())])
@@ -195,6 +199,7 @@ class Section3(BoxLayout):
                 with open(trigger_path, 'w') as f:
                     json.dump(trigger, f, indent=2)
             else:
+                self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
                 # FIXME: Change label from 'Stop' to 'Volver'
                 # FIXME: The button need two clicks, fix this
