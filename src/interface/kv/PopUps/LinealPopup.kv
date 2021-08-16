@@ -1,6 +1,6 @@
 <LinealPopup>:
     id_lineal_popup:
-        param_v_start, param_v_stop, param_points, \
+        param_v_1, param_v_2, param_points, \
         param_speed, param_delay, param_cmpl, \
         param_light_power, param_area
     auto_dismiss: False
@@ -35,8 +35,9 @@
                 height: 15
 
             TextInput:
-                id: param_v_start
+                id: param_v_1
                 input_filter: 'float'
+                text: str(root.param_v_1_init)
                 pos_hint:{'center_x':0.5,'center_y':0.85}
                 size_hint: None,None
                 width: 80
@@ -68,8 +69,9 @@
                 height: 15
 
             TextInput:
-                id: param_v_stop
+                id: param_v_2
                 input_filter: 'float'
+                text: str(root.param_v_2_init)
                 pos_hint:{'center_x':0.5,'center_y':0.77}
                 size_hint: None,None
                 width: 80
@@ -102,7 +104,8 @@
 
             TextInput:
                 id: param_points
-                input_filter: 'float'
+                input_filter: 'int'
+                text: str(root.param_points_init)
                 pos_hint:{'center_x':0.5,'center_y':0.69}
                 size_hint: None,None
                 width: 80
@@ -136,6 +139,7 @@
             TextInput:
                 id: param_speed
                 input_filter: 'float'
+                text: str(root.param_speed_init)
                 pos_hint:{'center_x':0.5,'center_y':0.55}
                 size_hint: None,None
                 width: 80
@@ -169,6 +173,7 @@
             TextInput:
                 id: param_delay
                 input_filter: 'float'
+                text: str(root.param_delay_init)
                 pos_hint:{'center_x':0.5,'center_y':0.47}
                 size_hint: None,None
                 width: 80
@@ -202,6 +207,7 @@
             TextInput:
                 id: param_cmpl
                 input_filter: 'float'
+                text: str(root.param_cmpl_init)
                 pos_hint:{'center_x':0.5,'center_y':0.39}
                 size_hint: None,None
                 width: 80
@@ -235,6 +241,7 @@
             TextInput:
                 id: param_light_power
                 input_filter: 'float'
+                text: str(root.param_light_power_init)
                 pos_hint:{'center_x':0.5,'center_y':0.25}
                 size_hint: None,None
                 width: 80
@@ -268,6 +275,7 @@
             TextInput:
                 id: param_area
                 input_filter: 'float'
+                text: str(root.param_area_init)
                 pos_hint:{'center_x':0.5,'center_y':0.17}
                 size_hint: None,None
                 width: 80

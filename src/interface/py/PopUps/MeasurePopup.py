@@ -5,7 +5,7 @@ from kivy.properties import ObjectProperty
 
 
 class MeasurePopup(Popup):
-    # TODO: Pantalla imprimir resultados -> Actualizar labels con medidas y boton Stop->Volver y titulo del popup al acabar medidas
+    # TODO: Pantalla imprimir resultados -> Actualizar boton Stop->Volver y titulo del popup al acabar medidas
     id_measurepopup = ObjectProperty(None)
 
     def display_measure(self, measures):
