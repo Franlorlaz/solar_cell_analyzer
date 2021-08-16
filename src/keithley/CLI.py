@@ -22,7 +22,7 @@ Where <path> is the path to a .json file like this:
   "config": "/path/to/config/file/mode.json",
   "keithley": "keithley_port or null",
   "trigger_path": "/path/to/trigger/file/trigger.json",
-  "param_path": "/path/to/param.txt"
+  "param_path": "/path/to/param.json"
 }
 """
 
@@ -226,11 +226,16 @@ if __name__ == '__main__':
                                   program['directory'], config['config'],
                                   keithley=program['keithley'])
         else:
-            pv_param = ''
+            pv_param = {}
+        pv_param['name'] = program['cell_name'] + ' - '
+        pv_param['name'] += program['electrode'].upper()
 
         param_path = Path(program['param_path']).resolve()
-        with open(param_path, 'a') as f:
-            f.write(str(pv_param))
+        with open(param_path, 'r') as f:
+            param = json.load(f)
+        param.append(pv_param)
+        with open(param_path, 'w') as f:
+            json.dump(param, f, indent=2)
 
         trigger_path = Path(program['trigger_path']).resolve()
         with open(trigger_path, 'r') as f:

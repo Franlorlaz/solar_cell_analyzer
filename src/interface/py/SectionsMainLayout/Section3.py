@@ -77,11 +77,11 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
-        # Initialize param.txt as empty file
-        param_path = Path(__file__ + '/../../../../config/tmp/param.txt')
+        # Initialize param.json as empty file
+        param_path = Path(__file__ + '/../../../../config/tmp/param.json')
         param_path = param_path.resolve()
         with open(param_path, 'w') as f:
-            f.write('')
+            json.dump([], f, indent=2)
 
         # Initialize trigger.json as False
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')

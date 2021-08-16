@@ -14,7 +14,8 @@
     "cell_1": {
       "name": "",
       "electrodes": [
-        "a"
+        "a",
+        "b"
       ]
     },
     "cell_2": {
