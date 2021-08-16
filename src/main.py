@@ -42,7 +42,7 @@ Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'width', 550)
 Config.set('graphics', 'height', 600)
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')  # Remove red circle when right-click
-Config.set('kivy','window_icon','/interface/icon3.png')
+Config.set('kivy','window_icon','interface/icon3.png')
 
 # Loads all kv file in kv/ dir
 kv_path = str(Path(__file__ + '/../interface/kv/').resolve()) + '/'
