@@ -13,7 +13,10 @@
   "cells": {
     "cell_1": {
       "name": "",
-      "electrodes": []
+      "electrodes": [
+        "a",
+        "b"
+      ]
     },
     "cell_2": {
       "name": "",

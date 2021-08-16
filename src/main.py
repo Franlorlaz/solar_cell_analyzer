@@ -76,7 +76,7 @@ class MainScreen(BoxLayout):
 
     def stop(self):
         self.MeasurePopup.ids.stop_button.text = 'Stop'
-        trigger_path = Path(__file__ + '/../../config/tmp/trigger.json')
+        trigger_path = Path(__file__ + '/../config/tmp/trigger.json')
         trigger_path = trigger_path.resolve()
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
