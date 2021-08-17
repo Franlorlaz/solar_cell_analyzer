@@ -11,7 +11,7 @@ from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
 from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
 from arduino import Arduino
-
+from keithley import Keithley
 
 class Section3(BoxLayout):
     id_section3 = ObjectProperty(None)
@@ -22,6 +22,7 @@ class Section3(BoxLayout):
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.keithley = None
         self.arduino = Arduino(port=None)
+        self.keithley = Keithley(port=None)
 
         self.repeat_electrode = False
         self.repeat_all = False
@@ -31,6 +32,8 @@ class Section3(BoxLayout):
         self.basic_sequence = []
         self.program = []
         self.measure_popup = MeasurePopup()
+
+        # print(self.measure_popup.ids.stop_button.text)
 
     def make_interface_dict(self):
         section1 = self.parent.parent.ids.section1
@@ -201,8 +204,9 @@ class Section3(BoxLayout):
             else:
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
+                self.measure_popup.ids.stop_button.text = 'Volver'
                 # FIXME: Change label from 'Stop' to 'Volver'
-                # FIXME: The button need two clicks, fix this
+                #  the button need two clicks, fix this --> PROBAR AHORA
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)

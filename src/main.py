@@ -14,6 +14,7 @@ from kivy.app import App
 from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
+from kivy.properties import ObjectProperty
 
 from os import listdir
 from os.path import isfile, join
@@ -52,7 +53,7 @@ for dir in kv_load_dir:
     for file in kv_load_list:
         if file.endswith('.kv'):
             Builder.load_file(kv_path + dir + '/' + file)
-
+from interface.py.SectionsMainLayout.ActionBarS0 import ActionBarS0
 
 
 # ***************************************************
@@ -85,27 +86,23 @@ class MainScreen(BoxLayout):
             json.dump(trigger, f, indent=2, sort_keys=True)
         self.MeasurePopup.ids.stop_button.text = 'Volver'
 
-
-from kivy.uix.actionbar import ActionBar
-from kivy.properties import ObjectProperty
-
-
-class ActionBarS0(ActionBar):
-    id_actionbar_S0 = ObjectProperty(None)
-
-    def prueba(self):
-        self.parent.ids.section3.arduino = 'puerto 1'
-
 # ***************************************************
 # ***************************************************
 #                     APP
 # ***************************************************
 # ***************************************************
+from kivy.core.window import Window
+
+
 class Main_kv(App):
     title = 'Solar Cell Analyzer'
+
     def build(self):
-        self.icon = r'interface/icon3.png' #Icono en el mismo directorio que el archivo principal, sino especificar ruta
+        self.icon = r'interface/icon3.png'
         return MainScreen()
+
+    def resize_window(self):
+        Window.size = (549, 600)
 
 
 # ***************************************************

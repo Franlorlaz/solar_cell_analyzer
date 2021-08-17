@@ -6,21 +6,23 @@
     "polarize": false
   },
   "repeat": {
-    "type": "no_repetition",
+    "type": "electrode_repetition",
     "times": 0,
     "wait": 0.0
   },
   "cells": {
     "cell_1": {
-      "name": "",
+      "name": "serranito",
       "electrodes": [
-        "a",
-        "b"
+        "a"
       ]
     },
     "cell_2": {
       "name": "",
-      "electrodes": []
+      "electrodes": [
+        "b",
+        "c"
+      ]
     },
     "cell_3": {
       "name": "",

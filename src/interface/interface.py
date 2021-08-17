@@ -115,6 +115,3 @@ class Main_kv(App):
 # ***************************************************
 if __name__ == '__main__':
     Main_kv().run()
-
-#TODO: Calibrate button (link): popup "calibrando" con boton "Ok" desactivado hasta que acabe la medida
-#TODO: Polarize: popup inicial al darle a "Start" cuando esté maracado, con botón "Continuar" para pasar las medidas

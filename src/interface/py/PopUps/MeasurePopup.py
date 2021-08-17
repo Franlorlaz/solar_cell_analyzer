@@ -9,9 +9,9 @@ class MeasurePopup(Popup):
     id_measurepopup = ObjectProperty(None)
 
     def display_measure(self, measures):
-        lst_param = ['PCE', 'FF', 'Pmax', 'Jsc', 'Voc']
+        lst_param = ['name', 'PCE', 'FF', 'Pmax', 'Jsc', 'Voc']
         for i in range(1, len(measures)+1):
-            for j in range(2, 7):
+            for j in range(1, 7):
                 the_reference = self.ids['line_' + str(i) + str(j)]
                 the_reference.text = str(measures[i-1][lst_param[j-2]])
 
