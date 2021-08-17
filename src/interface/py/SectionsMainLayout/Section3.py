@@ -210,3 +210,7 @@ class Section3(BoxLayout):
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
+
+    # TODO: Lanzar popup de calibracion, con boton "Ok" desactivado hasta que acabe la medida
+    def launch_calibration(self):
+        print('hola')

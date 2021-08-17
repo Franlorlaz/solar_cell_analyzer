@@ -6,7 +6,7 @@ from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 
 
-
+# TODO: Polarize: popup inicial al darle a "Start" cuando esté maracado, con botón "Continuar" para pasar las medidas
 class PolarizePopup(Popup):
     id_polarize_popup = ObjectProperty(None)
 

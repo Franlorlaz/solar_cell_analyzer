@@ -27,6 +27,7 @@ from interface.py.PopUps.PolarizePopup import PolarizePopup
 from interface.py.PopUps.ExaminePopup import ExaminePopup
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
+from interface.py.PopUps.Info import Info
 from interface.py.SectionsMainLayout import Section1
 from interface.py.SectionsMainLayout import Section2
 from interface.py.SectionsMainLayout import Section3
@@ -70,6 +71,7 @@ class MainScreen(BoxLayout):
         self.ExaminePopup = ExaminePopup()
         self.MeasurePopup = MeasurePopup()
         self.ErrorWarningPopup = ErrorWarningPopup()
+        self.Info = Info()
 
     def act_label_dir(self):
         self.ids.section3.ids.directory_label.text = str(self.ExaminePopup.ids.filechooser.selection[0])
@@ -113,5 +115,3 @@ class Main_kv(App):
 if __name__ == '__main__':
     Main_kv().run()
 
-#TODO: Calibrate button (link): popup "calibrando" con boton "Ok" desactivado hasta que acabe la medida
-#TODO: Polarize: popup inicial al darle a "Start" cuando esté maracado, con botón "Continuar" para pasar las medidas
