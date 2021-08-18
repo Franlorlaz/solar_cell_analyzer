@@ -74,3 +74,30 @@ class ESP32:
 
         return {'cell': cell, 'electrode_id': electrode_id,
                 'switch_off': switch_off}
+
+    def polarize(self, voltage, calibration=None):
+        """Send polarize order to ESP32.
+
+        :param voltage: voltage to set by ESP32. If calibration is not
+        given, voltage must be an integer between 0 and 255.
+        :param calibration: Dict with calibration parameters. It must have
+        the keys {'a', 'b'}. Equation: y = a*x + b
+        :return: A dictionary with used parameters.
+        """
+        a = 1
+        b = 0
+
+        if calibration:
+            if 'a' not in calibration and 'b' not in calibration:
+                raise ValueError('The calibration parameter given to '
+                                 'polarize() is not correct. It must be '
+                                 'like: {"a"=1, "b"=0}.')
+            if 'a' in calibration:
+                a = float(calibration['a'])
+            if 'b' in calibration:
+                b = float(calibration['b'])
+
+        voltage = int(a * voltage + b)
+        self.ser.write(b'c' + voltage.to_bytes(1, 'big'))
+
+        return {'voltage': voltage, 'calibration': calibration}
