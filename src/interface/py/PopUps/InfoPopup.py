@@ -5,12 +5,12 @@ from kivy.properties import StringProperty
 import webbrowser
 
 
-class Info(Popup):
+class InfoPopup(Popup):
     msg1 = StringProperty('')
     msg2 = StringProperty('')
 
     def __init__(self, **kwargs):
-        super(Info, self).__init__(**kwargs)
+        super(InfoPopup, self).__init__(**kwargs)
         self.msg1 = 'A desktop application for researchers to measure and analyze solar cells.'
         self.msg2 = 'Created by: Franciss and Laura.'
 

@@ -24,10 +24,11 @@ import json
 from interface.py.PopUps.LinealPopup import LinealPopup
 from interface.py.PopUps.HysteresisPopup import HysteresisPopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
+from interface.py.PopUps.CalibrationPopup import CalibrationPopup
 from interface.py.PopUps.ExaminePopup import ExaminePopup
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
-from interface.py.PopUps.Info import Info
+from interface.py.PopUps.InfoPopup import InfoPopup
 from interface.py.SectionsMainLayout import Section1
 from interface.py.SectionsMainLayout import Section2
 from interface.py.SectionsMainLayout import Section3
@@ -68,10 +69,11 @@ class MainScreen(BoxLayout):
         self.LinealPopup = LinealPopup()
         self.HysteresisPopup = HysteresisPopup()
         self.PolarizePopup = PolarizePopup()
+        self.CalibrationPopup = CalibrationPopup()
         self.ExaminePopup = ExaminePopup()
         self.MeasurePopup = MeasurePopup()
         self.ErrorWarningPopup = ErrorWarningPopup()
-        self.Info = Info()
+        self.InfoPopup = InfoPopup()
 
     def act_label_dir(self):
         self.ids.section3.ids.directory_label.text = str(self.ExaminePopup.ids.filechooser.selection[0])

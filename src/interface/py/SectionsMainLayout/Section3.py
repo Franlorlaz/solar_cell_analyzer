@@ -9,6 +9,7 @@ from kivy.properties import StringProperty
 from kivy.clock import Clock
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
+from interface.py.PopUps.CalibrationPopup import CalibrationPopup
 from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
 from arduino import Arduino
 from keithley import Keithley
@@ -32,6 +33,7 @@ class Section3(BoxLayout):
         self.basic_sequence = []
         self.program = []
         self.measure_popup = MeasurePopup()
+        self.calibration_popup = CalibrationPopup()
 
         # print(self.measure_popup.ids.stop_button.text)
 

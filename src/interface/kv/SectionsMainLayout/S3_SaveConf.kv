@@ -41,7 +41,8 @@
             pos_hint: {'center_x':.5, 'center_y':.38}
             markup: True
             on_ref_press:
-                root.launch_calibration()
+                root.calibration_popup.open()
+                root.calibration_popup.able_button()
 
         MyButton:
             text:'Start'
