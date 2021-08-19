@@ -4,6 +4,8 @@ Usage:
 $ python3 esp32/CLI.py ports
 $ python3 esp32/CLI.py connect --port <str>
 >> open <int><str>
+>> polarize <int>
+>> polarize <float> <float> <float>
 >> close all
 >> disconnect
 """
@@ -84,6 +86,29 @@ class ESP32Shell(cmd.Cmd):
             self.esp32.switch_relay(switch_off=True)
         else:
             print(f'Unrecognized close option: {arg}')
+
+    def do_polarize(self, arg):
+        """Send polarize order to ESP32.
+
+        Can take one argument (integer voltage from 0 to 255) or
+        three arguments (float voltage, a, b), where a and are parameters
+        from de equation y=ax+b.
+
+        Example 1: >> polarize 230
+        Example 1: >> polarize 1.2 1.0 0.0
+        """
+        args = arg.split()
+        if len(args) != 3 or len(args) != 1:
+            print(f'Unrecognized command "{arg}". '
+                  f'Must be: <float> <float> <float>.'
+                  f' Example: >> polarize 1.2 1.0 0.0')
+            return None
+        a = 1
+        b = 0
+        if len(args) == 3:
+            a = float(args[1])
+            b = float(args[2])
+        self.esp32.polarize(float(args[0]), calibration={'a': a, 'b': b})
 
     def do_disconnect(self, arg):
         """Disconnect the device and exit the interactive session."""
