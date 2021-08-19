@@ -12,17 +12,12 @@
   },
   "cells": {
     "cell_1": {
-      "name": "serranito",
-      "electrodes": [
-        "a"
-      ]
+      "name": "",
+      "electrodes": []
     },
     "cell_2": {
       "name": "",
-      "electrodes": [
-        "b",
-        "c"
-      ]
+      "electrodes": []
     },
     "cell_3": {
       "name": "",

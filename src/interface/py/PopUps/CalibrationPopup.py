@@ -15,6 +15,12 @@ class CalibrationPopup(Popup):
         self.calibration_msg = ' . . . '
         self.ids.button_calibration_accept.disabled = True
 
+    # TODO: ¿Que se resetee al cerrar el popup?
+    #  ¿O que el mensaje añada: "reiniciar app para volver a calibrar"?
+    def reset_popup(self):
+        self.calibration_msg = ' . . . '
+        self.ids.button_calibration_accept.disabled = True
+
     def able_button(self):
         Clock.schedule_once(self.my_callback, 3)
 

@@ -58,10 +58,11 @@ class HysteresisPopup(Popup):
                 error_warning_popup.print_error_msg(msg)
                 trigger = False
                 break
-            if float(the_reference.text) < 0.0:
+            if float(the_reference.text) < 0.0 and par in self.params_hysteresis_lst[2:]:
                 error_warning_popup = ErrorWarningPopup()
                 error_warning_popup.open()
-                msg = 'Some of the configuration parameters have a negative value. All parameters have to be positive or null.'
+                msg = "The configuration parameter '" + str(par) + "' has a negative value. "\
+                      "It has to be positive or null."
                 error_warning_popup.print_error_msg(msg)
                 trigger = False
                 break

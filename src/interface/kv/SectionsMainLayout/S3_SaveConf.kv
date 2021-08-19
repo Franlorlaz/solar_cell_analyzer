@@ -41,6 +41,7 @@
             pos_hint: {'center_x':.5, 'center_y':.38}
             markup: True
             on_ref_press:
+                root.calibration_popup.reset_popup()
                 root.calibration_popup.open()
                 root.calibration_popup.able_button()
 

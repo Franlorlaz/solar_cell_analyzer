@@ -15,6 +15,7 @@ from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
+from kivy.clock import Clock
 
 from os import listdir
 from os.path import isfile, join
@@ -103,10 +104,16 @@ class Main_kv(App):
 
     def build(self):
         self.icon = r'interface/icon3.png'
+        # Clock.schedule_interval(self.update, 1)
         return MainScreen()
+
+    def update(self,dt):
+        Clock.usleep(1)
 
     def resize_window(self):
         Window.size = (549, 600)
+    def restore_window(self):
+        Window.size = (550, 600)
 
 
 # ***************************************************

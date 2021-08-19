@@ -3,6 +3,7 @@
     id_actionbar_S0:
         arduino_spinner, esp32_spinner, keithley_spinner, \
         arduino_port_1, \
+        esp32_port_1, \
         keithley_port_1, keithley_port_2, keithley_port_3, \
         keithley_port_4, keithley_port_5, keithley_port_6
     pos_hint: {'top':1}
@@ -22,8 +23,9 @@
             id: arduino_spinner
             text: 'Arduino'
             on_press:
-                root.create_arduino_port_lst2()
-                app.resize_window()
+                if arduino_port_1.text == ' - - - ': root.create_arduino_port_lst2(); app.resize_window()
+            on_release:
+                app.restore_window()
             ActionButton:
                 id: arduino_port_1
                 text: ' - - - '
@@ -33,16 +35,12 @@
         ActionGroup:
             id: esp32_spinner
             text: 'ESP32'
+            on_press:
+                root.create_ports()
             ActionButton:
+                id: esp32_port_1
                 text: 'Port 1'
                 font_size: 14
-            ActionButton:
-                text: 'Port 2'
-                font_size: 14
-            ActionButton:
-                text: 'Port 3'
-                font_size: 14
-
 
         ActionGroup:
             dropdown_width: 150
