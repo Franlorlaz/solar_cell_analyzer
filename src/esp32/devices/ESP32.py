@@ -70,7 +70,7 @@ class ESP32:
         relay = 4 * int(cell) + int(electrode_id)
         self.ser.write(b'\x00')  # switch off all
         if not switch_off:
-            self.ser.write(relay.to_bytes(1, 'big'))
+            self.ser.write(b'c' + relay.to_bytes(1, 'big'))
 
         return {'cell': cell, 'electrode_id': electrode_id,
                 'switch_off': switch_off}
@@ -98,6 +98,6 @@ class ESP32:
                 b = float(calibration['b'])
 
         voltage = int(a * voltage + b)
-        self.ser.write(b'c' + voltage.to_bytes(1, 'big'))
+        self.ser.write(b'd' + voltage.to_bytes(1, 'big'))
 
         return {'voltage': voltage, 'calibration': calibration}

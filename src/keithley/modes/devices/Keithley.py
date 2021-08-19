@@ -273,3 +273,28 @@ class Keithley:
             for i in range(self._data_length):
                 file.write('%+8.6E   %+8.6E   %+8.6E'
                            '\n' % (data[i, 0], data[i, 1], data[i, 2]))
+
+    def voltmeter(self):
+        """Run keithley in voltmeter mode.
+
+        :return: Read data.
+        """
+        inst = self.inst
+        inst.write('*RST')  # Restore GPIB defaults
+        inst.write(':SOUR:FUNC CURR')  # Current source function
+        inst.write(':SOUR:CURR:MODE FIXED')  # Fixed current source mode
+        inst.write(':SENS:FUNC "VOLT"')  # Volts measure function
+        inst.write(':SOUR:CURR:RANG MIN')  # Lowest source range
+        inst.write(':SOUR:CURR:LEV 0')  # 0uA source level
+        inst.write(':SENS:VOLT:PROT 15')  # 25V compliance
+        inst.write(':SENS:VOLT:RANG 10')  # 20V range
+        inst.write(':FORM:ELEM VOLT')  # Volts only
+        inst.write(':OUTP ON')  # Output on before measuring
+
+        data = inst.write(':READ?')  # Trigger, acquire reading
+        # data = inst.query_ascii_values(':READ?', container=np.array)
+
+        inst.write(':OUTP OFF')  # Output off after measuring
+        inst.write('*RST')  # Reset unit to GPIB defaults
+        inst.write(':SYST:RSEN ON')  # 4-wire remote sensing
+        return data
