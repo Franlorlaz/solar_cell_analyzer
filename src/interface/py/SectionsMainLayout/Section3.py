@@ -77,14 +77,17 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
-        # Initialize param.json as empty file
+        # config files
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
+        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
+
+        # Initialize param.json as empty file
         param_path = param_path.resolve()
         with open(param_path, 'w') as f:
             json.dump([], f, indent=2)
 
         # Initialize trigger.json as False
-        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
         trigger_path = trigger_path.resolve()
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
@@ -97,7 +100,6 @@ class Section3(BoxLayout):
         data = self.make_interface_dict()
 
         # Change mode in mode.json
-        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
         mode_path = mode_path.resolve()
         with open(mode_path, 'r') as f:
             mode = json.load(f)
@@ -153,11 +155,12 @@ class Section3(BoxLayout):
         Clock.schedule_once(self.run, 1)
 
     def run(self, *dt):
-        wait = 2.0
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
-        param_path = param_path.resolve()
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+
+        wait = 2.0
+        param_path = param_path.resolve()
         trigger_path = trigger_path.resolve()
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
@@ -202,7 +205,7 @@ class Section3(BoxLayout):
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
                 # FIXME: Change label from 'Stop' to 'Volver'
-                # FIXME: The button need two clicks, fix this
+                # FIXME: The button needs two clicks, fix this
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
