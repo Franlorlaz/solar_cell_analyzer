@@ -10,18 +10,21 @@ from kivy.clock import Clock
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
 from interface.py.PopUps.CalibrationPopup import CalibrationPopup
-from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
+from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
 from keithley import Keithley
 
+
 class Section3(BoxLayout):
-    id_section3 = ObjectProperty(None)
+    """Section 3 (save path configuration and run) class."""
+    id_section_3 = ObjectProperty(None)
     init_dir = StringProperty('')
 
     def __init__(self, **kwargs):
+        """Initialize attributes."""
         super(Section3, self).__init__(**kwargs)
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
-        self.keithley = None
+        # self.keithley = None
         self.arduino = Arduino(port=None)
         self.keithley = Keithley(port=None)
 
@@ -38,6 +41,19 @@ class Section3(BoxLayout):
         # print(self.measure_popup.ids.stop_button.text)
 
     def check_params(self, sequence, arduino, keithley):
+        """Check that:
+            a) An electrode has been selected to measure
+            b) A port has been selected for the arduino
+            c) A port has been selected for the keithley
+
+        :param sequence: A list that contains the electrode sequence to measure.
+        :param arduino: An object that contains information about arduino.
+        :param keithley: An object that contains information about keithley.
+
+        :return: True, if there is any error;
+                 False, otherwise.
+        """
+
         msg = ''
         if not sequence:
             msg += 'No electrode selected. \n\n'
@@ -47,6 +63,7 @@ class Section3(BoxLayout):
         if keithley.port is None:
             msg += 'A port has not been selected for keithley (default port = None will simulate a ' \
                    'successful connection but no measurements will be made). \n\n'
+
         if msg != '':
             error_warning_popup = ErrorWarningPopup()
             error_warning_popup.open()
@@ -56,6 +73,7 @@ class Section3(BoxLayout):
             return True
 
     def make_interface_dict(self):
+        """Generate the dictionary with the interface configuration."""
         section1 = self.parent.parent.ids.section1
         section2 = self.parent.parent.ids.section2
         section3 = self.parent.parent.ids.section3
@@ -100,6 +118,7 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
+        """Start the measurement process."""
         # Initialize param.json as empty file
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
         param_path = param_path.resolve()

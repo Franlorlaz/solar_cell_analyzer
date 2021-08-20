@@ -6,7 +6,7 @@
     "polarize": false
   },
   "repeat": {
-    "type": "electrode_repetition",
+    "type": "no_repetition",
     "times": 0,
     "wait": 0.0
   },

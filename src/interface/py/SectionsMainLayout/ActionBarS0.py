@@ -9,7 +9,7 @@ from kivy.clock import mainthread
 from kivy.properties import ObjectProperty
 from arduino import Arduino
 from keithley import Keithley
-from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
+from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 
 class ActionBarS0(ActionBar):
     id_actionbar_S0 = ObjectProperty(None)

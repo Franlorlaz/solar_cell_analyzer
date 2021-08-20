@@ -1,14 +1,15 @@
-"""" Popup to hysteresis configuration"""
+"""" Popup to hysteresis configuration."""
 
 import json
 from pathlib import Path
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.properties import NumericProperty
-from ..PopUps.ErrorWarning import ErrorWarningPopup
+from ..PopUps.ErrorWarningPopup import ErrorWarningPopup
 
 
 class HysteresisPopup(Popup):
+    """Hysteresis popup class."""
     id_hysteresis_popup = ObjectProperty(None)
     param_v_1_init = NumericProperty(0.0)
     param_v_2_init = NumericProperty(0.0)
@@ -20,6 +21,7 @@ class HysteresisPopup(Popup):
     param_area_init = NumericProperty(0.0)
 
     def __init__(self, **kwargs):
+        """Initialize the parameters with the values from the last run."""
         super(HysteresisPopup, self).__init__(**kwargs)
         self.params_hysteresis_lst = [
             'v_1',
@@ -33,8 +35,9 @@ class HysteresisPopup(Popup):
         ]
 
         path = str(Path(__file__ + '/../../../../config/tmp/mode.json').resolve())
-        f = open(path)
-        init_dict = json.load(f)
+        with open(path, 'r') as f:
+            init_dict = json.load(f)
+
         self.param_v_1_init = init_dict['config']['v_1']
         self.param_v_2_init = init_dict['config']['v_2']
         self.param_points_init = int(init_dict['config']['points'])
@@ -45,12 +48,15 @@ class HysteresisPopup(Popup):
         self.param_area_init = init_dict['config']['area']
 
     def make_hysteresis_dict(self):
+        """Generate the dictionary with the hysteresis configuration."""
         params_hysteresis = dict()
         trigger = True
+
         for par in self.params_hysteresis_lst:
             the_reference = self.ids['param_' + par]
             params_hysteresis[par] = float(the_reference.text or 0)
             the_reference.text = the_reference.text
+
             if the_reference.text == '':
                 error_warning_popup = ErrorWarningPopup()
                 error_warning_popup.open()
@@ -58,6 +64,7 @@ class HysteresisPopup(Popup):
                 error_warning_popup.print_error_msg(msg)
                 trigger = False
                 break
+
             if float(the_reference.text) < 0.0 and par in self.params_hysteresis_lst[2:]:
                 error_warning_popup = ErrorWarningPopup()
                 error_warning_popup.open()

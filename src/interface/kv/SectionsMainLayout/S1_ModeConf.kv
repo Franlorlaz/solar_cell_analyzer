@@ -1,6 +1,6 @@
 # Section 1: Mode and repetition configuration
 <Section1>:
-    id_section1:
+    id_section_1:
         mode_spinner, polarize_check, \
         no_repetition, electrode_repetition, all_repetition, \
         number_repetition, time_repetition
@@ -51,8 +51,8 @@
             pos_hint:  {'center': (.75, .5)}
             text: 'Configuration'
             on_press:
-                if mode_spinner.text == 'Lineal': app.root.LinealPopup.open()               #Factory.LinealPopup().open()
-                elif mode_spinner.text == 'Hysteresis': app.root.HysteresisPopup.open()     #Factory.HysteresisPopup().open()
+                if mode_spinner.text == 'Lineal': app.root.lineal_popup.open()               #Factory.LinealPopup().open()
+                elif mode_spinner.text == 'Hysteresis': app.root.hysteresis_popup.open()     #Factory.HysteresisPopup().open()
                 elif mode_spinner.text == 'Polarization': app.root.PolarizationPopup.open()
 
     # Subsection: Polarize
