@@ -1,0 +1,50 @@
+<CalibrationPopup>:
+    id_calibration_popup:
+        button_calibration_accept
+    auto_dismiss: False
+    title: 'Calibration...'
+    size_hint: 0.6,0.5
+    pos_hint: {'center_x':0.5, 'top':0.8}
+
+    BoxLayout:
+        size: root.width, root.height
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FloatLayout:
+            Label:
+                text: 'Calibration'
+                pos_hint:{'center_x':0.5,'center_y':0.95}
+                bold: True
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+            Label:
+                text: 'Calibrating, this may take a few minutes.'
+                pos_hint:{'center_x':0.5,'center_y':0.65}
+                bold: False
+                text_size: root.width-50, root.height-50
+                halign: 'center'
+                valign: 'middle'
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+
+            Label:
+                text: root.calibration_msg
+                pos_hint:{'center_x':0.5,'center_y':0.25}
+                bold: False
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:0.3,None
+            height:30
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+            MyButton:
+                id: button_calibration_accept
+                text: 'Acept'
+                on_release: root.dismiss()
