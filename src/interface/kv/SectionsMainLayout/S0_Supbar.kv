@@ -23,12 +23,12 @@
             id: arduino_spinner
             text: 'Arduino'
             on_press:
-                if arduino_port_1.text == ' - - - ': root.create_arduino_port_lst2(); app.resize_window()
+                if arduino_port_1.text == ' Init ': root.create_arduino_port_lst2(); app.resize_window()
             on_release:
                 app.restore_window()
             ActionButton:
                 id: arduino_port_1
-                text: ' - - - '
+                text: ' Init '
                 font_size: 14
                 on_press: root.connect_arduino_to_port(self.text)
 

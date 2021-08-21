@@ -47,7 +47,7 @@ for directory in kv_load_dir:
         if file.endswith('.kv'):
             Builder.load_file(kv_path + directory + '/' + file)
 
-
+from arduino import Arduino
 # ***************************************************
 # ***************************************************
 #                   MAIN SCREEN
@@ -67,6 +67,7 @@ class MainScreen(BoxLayout):
         self.measure_popup = MeasurePopup()
         self.error_warning_popup = ErrorWarningPopup()
         self.info_popup = InfoPopup()
+        self.fake_arduino = Arduino(port=None)
 
     def act_label_dir(self):
         """Update directory label in section 3."""

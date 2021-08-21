@@ -29,6 +29,8 @@ class CalibrationPopup(Popup):
     #  iría en Section3 cuando acabe la calibración
     def call_able_button(self):
         """Wait 3 seconds before able 'Accept' button."""
+        print(my_arduino)
+
         Clock.schedule_once(self.able_button, 3)
 
     def able_button(self, dt):

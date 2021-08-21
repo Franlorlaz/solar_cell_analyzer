@@ -12,7 +12,6 @@ from interface.py.PopUps.PolarizePopup import PolarizePopup
 from interface.py.PopUps.CalibrationPopup import CalibrationPopup
 from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
-from keithley import Keithley
 
 
 class Section3(BoxLayout):
@@ -24,9 +23,8 @@ class Section3(BoxLayout):
         """Initialize attributes."""
         super(Section3, self).__init__(**kwargs)
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
-        # self.keithley = None
+        self.keithley = None
         self.arduino = Arduino(port=None)
-        self.keithley = Keithley(port=None)
 
         self.repeat_electrode = False
         self.repeat_all = False
@@ -168,7 +166,8 @@ class Section3(BoxLayout):
             sequence *= data['repeat']['times'] + 1
 
         # Check params
-        trigger_check = self.check_params(sequence, self.arduino, self.keithley)
+        # trigger_check = self.check_params(sequence, self.arduino, self.keithley)
+        trigger_check = True
 
         if trigger_check:
             # Open Polarize or Measure Popup and run
@@ -220,13 +219,15 @@ class Section3(BoxLayout):
             with open(param_path, 'r') as f:
                 param = json.load(f)
             if len(param) > 5:
-                param = param[-1, -6]
+                param = param[::-1][0:5][::-1]
             self.measure_popup.display_measure(param)
 
             if self.sequence:
                 electrodes = ['A', 'B', 'C', 'D']
                 iteration = self.sequence.pop(0)
                 program = self.program.pop(0)
+                print('-------------------------')
+                print(program)
                 with open(program_path.resolve(), 'w') as f:
                     json.dump(program, f, indent=2)
 
