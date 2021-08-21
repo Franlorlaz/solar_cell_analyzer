@@ -1,7 +1,7 @@
 {
   "mode": "lineal",
   "cell_name": "",
-  "electrode": "B",
+  "electrode": "D",
   "directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
   "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
   "keithley": null,

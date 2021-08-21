@@ -1,42 +1,80 @@
 # ActionBar S0: Superior bar
 <ActionBarS0>:
     id_actionbar_S0:
-        prueba
+        arduino_spinner, esp32_spinner, keithley_spinner, \
+        arduino_port_1, \
+        esp32_port_1, \
+        keithley_port_1, keithley_port_2, keithley_port_3, \
+        keithley_port_4, keithley_port_5, keithley_port_6
     pos_hint: {'top':1}
     ActionView:
+        id: action_view
         use_separator: True
+
         ActionPrevious:
             title: 'Solar Cell Analyzer'
             with_previous: False
-            app_icon: 'icon3.png'
+            app_icon: 'interface/icon3.png'
             app_icon_height: 35
             app_icon_width: 40
+            on_press: app.root.info_popup.open()
 
         ActionGroup:
-            id: prueba
+            id: arduino_spinner
             text: 'Arduino'
+            on_press:
+                if arduino_port_1.text == ' Init ': root.create_arduino_port_lst2(); app.resize_window()
+            on_release:
+                app.restore_window()
             ActionButton:
-                text: 'Port 1'
-                on_press: root.prueba()
-            ActionButton:
-                text: 'Port 2'
-            ActionButton:
-                text: 'Port 3'
+                id: arduino_port_1
+                text: ' Init '
+                font_size: 14
+                on_press: root.connect_arduino_to_port(self.text)
 
         ActionGroup:
+            id: esp32_spinner
             text: 'ESP32'
+            on_press:
+                root.create_ports()
             ActionButton:
+                id: esp32_port_1
                 text: 'Port 1'
-            ActionButton:
-                text: 'Port 2'
-            ActionButton:
-                text: 'Port 3'
+                font_size: 14
 
         ActionGroup:
+            dropdown_width: 150
+            id: keithley_spinner
             text: 'Keithley'
+            on_press:
+                root.update_ports()
             ActionButton:
-                text: 'Port 1'
+                id: keithley_port_1
+                text: ' - - - '
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)
             ActionButton:
-                text: 'Port 2'
+                id: keithley_port_2
+                text: ' - - - '
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)
             ActionButton:
-                text: 'Port 3'
+                id: keithley_port_3
+                text: ' - - - '
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)
+            ActionButton:
+                id: keithley_port_4
+                text: ' - - - '
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)
+            ActionButton:
+                id: keithley_port_5
+                text: ' - - - '
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)
+            ActionButton:
+                id: keithley_port_6
+                text: ' - - - '
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)

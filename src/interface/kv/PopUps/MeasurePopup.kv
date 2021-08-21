@@ -1,5 +1,5 @@
 <MeasurePopup>:
-    id_measurepopup:
+    id_measure_popup:
         line_11, line_12, line_13, line_14, line_15, line_16, \
         line_21, line_22, line_23, line_24, line_25, line_26, \
         line_31, line_32, line_33, line_34, line_35, line_36, \
@@ -7,7 +7,7 @@
         line_51, line_52, line_53, line_54, line_55, line_56, \
         stop_button
     auto_dismiss: False
-    title: 'Midiendo...'
+    title: 'Measure window'
     size_hint: 0.85,0.7
     pos_hint: {'center_x':0.5, 'top':0.92}
 
@@ -188,7 +188,6 @@
                 text: "Stop"
                 on_release:
                     if stop_button.text == 'Stop': stop_button.text = 'Volver'
-                    #if stop_button.text == 'Volver': root.dismiss()
                 on_press:
                     if stop_button.text == 'Stop': app.root.stop()
                     if stop_button.text == 'Volver': root.dismiss()

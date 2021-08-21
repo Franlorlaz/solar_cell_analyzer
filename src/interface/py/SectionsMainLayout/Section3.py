@@ -9,15 +9,18 @@ from kivy.properties import StringProperty
 from kivy.clock import Clock
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
-from interface.py.PopUps.ErrorWarning import ErrorWarningPopup
+from interface.py.PopUps.CalibrationPopup import CalibrationPopup
+from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
 
 
 class Section3(BoxLayout):
-    id_section3 = ObjectProperty(None)
+    """Section 3 (save path configuration and run) class."""
+    id_section_3 = ObjectProperty(None)
     init_dir = StringProperty('')
 
     def __init__(self, **kwargs):
+        """Initialize attributes."""
         super(Section3, self).__init__(**kwargs)
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.keithley = None
@@ -31,8 +34,46 @@ class Section3(BoxLayout):
         self.basic_sequence = []
         self.program = []
         self.measure_popup = MeasurePopup()
+        self.calibration_popup = CalibrationPopup()
+
+        # print(self.measure_popup.ids.stop_button.text)
+
+    def check_params(self, sequence, arduino, keithley):
+        """Check that:
+            a) An electrode has been selected to measure
+            b) A port has been selected for the arduino
+            c) A port has been selected for the keithley
+
+        :param sequence: A list that contains electrode sequence to measure.
+        :param arduino: An object that contains information about arduino.
+        :param keithley: An object that contains information about keithley.
+
+        :return: True, if there is any error;
+                 False, otherwise.
+        """
+
+        msg = ''
+        if not sequence:
+            msg += 'No electrode selected. \n\n'
+        if arduino.port is None:
+            msg += ('A port has not been selected for arduino (default port ='
+                    ' None will simulate a successful connection but no '
+                    'measurements will be made). \n\n')
+        if keithley.port is None:
+            msg += ('A port has not been selected for keithley (default '
+                    'port = None will simulate a successful connection '
+                    'but no measurements will be made). \n\n')
+
+        if msg != '':
+            error_warning_popup = ErrorWarningPopup()
+            error_warning_popup.open()
+            error_warning_popup.print_error_msg(msg)
+            return False
+        else:
+            return True
 
     def make_interface_dict(self):
+        """Generate the dictionary with the interface configuration."""
         section1 = self.parent.parent.ids.section1
         section2 = self.parent.parent.ids.section2
         section3 = self.parent.parent.ids.section3
@@ -77,6 +118,7 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
+        """Start the measurement process."""
         # config files
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
@@ -95,6 +137,9 @@ class Section3(BoxLayout):
         trigger['measuring'] = False
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2)
+
+        # Initialize Stop button in measure popup
+        self.measure_popup.ids.stop_button.text = 'Stop'
 
         # Generate de global_dict
         data = self.make_interface_dict()
@@ -124,35 +169,40 @@ class Section3(BoxLayout):
         if repeat_all:
             sequence *= data['repeat']['times'] + 1
 
-        # Open Measure Popup and run
-        polarize = data['mode']['polarize']
-        if polarize:
-            measure = PolarizePopup()
-            measure.open()
-        else:
-            measure = self.measure_popup
-            measure.open()
+        # Check params
+        # trigger_check = self.check_params(sequence, self.arduino, self.keithley)
+        trigger_check = True
 
-        self.sequence = sequence
-        self.basic_sequence = basic_sequence
-        self.repeat_electrode = repeat_electrode
-        self.repeat_all = repeat_all
-        self.wait = data['repeat']['wait']
-        self.program = []
+        if trigger_check:
+            # Open Polarize or Measure Popup and run
+            polarize = data['mode']['polarize']
+            if polarize:
+                measure = PolarizePopup()
+                measure.open()
+            else:
+                measure = self.measure_popup
+                measure.open()
 
-        for iteration in sequence:
-            cell_name = data['cells']['cell_' + iteration[0]]['name']
-            program = {'mode': str(data['mode']['name']),
-                       'cell_name': str(cell_name),
-                       'electrode': str(iteration[1]).upper(),
-                       'directory': str(data['saving_directory']),
-                       'config': str(data['mode']['config']),
-                       'keithley': self.keithley,
-                       'trigger_path': str(trigger_path),
-                       'param_path': str(param_path)}
-            self.program.append(program)
+            self.sequence = sequence
+            self.basic_sequence = basic_sequence
+            self.repeat_electrode = repeat_electrode
+            self.repeat_all = repeat_all
+            self.wait = data['repeat']['wait']
+            self.program = []
 
-        Clock.schedule_once(self.run, 1)
+            for iteration in sequence:
+                cell_name = data['cells']['cell_' + iteration[0]]['name']
+                program = {'mode': str(data['mode']['name']),
+                           'cell_name': str(cell_name),
+                           'electrode': str(iteration[1]).upper(),
+                           'directory': str(data['saving_directory']),
+                           'config': str(data['mode']['config']),
+                           'keithley': self.keithley,
+                           'trigger_path': str(trigger_path),
+                           'param_path': str(param_path)}
+                self.program.append(program)
+
+            Clock.schedule_once(self.run, 1)
 
     def run(self, *dt):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
@@ -174,7 +224,7 @@ class Section3(BoxLayout):
             with open(param_path, 'r') as f:
                 param = json.load(f)
             if len(param) > 5:
-                param = param[-1, -6]
+                param = param[::-1][0:5][::-1]
             self.measure_popup.display_measure(param)
 
             if self.sequence:
@@ -204,8 +254,7 @@ class Section3(BoxLayout):
             else:
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
-                # FIXME: Change label from 'Stop' to 'Volver'
-                # FIXME: The button needs two clicks, fix this
+                self.measure_popup.ids.stop_button.text = 'Volver'
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
