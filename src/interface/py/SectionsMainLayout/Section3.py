@@ -10,6 +10,7 @@ from kivy.clock import Clock
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
 from interface.py.PopUps.CalibrationPopup import CalibrationPopup
+from interface.py.PopUps.ConfirmCalibrationPopup import ConfirmCalibrationPopup
 from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
 
@@ -25,6 +26,7 @@ class Section3(BoxLayout):
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.keithley = None
         self.arduino = Arduino(port=None)
+        self.esp32 = Arduino(port=None)
 
         self.repeat_electrode = False
         self.repeat_all = False
@@ -34,9 +36,7 @@ class Section3(BoxLayout):
         self.basic_sequence = []
         self.program = []
         self.measure_popup = MeasurePopup()
-        self.calibration_popup = CalibrationPopup()
-
-        # print(self.measure_popup.ids.stop_button.text)
+        self.confirm_calibration_popup = ConfirmCalibrationPopup()
 
     def check_params(self, sequence, arduino, keithley):
         """Check that:

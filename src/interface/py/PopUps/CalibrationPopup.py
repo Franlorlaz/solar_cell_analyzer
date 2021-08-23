@@ -18,8 +18,11 @@ class CalibrationPopup(Popup):
         self.calibration_msg = ' . . . '
         self.ids.button_calibration_accept.disabled = True
 
-    # TODO: ¿Que se resetee al cerrar el popup?
-    #  ¿O que el mensaje añada: "reiniciar app para volver a calibrar"?
+    def launch_calibration(self):
+        self.reset_popup()
+        self.open()
+        self.call_able_button()
+
     def reset_popup(self):
         """Reset calibration popup attributes every time it is opened."""
         self.calibration_msg = ' . . . '
@@ -29,8 +32,7 @@ class CalibrationPopup(Popup):
     #  iría en Section3 cuando acabe la calibración
     def call_able_button(self):
         """Wait 3 seconds before able 'Accept' button."""
-        print(my_arduino)
-
+        # print(my_arduino)
         Clock.schedule_once(self.able_button, 3)
 
     def able_button(self, dt):
