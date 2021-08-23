@@ -236,7 +236,7 @@ class Section3(BoxLayout):
                 self.arduino.switch_relay(cell=cell_id,
                                           electrode_id=electrode_id)
 
-                Popen(['python3', 'keithley/CLI.py', 'run', '--program',
+                Popen(['python', 'keithley/CLI.py', 'run', '--program',
                        str(program_path.resolve())])
 
                 repeat_all = self.repeat_all

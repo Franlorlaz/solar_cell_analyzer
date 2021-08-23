@@ -13,12 +13,13 @@
   "cells": {
     "cell_1": {
       "name": "",
-      "electrodes": []
+      "electrodes": [
+        "a"
+      ]
     },
     "cell_2": {
-      "name": "mine",
+      "name": "",
       "electrodes": [
-        "a",
         "b",
         "c"
       ]

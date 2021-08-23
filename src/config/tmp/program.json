@@ -1,6 +1,6 @@
 {
   "mode": "lineal",
-  "cell_name": "mine",
+  "cell_name": "",
   "electrode": "A",
   "directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
   "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
