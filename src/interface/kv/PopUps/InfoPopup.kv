@@ -1,0 +1,56 @@
+<InfoPopup>:
+    auto_dismiss: False
+    title: 'Info...'
+    size_hint: 0.7,0.6
+    pos_hint: {'center_x':0.5, 'top':0.8}
+
+    BoxLayout:
+        size: root.width, root.height
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FloatLayout:
+            Label:
+                text: 'Version 1.0'
+                pos_hint:{'center_x':0.5,'center_y':0.95}
+                bold: True
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+            Label:
+                text: root.msg1
+                pos_hint:{'center_x':0.5,'center_y':0.65}
+                bold: False
+                text_size: root.width-50, root.height-50
+                halign: 'center'
+                valign: 'middle'
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+            Label:
+                text: '[ref=str]Github repository[/ref]'
+                pos_hint:{'center_x':0.5,'center_y':0.4}
+                underline: True
+                font_size: 15
+                color: 0.8,0.8,0.8
+                markup: True
+                on_ref_press:
+                    root.open_repository()
+
+            Label:
+                text: root.msg2
+                pos_hint:{'center_x':0.5,'center_y':0.25}
+                bold: False
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:0.3,None
+            height:30
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+            MyButton:
+                text: 'Ok'
+                on_release: root.dismiss()

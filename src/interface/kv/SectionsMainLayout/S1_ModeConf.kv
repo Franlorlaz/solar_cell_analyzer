@@ -1,20 +1,25 @@
 # Section 1: Mode and repetition configuration
 <Section1>:
-    id_section1:
-        mode_spinner, \
+    id_section_1:
+        mode_spinner, polarize_check, \
         no_repetition, electrode_repetition, all_repetition, \
         number_repetition, time_repetition
     size_hint: 1.0, 1.0
     orientation: 'vertical'
     padding: 2
     spacing: 5
-
+    canvas:
+        Color:
+            rgb: 0.25,0.25,0.25
+        Rectangle:
+            size: self.size
+            pos: self.pos
 
     # Subsection: Mode configuration
     FloatLayout:
         padding: 0
         spacing: 0
-        size_hint: 1, 0.5
+        size_hint: 1, 0.25
         orientation: 'horizontal'
         canvas:
             Color:
@@ -28,7 +33,7 @@
             width:30
             height:20
             pos_hint: {'center': (.15, .5)}
-            text: 'Modo: '
+            text: 'Mode: '
             halign: 'left'
             bold: True
             font_size: 15
@@ -38,17 +43,48 @@
             id: mode_spinner
             size_hint: 0.35, 0.5
             pos_hint: {'center': (.4, .5)}
-            text: '- - Elegir modo - -'
-            values: 'Lineal', 'Histéresis'
-            #on_text: app.current_mode_state(mode_spinner.text)  # Para testeo, se puede eliminar
+            text: 'Lineal'       #'- - Choose mode - -'
+            values: 'Lineal', 'Hysteresis' #, 'Polarization'
 
         MyButton:
             size_hint: 0.30, 0.6
             pos_hint:  {'center': (.75, .5)}
-            text: 'Configuración'
+            text: 'Configuration'
             on_press:
-                if mode_spinner.text == 'Lineal': app.root.LinealPopup.open()               #Factory.LinealPopup().open()
-                elif mode_spinner.text == 'Histéresis': app.root.HysteresisPopup.open()     #Factory.HysteresisPopup().open()
+                if mode_spinner.text == 'Lineal': app.root.lineal_popup.open()               #Factory.LinealPopup().open()
+                elif mode_spinner.text == 'Hysteresis': app.root.hysteresis_popup.open()     #Factory.HysteresisPopup().open()
+                elif mode_spinner.text == 'Polarization': app.root.PolarizationPopup.open()
+
+    # Subsection: Polarize
+    FloatLayout:
+        padding: 0
+        spacing: 0
+        orientation: 'horizontal'
+        size_hint: 1, 0.15
+        canvas:
+            Color:
+                rgb: 0.25,0.25,0.25
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        CheckBox:
+            id: polarize_check
+            pos_hint:  {'center': (.15, .70)}  # .15   .24   .31   .77
+            size_hint: None,None
+            width: 25
+            height: 25
+
+        Label:
+            size_hint: None, None
+            width:30
+            height:20
+            pos_hint: {'center': (.25, 0.70)}  #.32    .40   .85
+            text: 'Polarize'
+            color: 0.8,0.8,0.8
+            halign: 'left'
+            bold: False
+            font_size: 15
 
 
     # Subsection: Repetition configuration
@@ -56,6 +92,7 @@
         padding: 0
         spacing: 0
         orientation: 'horizontal'
+        size_hint: 1, 0.55
         canvas:
             Color:
                 rgb: 0.25,0.25,0.25
@@ -68,7 +105,7 @@
             width:30
             height:20
             pos_hint: {'center': (.15, .90)}
-            text: '  Repetir:'
+            text: '  Repeat:'
             color: 0.8,0.8,0.8
             halign: 'left'
             bold: True
@@ -77,6 +114,7 @@
         CheckBox:
             id: no_repetition
             group: 'repetir_seleccion'
+            active: True
             pos_hint:  {'center': (.15, .65)}
             size_hint: None,None
             width: 25
@@ -113,7 +151,7 @@
         Label:
             id: label_cada_electrodo
             text_size: label_cada_electrodo.size
-            text: 'Cada electrodo'
+            text: 'Each electrode'
             color: 0.8,0.8,0.8
             halign: 'left'
             font_size: 15
@@ -125,7 +163,7 @@
         Label:
             id: label_medida_completa
             text_size: label_medida_completa.size
-            text: 'Medida completa'
+            text: 'Full measure'
             color: 0.8,0.8,0.8
             halign: 'left'
             font_size: 15
@@ -136,7 +174,7 @@
 
         Label:
             pos_hint:  {'center': (.65, .55)}
-            text:'Nº repeticiones'
+            text:'Nº repetitions'
             color: 0.8,0.8,0.8
             halign: 'right'
             font_size: 14
@@ -144,17 +182,16 @@
         TextInput:
             id: number_repetition
             input_filter: 'int'
+            text: '0'
             pos_hint:  {'center': (.85, .55)}
             size_hint: None,None
             width: 60
             height: 25
             font_size: 12
-            #background_normal: ''
-            #background_color: 0.6,0.6,0.6
 
         Label:
             pos_hint:  {'center': (.65, .3)}
-            text:'t (final-inicial) (min)'
+            text:'t (final-initial) (min)'
             color: 0.8,0.8,0.8
             halign: 'right'
             font_size: 14
@@ -162,10 +199,11 @@
         TextInput:
             id: time_repetition
             input_filter: 'float'
+            text: '0.0'
             pos_hint:  {'center': (.85, .3)}
             size_hint: None,None
             width: 60
             height: 25
             font_size: 12
-            #background_normal: ''
-            #background_color: 0.6,0.6,0.6
+
+

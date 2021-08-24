@@ -1,0 +1,73 @@
+# ActionBar S0: Superior bar
+<ActionBarS0>:
+    id_actionbar_S0:
+        arduino_spinner, esp32_spinner, keithley_spinner, \
+        arduino_port_1, arduino_port_2, \
+        esp32_port_1, esp32_port_2, \
+        keithley_port_1, keithley_port_2
+
+    pos_hint: {'top':1}
+    ActionView:
+        id: action_view
+        use_separator: True
+
+        ActionPrevious:
+            title: 'Solar Cell Analyzer'
+            with_previous: False
+            app_icon: 'interface/icon3.png'
+            app_icon_height: 35
+            app_icon_width: 40
+            on_press: app.root.info_popup.open()
+
+        ActionGroup:
+            dropdown_width: 170
+            id: arduino_spinner
+            text: 'Arduino'
+            on_press:
+                if arduino_port_1.text == 'Init': root.create_port_lst(); app.resize_window()
+            on_release:
+                app.restore_window()
+            ActionButton:
+                id: arduino_port_1
+                text: 'Init'
+                font_size: 14
+                on_press: root.connect_arduino_to_port(self.text)
+            ActionButton:
+                id: arduino_port_2
+                text: '---'
+                font_size: 14
+                on_press: root.connect_arduino_to_port(self.text)
+
+        ActionGroup:
+            dropdown_width: 170
+            id: esp32_spinner
+            text: 'ESP32'
+            on_press:
+                if esp32_port_1.text == 'Init': root.create_port_lst(); app.resize_window()
+            ActionButton:
+                id: esp32_port_1
+                text: 'Init'
+                font_size: 14
+                on_press: root.connect_esp32_to_port(self.text)
+            ActionButton:
+                id: esp32_port_2
+                text: '---'
+                font_size: 14
+                on_press: root.connect_arduino_to_port(self.text)
+
+        ActionGroup:
+            dropdown_width: 170
+            id: keithley_spinner
+            text: 'Keithley'
+            on_press:
+                if keithley_port_1.text == 'Init': root.create_port_lst(); app.resize_window()
+            ActionButton:
+                id: keithley_port_1
+                text: 'Init'
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)
+            ActionButton:
+                id: keithley_port_2
+                text: '---'
+                font_size: 14
+                on_press: root.connect_keithley_to_port(self.text)

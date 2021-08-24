@@ -1,0 +1,33 @@
+<ErrorWarningPopup>:
+    id_error_warning_popup:
+        layout_error_msg, error_msg, \
+        ok_button
+    auto_dismiss: False
+    title: 'Error / Warning'
+    size_hint: 0.65,0.6
+    pos_hint: {'center_x':0.5, 'top':0.82}
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        BoxLayout:
+            id: layout_error_msg
+            orientation: 'vertical'
+            size_hint_y: 0.90
+
+            Label:
+                id: error_msg
+                text_size: root.width-50, root.height-10
+                halign: 'center'
+                valign: 'middle'
+                text: ' '
+
+        BoxLayout:
+            size_hint_y: 0.10
+
+            Button:
+                id: ok_button
+                text: "Ok"
+                on_press: root.dismiss()

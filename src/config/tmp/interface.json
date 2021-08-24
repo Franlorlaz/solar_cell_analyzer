@@ -1,12 +1,14 @@
 {
-  "saving_directory": "- - Directorio - -",
+  "saving_directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
   "mode": {
-    "name": "- - Elegir modo - -",
-    "config": "path/to/file/mode.json"
+    "name": "lineal",
+    "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
+    "polarize": false
   },
   "repeat": {
-    "times": "",
-    "wait": ""
+    "type": "no_repetition",
+    "times": 0,
+    "wait": 0.0
   },
   "cells": {
     "cell_1": {

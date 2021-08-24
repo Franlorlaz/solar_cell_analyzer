@@ -1,0 +1,54 @@
+<PolarizePopup>:
+    id_polarize_popup:
+        continue_polarize
+    auto_dismiss: False
+    title: 'Polarization Menu'
+    size_hint: 0.7,0.6
+    pos_hint: {'center_x':0.5, 'top':0.8}
+
+    BoxLayout:
+        size: root.width, root.height
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FloatLayout:
+            Label:
+                text: 'Polarization'
+                pos_hint:{'center_x':0.5,'center_y':0.95}
+                bold: True
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+            Label:
+                id: polarization_text
+                text: 'A'
+                pos_hint:{'center_x':0.5,'center_y':0.75}
+                bold: False
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:0.8,None
+            height:30
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+            MyButton:
+                text: 'Stop'
+                size_hint:0.4,0.75
+                pos_hint:{'x':0.4,'center_y':0.5}
+                on_press: root.stop_polarize()
+
+            BoxLayout:
+                size_hint:0.2,0.75
+
+            MyButton:
+                id: continue_polarize
+                text: 'Continue'
+                size_hint:0.4,0.75
+                pos_hint:{'x':0.6,'center_y':0.5}
+                on_press:
+                    if self.text == 'Continue': root.polarize_next_cell()
+                    else: root.end_polarize()

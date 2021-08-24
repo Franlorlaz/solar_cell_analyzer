@@ -1,14 +1,30 @@
 """Command Line Interface for Keithley Controller.
 
 Usage:
+
 $ python3 keithley/CLI.py ports
+
 $ python3 keithley/CLI.py connect --port <str>
 >> config <file>
 >> lineal
 >> hysteresis
 >> save data <file>
 >> save pv_param <file> <name>
+>> voltmeter
 >> disconnect
+
+$ python3 keithley/CLI.py run --program <path>
+Where <path> is the path to a .json file like this:
+{
+  "mode": "lineal",
+  "cell_name": "no_name",
+  "electrode": "A",
+  "directory": "/path/to/save/measured/data",
+  "config": "/path/to/config/file/mode.json",
+  "keithley": "keithley_port or null",
+  "trigger_path": "/path/to/trigger/file/trigger.json",
+  "param_path": "/path/to/param.json"
+}
 """
 
 import cmd
@@ -16,9 +32,9 @@ import argparse
 import json
 from pathlib import Path
 
-from devices.Keithley import Keithley
-from utils.pv_param import calculate_pv_param, save_pv_param
-from utils.path_maker import make_file
+from modes.devices import Keithley
+from modes.utils import calculate_pv_param, save_pv_param, make_file
+from modes import lineal, hysteresis
 
 
 class KeithleyShell(cmd.Cmd):
@@ -117,6 +133,11 @@ class KeithleyShell(cmd.Cmd):
             print(key, (value + pv_param_2[key]) / 2, sep=': ')
         self.pv_param = [pv_param_1, pv_param_2]
 
+    def do_voltmeter(self, arg):
+        """Run keithley in voltmeter mode."""
+        data = self.keithley.voltmeter()
+        print(data)
+
     def do_save(self, arg):
         """Save data measure or photovoltaic parameters calculated.
 
@@ -167,8 +188,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Keithley Controller.")
 
     parser.add_argument('action', type=str,
-                        help='Accepted values: {ports, connect}')
+                        help='Accepted values: {ports, connect, run}')
     parser.add_argument('-p', '--port', type=str, help="Device for connection")
+    parser.add_argument('-r', '--program', type=str,
+                        help="Program file for run")
     args = parser.parse_args()
 
     if args.action == 'ports':
@@ -183,6 +206,49 @@ if __name__ == '__main__':
             args.port = None
         keithley = Keithley(port=args.port)
         KeithleyShell(keithley).cmdloop()
+
+    elif args.action == 'run':
+        if args.program == 'None':
+            args.program = None
+        if not args.program:
+            raise ValueError('Program file is required.')
+
+        program = Path(__file__ + '/../../config').resolve()
+        program = program.joinpath(args.program).resolve()
+        with open(program, 'r') as f:
+            program = json.load(f)
+        with open(Path(program['config']).resolve(), 'r') as f:
+            config = json.load(f)
+
+        if program['mode'] == 'lineal':
+            pv_param = lineal(program['cell_name'],
+                              program['electrode'].upper(),
+                              program['directory'], config['config'],
+                              keithley=program['keithley'])
+
+        elif program['mode'] == 'hysteresis':
+            pv_param = hysteresis(program['cell_name'],
+                                  program['electrode'].upper(),
+                                  program['directory'], config['config'],
+                                  keithley=program['keithley'])
+        else:
+            pv_param = {}
+        pv_param['name'] = program['cell_name'] + ' - '
+        pv_param['name'] += program['electrode'].upper()
+
+        param_path = Path(program['param_path']).resolve()
+        with open(param_path, 'r') as f:
+            param = json.load(f)
+        param.append(pv_param)
+        with open(param_path, 'w') as f:
+            json.dump(param, f, indent=2)
+
+        trigger_path = Path(program['trigger_path']).resolve()
+        with open(trigger_path, 'r') as f:
+            trigger = json.load(f)
+        trigger['measuring'] = False
+        with open(trigger_path, 'w') as f:
+            json.dump(trigger, f, indent=2)
 
     else:
         print(f'Unrecognized command: {args.action}')

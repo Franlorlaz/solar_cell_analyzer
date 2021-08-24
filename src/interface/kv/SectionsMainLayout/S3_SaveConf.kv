@@ -1,41 +1,52 @@
 # Section 3: Save configuration
 <Section3>:
-    id_section3: directory_label
+    id_section_3: calibration_label, directory_label
+
     canvas:
         Color:
             rgb: 0.40,0.40,0.40
         Rectangle:
-            size: 395,25
-            pos: 85,115
+            size: 376,25
+            pos: 92,80
 
     RelativeLayout:
         Label:
-            text: 'Directorio de guardado:'
-            pos: -110,60
+            text: 'Save directory:'
+            pos_hint: {'center_x':.25, 'center_y':.89}
             bold: True
             color: 0.8,0.8,0.8
             font_size: 15
 
         MyButton:
-            text:'Examinar...'
-            pos:340,130
+            text:'Examine...'
+            pos_hint: {'center_x':.75, 'center_y':.93}
             size_hint: None, None
             width:120
             height: 25
-            on_release: app.root.ExaminePopup.open()       #Factory.ExaminePopup().open()
-
+            on_release: app.root.examine_popup.open()
 
         Label:
             id: directory_label
-            text: '- - Directorio - -'
+            text: root.init_dir
             color: 0.8,0.8,0.8
             font_size: 15
-            pos: 0,23
+            pos_hint: {'center_x':.5, 'center_y':.68}
+
+        Label:
+            id: calibration_label
+            text: '[ref=str]Calibration[/ref]'
+            color: utils.get_color_from_hex('#22BCF5')
+            font_size: 15
+            underline: True
+            pos_hint: {'center_x':.5, 'center_y':.38}
+            markup: True
+            on_ref_press:
+                root.press_calibrate()
 
         MyButton:
-            text:'Comenzar'
-            pos:150,40
+            text:'Start'
+            pos_hint: {'center_x':.5, 'center_y':.15}
             size_hint: None, None
             width:200
             height: 30
-            on_press: root.Start_button()
+            on_press: root.start_button()

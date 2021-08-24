@@ -1,4 +1,4 @@
-"""" Popup to lineal configuration."""
+"""" Popup to hysteresis configuration."""
 
 import json
 from pathlib import Path
@@ -8,9 +8,9 @@ from kivy.properties import NumericProperty
 from ..PopUps.ErrorWarningPopup import ErrorWarningPopup
 
 
-class LinealPopup(Popup):
-    """Lineal popup class."""
-    id_lineal_popup = ObjectProperty(None)
+class HysteresisPopup(Popup):
+    """Hysteresis popup class."""
+    id_hysteresis_popup = ObjectProperty(None)
     param_v_1_init = NumericProperty(0.0)
     param_v_2_init = NumericProperty(0.0)
     param_points_init = NumericProperty(0.0)
@@ -22,8 +22,8 @@ class LinealPopup(Popup):
 
     def __init__(self, **kwargs):
         """Initialize the parameters with the values from the last run."""
-        super(LinealPopup, self).__init__(**kwargs)
-        self.params_lineal_lst = [
+        super(HysteresisPopup, self).__init__(**kwargs)
+        self.params_hysteresis_lst = [
             'v_1',
             'v_2',
             'points',
@@ -47,14 +47,14 @@ class LinealPopup(Popup):
         self.param_light_power_init = init_dict['config']['light_power']
         self.param_area_init = init_dict['config']['area']
 
-    def make_lineal_dict(self):
-        """Generate the dictionary with the lineal configuration."""
-        params_lineal = dict()
+    def make_hysteresis_dict(self):
+        """Generate the dictionary with the hysteresis configuration."""
+        params_hysteresis = dict()
         trigger = True
 
-        for par in self.params_lineal_lst:
+        for par in self.params_hysteresis_lst:
             the_reference = self.ids['param_' + par]
-            params_lineal[par] = float(the_reference.text or 0)
+            params_hysteresis[par] = float(the_reference.text or 0)
             the_reference.text = the_reference.text
 
             if the_reference.text == '':
@@ -65,7 +65,7 @@ class LinealPopup(Popup):
                 trigger = False
                 break
 
-            if float(the_reference.text) < 0.0 and par in self.params_lineal_lst[2:]:
+            if float(the_reference.text) < 0.0 and par in self.params_hysteresis_lst[2:]:
                 error_warning_popup = ErrorWarningPopup()
                 error_warning_popup.open()
                 msg = "The configuration parameter '" + str(par) + "' has a negative value. "\
@@ -75,15 +75,15 @@ class LinealPopup(Popup):
                 break
 
         while trigger:
-            dict_lineal = {'mode': 'lineal',
-                           'config': params_lineal}
+            dict_hysteresis = {'mode': 'hysteresis',
+                               'config': params_hysteresis}
 
             # Create mode.json
             mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
             mode_path = mode_path.resolve()
             with open(mode_path, 'w') as f:
-                json.dump(dict_lineal, f, indent=2)
-            print(dict_lineal)
+                json.dump(dict_hysteresis, f, indent=2)
+            print(dict_hysteresis)
 
             trigger = False
             self.dismiss()
