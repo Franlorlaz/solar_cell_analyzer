@@ -10,6 +10,7 @@ from kivy.clock import Clock
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
 from interface.py.PopUps.CalibrationPopup import CalibrationPopup
+from interface.py.PopUps.ConfirmCalibrationPopup import ConfirmCalibrationPopup
 from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
 
@@ -25,6 +26,7 @@ class Section3(BoxLayout):
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.keithley = None
         self.arduino = Arduino(port=None)
+        self.esp32 = Arduino(port=None)
 
         self.repeat_electrode = False
         self.repeat_all = False
@@ -34,9 +36,7 @@ class Section3(BoxLayout):
         self.basic_sequence = []
         self.program = []
         self.measure_popup = MeasurePopup()
-        self.calibration_popup = CalibrationPopup()
-
-        # print(self.measure_popup.ids.stop_button.text)
+        self.confirm_calibration_popup = ConfirmCalibrationPopup()
 
     def check_params(self, sequence, arduino, keithley):
         """Check that:
@@ -118,6 +118,8 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
+        # print('Arduino conectado al puerto: ', self.arduino.port)
+
         """Start the measurement process."""
         # config files
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
@@ -239,7 +241,7 @@ class Section3(BoxLayout):
                 self.arduino.switch_relay(cell=cell_id,
                                           electrode_id=electrode_id)
 
-                Popen(['python3', 'keithley/CLI.py', 'run', '--program',
+                Popen(['python', 'keithley/CLI.py', 'run', '--program',
                        str(program_path.resolve())])
 
                 repeat_all = self.repeat_all
@@ -258,3 +260,8 @@ class Section3(BoxLayout):
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
+
+    def press_calibrate(self):
+        self.confirm_calibration_popup.open()
+        self.confirm_calibration_popup.pass_arduino_1(self.arduino)
+        print(self.arduino)

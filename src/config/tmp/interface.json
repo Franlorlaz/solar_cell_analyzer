@@ -1,8 +1,8 @@
 {
-  "saving_directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
+  "saving_directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
   "mode": {
     "name": "lineal",
-    "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
+    "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
     "polarize": false
   },
   "repeat": {
@@ -13,21 +13,11 @@
   "cells": {
     "cell_1": {
       "name": "",
-      "electrodes": [
-        "a",
-        "b",
-        "c",
-        "d"
-      ]
+      "electrodes": []
     },
     "cell_2": {
       "name": "",
-      "electrodes": [
-        "a",
-        "b",
-        "c",
-        "d"
-      ]
+      "electrodes": []
     },
     "cell_3": {
       "name": "",

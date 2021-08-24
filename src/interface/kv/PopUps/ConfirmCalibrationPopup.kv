@@ -1,0 +1,43 @@
+<ConfirmCalibrationPopup>:
+    id_confirm_calibration_popup:
+        button_no, button_yes
+    auto_dismiss: False
+    title: 'Confirm calibration'
+    size_hint: 0.5,0.4
+    pos_hint: {'center_x':0.5, 'top':0.8}
+
+    BoxLayout:
+        size: root.width, root.height
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        FloatLayout:
+            Label:
+                text: 'Calibration may take a few minutes. Do you want to start the calibration?'
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                bold: True
+                text_size: root.width-50, root.height-50
+                halign: 'center'
+                valign: 'middle'
+                font_size: 15
+                color: 0.8,0.8,0.8
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:0.8,None
+            height:30
+            pos_hint:{'center_x':0.5,'center_y':0.5}
+
+            MyButton:
+                id: button_no
+                text: 'No'
+                on_release: root.set_no()
+
+            BoxLayout:
+                size_hint:0.3,1
+
+            MyButton:
+                id: button_yes
+                text: 'Yes'
+                on_release: root.set_yes()
