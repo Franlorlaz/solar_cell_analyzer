@@ -44,7 +44,7 @@ class Section3(BoxLayout):
             b) A port has been selected for the arduino
             c) A port has been selected for the keithley
 
-        :param sequence: A list that contains the electrode sequence to measure.
+        :param sequence: A list that contains electrode sequence to measure.
         :param arduino: An object that contains information about arduino.
         :param keithley: An object that contains information about keithley.
 
@@ -56,11 +56,13 @@ class Section3(BoxLayout):
         if not sequence:
             msg += 'No electrode selected. \n\n'
         if arduino.port is None:
-            msg += 'A port has not been selected for arduino (default port = None will simulate a ' \
-                   'successful connection but no measurements will be made). \n\n'
+            msg += ('A port has not been selected for arduino (default port ='
+                    ' None will simulate a successful connection but no '
+                    'measurements will be made). \n\n')
         if keithley.port is None:
-            msg += 'A port has not been selected for keithley (default port = None will simulate a ' \
-                   'successful connection but no measurements will be made). \n\n'
+            msg += ('A port has not been selected for keithley (default '
+                    'port = None will simulate a successful connection '
+                    'but no measurements will be made). \n\n')
 
         if msg != '':
             error_warning_popup = ErrorWarningPopup()
@@ -119,14 +121,17 @@ class Section3(BoxLayout):
         # print('Arduino conectado al puerto: ', self.arduino.port)
 
         """Start the measurement process."""
-        # Initialize param.json as empty file
+        # config files
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
+        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
+
+        # Initialize param.json as empty file
         param_path = param_path.resolve()
         with open(param_path, 'w') as f:
             json.dump([], f, indent=2)
 
         # Initialize trigger.json as False
-        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
         trigger_path = trigger_path.resolve()
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
@@ -142,7 +147,6 @@ class Section3(BoxLayout):
         data = self.make_interface_dict()
 
         # Change mode in mode.json
-        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
         mode_path = mode_path.resolve()
         with open(mode_path, 'r') as f:
             mode = json.load(f)
@@ -203,11 +207,12 @@ class Section3(BoxLayout):
             Clock.schedule_once(self.run, 1)
 
     def run(self, *dt):
-        wait = 2.0
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
-        param_path = param_path.resolve()
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+
+        wait = 2.0
+        param_path = param_path.resolve()
         trigger_path = trigger_path.resolve()
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
@@ -228,8 +233,6 @@ class Section3(BoxLayout):
                 electrodes = ['A', 'B', 'C', 'D']
                 iteration = self.sequence.pop(0)
                 program = self.program.pop(0)
-                print('-------------------------')
-                print(program)
                 with open(program_path.resolve(), 'w') as f:
                     json.dump(program, f, indent=2)
 
@@ -254,8 +257,6 @@ class Section3(BoxLayout):
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
                 self.measure_popup.ids.stop_button.text = 'Volver'
-                # FIXME: Change label from 'Stop' to 'Volver'
-                #  the button need two clicks, fix this --> PROBAR AHORA
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)

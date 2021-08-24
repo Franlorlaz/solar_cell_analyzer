@@ -10,6 +10,7 @@ $ python3 keithley/CLI.py connect --port <str>
 >> hysteresis
 >> save data <file>
 >> save pv_param <file> <name>
+>> voltmeter
 >> disconnect
 
 $ python3 keithley/CLI.py run --program <path>
@@ -131,6 +132,11 @@ class KeithleyShell(cmd.Cmd):
         for key, value in pv_param_1.items():
             print(key, (value + pv_param_2[key]) / 2, sep=': ')
         self.pv_param = [pv_param_1, pv_param_2]
+
+    def do_voltmeter(self, arg):
+        """Run keithley in voltmeter mode."""
+        data = self.keithley.voltmeter()
+        print(data)
 
     def do_save(self, arg):
         """Save data measure or photovoltaic parameters calculated.
