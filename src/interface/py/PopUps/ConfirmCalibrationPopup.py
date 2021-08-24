@@ -16,6 +16,10 @@ class ConfirmCalibrationPopup(Popup):
         super(ConfirmCalibrationPopup, self).__init__(**kwargs)
         self.trigger_confirm_calibration = False
 
+    def pass_arduino_1(self, arduino_widget):
+        self.arduino = arduino_widget
+        print(self.arduino)
+
     def set_no(self):
         """Close popup."""
         self.dismiss()
@@ -25,6 +29,6 @@ class ConfirmCalibrationPopup(Popup):
         self.dismiss()
         calibration_popup = CalibrationPopup()
         calibration_popup.reset_popup()
+        calibration_popup.pass_arduino_2(self.arduino)
         calibration_popup.open()
         calibration_popup.call_able_button()
-

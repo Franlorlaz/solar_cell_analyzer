@@ -18,10 +18,11 @@ class CalibrationPopup(Popup):
         self.calibration_msg = ' . . . '
         self.ids.button_calibration_accept.disabled = True
 
-    def launch_calibration(self):
-        self.reset_popup()
-        self.open()
-        self.call_able_button()
+    def pass_arduino_2(self, arduino_widget):
+        self.arduino = arduino_widget
+        print(self.arduino)
+        self.arduino.connect(self.arduino.search_ports()[0])
+        print(self.arduino.port)
 
     def reset_popup(self):
         """Reset calibration popup attributes every time it is opened."""

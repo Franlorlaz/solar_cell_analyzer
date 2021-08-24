@@ -116,6 +116,8 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
+        # print('Arduino conectado al puerto: ', self.arduino.port)
+
         """Start the measurement process."""
         # Initialize param.json as empty file
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
@@ -257,3 +259,8 @@ class Section3(BoxLayout):
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
+
+    def press_calibrate(self):
+        self.confirm_calibration_popup.open()
+        self.confirm_calibration_popup.pass_arduino_1(self.arduino)
+        print(self.arduino)
