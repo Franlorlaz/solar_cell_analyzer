@@ -238,7 +238,7 @@ class Keithley:
             points = 2 * self.points - 1
             self._data_length = points
         if not voltage:
-            voltage = list_voltage_hysteresis(self.v_1, self.v_2, points)
+            voltage = list_voltage_hysteresis(self.v_1, self.v_2, self.points)
 
         inst.write(':SOUR:VOLT:MODE LIST')           # Volts list mode
         inst.write(':SOUR:LIST:VOLT %s' % voltage)   # Volts list
