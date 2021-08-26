@@ -277,7 +277,7 @@ class Keithley:
     def voltmeter(self):
         """Run keithley in voltmeter mode.
 
-        :return: Read data.
+        :return: Measured voltage (float).
         """
         inst = self.inst
         inst.write('*RST')  # Restore GPIB defaults
@@ -291,8 +291,12 @@ class Keithley:
         inst.write(':FORM:ELEM VOLT')  # Volts only
         inst.write(':OUTP ON')  # Output on before measuring
 
-        data = inst.write(':READ?')  # Trigger, acquire reading
-        # data = inst.query_ascii_values(':READ?', container=np.array)
+        if self.port:
+            data = inst.query_ascii_values(':READ?', container=np.array)
+        else:
+            inst.write(':READ?')
+            data = [0.0]
+        data = float(data[0])
 
         inst.write(':OUTP OFF')  # Output off after measuring
         inst.write('*RST')  # Reset unit to GPIB defaults
