@@ -8,6 +8,11 @@ class MeasurePopup(Popup):
     """Measure popup class."""
     id_measure_popup = ObjectProperty(None)
 
+    def __init__(self, **kwargs):
+        """Initialize the measures to zero."""
+        super(MeasurePopup, self).__init__(**kwargs)
+        self.lst_param = ['name', 'PCE', 'FF', 'Pmax', 'Jsc', 'Voc']
+
     def display_measure(self, measures):
         """Update the measures shown in the measure windows
         with the last six measures done.
@@ -16,15 +21,25 @@ class MeasurePopup(Popup):
         dictionary contains some parameters calculated after the measure
         and their values.
         """
-        lst_param = ['name', 'PCE', 'FF', 'Pmax', 'Jsc', 'Voc']
         for i in range(1, len(measures)+1):
             for j in range(1, 7):
-                value = measures[i-1][lst_param[j-1]]
+                value = measures[i-1][self.lst_param[j-1]]
 
                 if isinstance(value, float):
                     value = round(value, 3)
-                if lst_param[j-1] == 'PCE':
+                if self.lst_param[j-1] == 'PCE':
                     value *= 100
+
+                the_reference = self.ids['line_' + str(i) + str(j)]
+                the_reference.text = str(value)
+
+    def reset_measure(self):
+        """Reset all labels in the measure popup to zero."""
+        for i in range(1, 6):
+            for j in range(1, 7):
+                value = 0.0
+                if self.lst_param[j - 1] == 'name':
+                    value = '---'
 
                 the_reference = self.ids['line_' + str(i) + str(j)]
                 the_reference.text = str(value)

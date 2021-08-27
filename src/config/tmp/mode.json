@@ -3,7 +3,7 @@
   "config": {
     "v_1": -2.0,
     "v_2": 0.1,
-    "points": 100.0,
+    "points": 200,
     "speed": 0.24,
     "delay": 0.001,
     "cmpl": 0.05,

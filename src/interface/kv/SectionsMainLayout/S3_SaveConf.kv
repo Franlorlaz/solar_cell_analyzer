@@ -7,19 +7,19 @@
             rgb: 0.40,0.40,0.40
         Rectangle:
             size: 376,25
-            pos: 92,80
+            pos: 92,100
 
     RelativeLayout:
         Label:
             text: 'Save directory:'
-            pos_hint: {'center_x':.25, 'center_y':.89}
+            pos_hint: {'center_x':.25, 'center_y':.85}
             bold: True
             color: 0.8,0.8,0.8
             font_size: 15
 
         MyButton:
             text:'Examine...'
-            pos_hint: {'center_x':.75, 'center_y':.93}
+            pos_hint: {'center_x':.75, 'center_y':.90}
             size_hint: None, None
             width:120
             height: 25
@@ -27,26 +27,26 @@
 
         Label:
             id: directory_label
-            text: root.init_dir
+            text: root.init_dir_clipped
             color: 0.8,0.8,0.8
             font_size: 15
             pos_hint: {'center_x':.5, 'center_y':.68}
 
-        Label:
-            id: calibration_label
-            text: '[ref=str]Calibration[/ref]'
-            color: utils.get_color_from_hex('#22BCF5')
-            font_size: 15
-            underline: True
-            pos_hint: {'center_x':.5, 'center_y':.38}
-            markup: True
-            on_ref_press:
-                root.press_calibrate()
-
         MyButton:
             text:'Start'
-            pos_hint: {'center_x':.5, 'center_y':.15}
+            pos_hint: {'center_x':.5, 'center_y':.38}
             size_hint: None, None
             width:200
             height: 30
             on_press: root.start_button()
+
+        Label:
+            id: calibration_label
+            text: '[ref=str]Calibrate[/ref]'
+            color: utils.get_color_from_hex('#22BCF5')
+            font_size: 15
+            underline: True
+            pos_hint: {'center_x':.5, 'center_y':0.15}
+            markup: True
+            on_ref_press:
+                root.press_calibrate()
