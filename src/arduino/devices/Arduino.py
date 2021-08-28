@@ -67,7 +67,7 @@ class Arduino:
         :param switch_off: Switch off all relays or not (boolean).
         :return: A dictionary with used parameters.
         """
-        relay = 4 * int(cell) + int(electrode_id)
+        relay = 4 * (int(cell) - 1) + int(electrode_id)
         self.ser.write(b'\x00')  # switch off all
         if not switch_off:
             self.ser.write(relay.to_bytes(1, 'big'))

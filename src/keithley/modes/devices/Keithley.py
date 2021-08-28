@@ -149,8 +149,6 @@ class Keithley:
         inst.write(':SOUR:VOLT:PROT 20')  # V-source protection
         inst.write(':SOUR:DEL %f' % delay)  # source-delay-measure MANUAL
         # inst.write(':SOUR:DEL:AUTO ON')     # source-delay-measure AUTO
-        inst.write(':SOUR:VOLT:RANG 1')  # voltage range (source)
-        inst.write(':SOUR:VOLT:RANG:AUTO ON')  # disable voltage auto range
 
     def set_trigger(self, points=None, speed=None):
         """Trigger configuration.
@@ -199,6 +197,9 @@ class Keithley:
         # inst.query(':SYST:TIME?')      # returns the current timestamp value
         inst.write(':OUTP OFF')  # close output
 
+        inst.write('*RST')  # Reset unit to GPIB defaults
+        inst.write(':SYST:RSEN ON')  # 4-wire remote sensing
+
         self._data = np.reshape(data, (points, 3))
         return self._data
 
@@ -219,10 +220,13 @@ class Keithley:
             points = self.points
             self._data_length = points
 
+        inst.write(':SOUR:VOLT:MODE SWE')         # Volts sweep mode
         inst.write(':SOUR:SWE:SPAC LIN')          # Linear sweep
         inst.write(':SOUR:VOLT:STAR %f' % v_1)    # start voltage
         inst.write(':SOUR:VOLT:STOP %f' % v_2)    # stop voltage
         inst.write(':SOUR:SWE:POIN %d' % points)  # Sweep points
+        inst.write(':SOUR:VOLT:RANG 1')           # voltage range (source)
+        inst.write(':SOUR:VOLT:RANG:AUTO ON')     # disable voltage auto range
 
     def source_list_mode(self, voltage=None, points=None):
         """Configure source in list mode.
@@ -238,11 +242,13 @@ class Keithley:
             points = 2 * self.points - 1
             self._data_length = points
         if not voltage:
-            voltage = list_voltage_hysteresis(self.v_1, self.v_2, points)
+            voltage = list_voltage_hysteresis(self.v_1, self.v_2, self.points)
 
         inst.write(':SOUR:VOLT:MODE LIST')           # Volts list mode
         inst.write(':SOUR:LIST:VOLT %s' % voltage)   # Volts list
         # inst.write(':SOUR:LIST:POIN %d' % points)  # Sweep points
+        inst.write(':SOUR:VOLT:RANG 1')              # voltage range (source)
+        inst.write(':SOUR:VOLT:RANG:AUTO ON')   # disable voltage auto range
 
     def save(self, file_name, data=None, data_length=None, config=None):
         """Save data in a file.
@@ -277,7 +283,7 @@ class Keithley:
     def voltmeter(self):
         """Run keithley in voltmeter mode.
 
-        :return: Read data.
+        :return: Measured voltage (float).
         """
         inst = self.inst
         inst.write('*RST')  # Restore GPIB defaults
@@ -291,8 +297,12 @@ class Keithley:
         inst.write(':FORM:ELEM VOLT')  # Volts only
         inst.write(':OUTP ON')  # Output on before measuring
 
-        data = inst.write(':READ?')  # Trigger, acquire reading
-        # data = inst.query_ascii_values(':READ?', container=np.array)
+        if self.port:
+            data = inst.query_ascii_values(':READ?', container=np.array)
+        else:
+            inst.write(':READ?')
+            data = [0.0]
+        data = float(data[0])
 
         inst.write(':OUTP OFF')  # Output off after measuring
         inst.write('*RST')  # Reset unit to GPIB defaults
