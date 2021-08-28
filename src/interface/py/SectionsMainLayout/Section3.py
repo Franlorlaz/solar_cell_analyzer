@@ -19,11 +19,13 @@ class Section3(BoxLayout):
     """Section 3 (save path configuration and run) class."""
     id_section_3 = ObjectProperty(None)
     init_dir = StringProperty('')
+    init_dir_clipped = StringProperty('')
 
     def __init__(self, **kwargs):
         """Initialize attributes."""
         super(Section3, self).__init__(**kwargs)
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
+        self.init_dir_clipped = '...' + self.init_dir[-33:]
         self.keithley = None
         self.arduino = Arduino(port=None)
         self.esp32 = Arduino(port=None)
@@ -52,22 +54,19 @@ class Section3(BoxLayout):
                  False, otherwise.
         """
 
-        msg = ''
+        self.msg = ''
         if not sequence:
-            msg += 'No electrode selected. \n\n'
+            self.msg += 'No electrode selected. \n\n'
         if arduino.port is None:
-            msg += ('A port has not been selected for arduino (default port ='
+            self.msg += ('A port has not been selected for arduino (default port ='
                     ' None will simulate a successful connection but no '
                     'measurements will be made). \n\n')
-        if keithley.port is None:
-            msg += ('A port has not been selected for keithley (default '
+        if keithley is None:
+            self.msg += ('A port has not been selected for keithley (default '
                     'port = None will simulate a successful connection '
                     'but no measurements will be made). \n\n')
 
-        if msg != '':
-            error_warning_popup = ErrorWarningPopup()
-            error_warning_popup.open()
-            error_warning_popup.print_error_msg(msg)
+        if self.msg != '':
             return False
         else:
             return True
@@ -78,7 +77,7 @@ class Section3(BoxLayout):
         section2 = self.parent.parent.ids.section2
         section3 = self.parent.parent.ids.section3
 
-        saving_directory = section3.ids.directory_label.text
+        saving_directory = section3.init_dir
 
         mode_name = section1.ids.mode_spinner.text
         mode_config = Path(__file__ + '/../../../../config/tmp/mode.json')
@@ -172,39 +171,44 @@ class Section3(BoxLayout):
             sequence *= data['repeat']['times'] + 1
 
         # Check params
-        # trigger_check = self.check_params(sequence, self.arduino, self.keithley)
-        trigger_check = True
+        trigger_check = \
+            self.check_params(sequence, self.arduino, self.keithley)
+        # trigger_check = True
 
-        if trigger_check:
-            # Open Polarize or Measure Popup and run
-            polarize = data['mode']['polarize']
-            if polarize:
-                measure = PolarizePopup()
-                measure.open()
-            else:
-                measure = self.measure_popup
-                measure.open()
+        # Open Polarize or Measure Popup and run
+        polarize = data['mode']['polarize']
+        if polarize:
+            measure = PolarizePopup()
+            measure.open()
+        else:
+            measure = self.measure_popup
+            measure.reset_measure()
+            measure.open()
+            if not trigger_check:
+                error_warning_popup = ErrorWarningPopup()
+                error_warning_popup.open()
+                error_warning_popup.print_error_msg(self.msg)
 
-            self.sequence = sequence
-            self.basic_sequence = basic_sequence
-            self.repeat_electrode = repeat_electrode
-            self.repeat_all = repeat_all
-            self.wait = data['repeat']['wait']
-            self.program = []
+        self.sequence = sequence
+        self.basic_sequence = basic_sequence
+        self.repeat_electrode = repeat_electrode
+        self.repeat_all = repeat_all
+        self.wait = data['repeat']['wait']
+        self.program = []
 
-            for iteration in sequence:
-                cell_name = data['cells']['cell_' + iteration[0]]['name']
-                program = {'mode': str(data['mode']['name']),
-                           'cell_name': str(cell_name),
-                           'electrode': str(iteration[1]).upper(),
-                           'directory': str(data['saving_directory']),
-                           'config': str(data['mode']['config']),
-                           'keithley': self.keithley,
-                           'trigger_path': str(trigger_path),
-                           'param_path': str(param_path)}
-                self.program.append(program)
+        for iteration in sequence:
+            cell_name = data['cells']['cell_' + iteration[0]]['name']
+            program = {'mode': str(data['mode']['name']),
+                       'cell_name': str(cell_name),
+                       'electrode': str(iteration[1]).upper(),
+                       'directory': str(data['saving_directory']),
+                       'config': str(data['mode']['config']),
+                       'keithley': self.keithley,
+                       'trigger_path': str(trigger_path),
+                       'param_path': str(param_path)}
+            self.program.append(program)
 
-            Clock.schedule_once(self.run, 1)
+        Clock.schedule_once(self.run, 1)
 
     def run(self, *dt):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
@@ -256,12 +260,13 @@ class Section3(BoxLayout):
             else:
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
-                self.measure_popup.ids.stop_button.text = 'Volver'
+                self.measure_popup.ids.stop_button.text = 'Go back'
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
 
     def press_calibrate(self):
+        """Open the confirmation popup to start the calibration."""
         self.confirm_calibration_popup.open()
         self.confirm_calibration_popup.pass_arduino_1(self.arduino)
         print(self.arduino)

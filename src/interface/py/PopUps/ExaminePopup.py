@@ -14,4 +14,6 @@ class ExaminePopup(Popup):
     def __init__(self, **kwargs):
         """Initialize examine popup."""
         super(ExaminePopup, self).__init__(**kwargs)
-        self.save_init_path = str(Path(__file__ + '/../../../../measures').resolve())
+        examine_path = Path(__file__ + '/../../../../measures').resolve()
+        examine_path = examine_path.joinpath('../../../').resolve()
+        self.save_init_path = str(examine_path)
