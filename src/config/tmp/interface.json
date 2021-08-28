@@ -22,7 +22,10 @@
     },
     "cell_2": {
       "name": "",
-      "electrodes": []
+      "electrodes": [
+        "b",
+        "c"
+      ]
     },
     "cell_3": {
       "name": "",

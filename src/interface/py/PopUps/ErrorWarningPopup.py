@@ -8,6 +8,7 @@ class ErrorWarningPopup(Popup):
     """Error and warning popup class."""
     id_error_warning_popup = ObjectProperty(None)
 
+
     def print_error_msg(self, msg):
         """Print error in popup.
 

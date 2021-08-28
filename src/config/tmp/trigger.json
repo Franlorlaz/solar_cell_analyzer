@@ -1,4 +1,4 @@
 {
-  "measuring": false,
-  "stop_button": false
+  "measuring": true,
+  "stop_button": true
 }

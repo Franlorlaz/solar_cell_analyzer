@@ -13,7 +13,7 @@ class HysteresisPopup(Popup):
     id_hysteresis_popup = ObjectProperty(None)
     param_v_1_init = NumericProperty(0.0)
     param_v_2_init = NumericProperty(0.0)
-    param_points_init = NumericProperty(0.0)
+    param_points_init = NumericProperty(0)
     param_speed_init = NumericProperty(0.0)
     param_delay_init = NumericProperty(0.0)
     param_cmpl_init = NumericProperty(0.0)
@@ -55,6 +55,8 @@ class HysteresisPopup(Popup):
         for par in self.params_hysteresis_lst:
             the_reference = self.ids['param_' + par]
             params_hysteresis[par] = float(the_reference.text or 0)
+            if par == 'points':
+                params_hysteresis[par] = int(params_hysteresis[par])
             the_reference.text = the_reference.text
 
             if the_reference.text == '':
@@ -87,3 +89,11 @@ class HysteresisPopup(Popup):
 
             trigger = False
             self.dismiss()
+
+    def close(self):
+        """Save changes to parameters in the popup
+        without generating the dictionary."""
+        for par in self.params_hysteresis_lst:
+            the_reference = self.ids['param_' + par]
+            the_reference.text = the_reference.text
+        self.dismiss()
