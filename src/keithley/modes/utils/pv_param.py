@@ -2,6 +2,7 @@
 
 import numpy as np
 from pathlib import Path
+import csv
 
 
 def save_pv_param(file_name, name, param):
@@ -27,6 +28,34 @@ def save_pv_param(file_name, name, param):
     with open(file_name, 'a') as file:
         file.write('%17s     %8.6E   %8.6E   %8.6E   %8.6E   %8.6E   %8.6E'
                    '   %8.6E\n' % (name, PCE, FF, Pmax, Jsc, Voc, P_sol, A))
+
+    # with open(file_name, 'r') as file2:
+    #     last_line_number = sum(1 for _ in file2)
+    #
+    # if last_line_number == 1:
+    #     time = 0
+    # else:
+    #     with open(file_name, 'r') as file2:
+    #         reader = csv.reader(file2, delimiter='\t')
+    #         next(reader)
+    #         init_time = next(reader)[0]
+    #         time = int(name) - int(init_time)
+    #
+    # with open(file_name, 'a', newline='') as file2:
+    #     fieldnames = ['File', 'PCE', 'FF', 'Pmax (W/cm2)',
+    #                   'Jsc (A/cm2)', 'Voc (V)', 'P_sol (W/cm2)',
+    #                   'area (cm2)', 'time']
+    #     writer = csv.DictWriter(file2, fieldnames=fieldnames, delimiter='\t')
+    #
+    #     writer.writerow({'File': name,
+    #                      'PCE': '%8.6E' % PCE,
+    #                      'FF': '%8.6E' % FF,
+    #                      'Pmax (W/cm2)': '%8.6E' % Pmax,
+    #                      'Jsc (A/cm2)': '%8.6E' % Jsc,
+    #                      'Voc (V)': '%8.6E' % Voc,
+    #                      'P_sol (W/cm2)': '%8.6E' % P_sol,
+    #                      'area (cm2)': '%8.6E' % A,
+    #                      'time': str(time)})
 
 
 def calculate_pv_param(data, area=0.14, light_power=0.1):

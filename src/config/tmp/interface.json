@@ -1,31 +1,25 @@
 {
-  "saving_directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
+  "saving_directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
   "mode": {
-    "name": "hysteresis",
-    "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
+    "name": "lineal",
+    "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
     "polarize": false
   },
   "repeat": {
-    "type": "no_repetition",
-    "times": 0,
+    "type": "electrode_repetition",
+    "times": 2,
     "wait": 0.0
   },
   "cells": {
     "cell_1": {
-      "name": "example",
+      "name": "new3",
       "electrodes": [
-        "a",
-        "b",
-        "c",
-        "d"
+        "a"
       ]
     },
     "cell_2": {
       "name": "",
-      "electrodes": [
-        "b",
-        "c"
-      ]
+      "electrodes": []
     },
     "cell_3": {
       "name": "",
