@@ -33,7 +33,7 @@ from interface.py.SectionsMainLayout import Section3
 kivy.require('2.0.0')
 Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'width', 550)
-Config.set('graphics', 'height', 600)
+Config.set('graphics', 'height', 650)
 Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
 Config.set('kivy', 'window_icon', 'interface/icon3.png')
 
@@ -47,7 +47,7 @@ for directory in kv_load_dir:
         if file.endswith('.kv'):
             Builder.load_file(kv_path + directory + '/' + file)
 
-from arduino import Arduino
+
 # ***************************************************
 # ***************************************************
 #                   MAIN SCREEN
@@ -67,12 +67,15 @@ class MainScreen(BoxLayout):
         self.measure_popup = MeasurePopup()
         self.error_warning_popup = ErrorWarningPopup()
         self.info_popup = InfoPopup()
-        # self.fake_arduino = Arduino(port=None)
 
     def act_label_dir(self):
         """Update directory label in section 3."""
-        self.ids.section3.ids.directory_label.text = \
+        self.ids.section3.init_dir = \
             str(self.examine_popup.ids.filechooser.selection[0])
+        self.ids.section3.init_dir_clipped = \
+            '...' + self.ids.section3.init_dir[-33:]
+        self.ids.section3.ids.directory_label.text = \
+            self.ids.section3.init_dir_clipped
         self.examine_popup.dismiss()
 
     def stop(self):
@@ -85,7 +88,7 @@ class MainScreen(BoxLayout):
         trigger['stop_button'] = True
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2, sort_keys=True)
-        self.measure_popup.ids.stop_button.text = 'Volver'
+        self.measure_popup.ids.stop_button.text = 'Go back'
 
 
 from interface.py.SectionsMainLayout.ActionBarS0 import ActionBarS0
@@ -118,12 +121,12 @@ class Main_kv(App):
     @staticmethod
     def resize_window():
         """Resize app's windows."""
-        Window.size = (549, 600)
+        Window.size = (549, 650)
 
     @staticmethod
     def restore_window():
         """Restore app's windows size."""
-        Window.size = (550, 600)
+        Window.size = (550, 650)
 
 
 # ***************************************************

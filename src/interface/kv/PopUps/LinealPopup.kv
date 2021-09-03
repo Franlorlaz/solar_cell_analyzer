@@ -43,6 +43,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par1
@@ -77,6 +78,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par2
@@ -111,6 +113,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par3
@@ -145,6 +148,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par4
@@ -179,6 +183,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par5
@@ -213,6 +218,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par6
@@ -247,6 +253,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par7
@@ -281,6 +288,7 @@
                 width: 80
                 height: 25
                 font_size: 12
+                multiline: False
 
             Label:
                 id: Unidades_Par8
@@ -301,8 +309,8 @@
             pos_hint:{'center_x':0.5,'center_y':0.5}
 
             MyButton:
-                text: 'Salir'
-                on_release: root.dismiss()
+                text: 'Close'
+                on_release: root.close()
                 size_hint:0.4,0.75
 
                 pos_hint:{'x':0.4,'center_y':0.5}
@@ -311,7 +319,7 @@
                 size_hint:0.2,0.75
 
             MyButton:
-                text: 'Guardar'
+                text: 'Save'
                 size_hint:0.4,0.75
                 pos_hint:{'x':0.6,'center_y':0.5}
                 on_press: root.make_lineal_dict()

@@ -1,0 +1,2 @@
+#       File        |   PCE        |   FF         | Pmax (W/cm2) |  Jsc (A/cm2) |  Voc (V)     | P_sol (W/cm2)|  area (cm2)   
+          example     6.127219E-04   9.149429E-01   6.127219E-04   6.696832E-03   1.000000E-01   1.000000E+00   3.000000E-01

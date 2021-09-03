@@ -5,7 +5,9 @@
         cell_2a, cell_2b, cell_2c, cell_2d, \
         cell_3a, cell_3b, cell_3c, cell_3d, \
         cell_4a, cell_4b, cell_4c, cell_4d, \
-        textinput_cell_1, textinput_cell_2, textinput_cell_3, textinput_cell_4
+        textinput_cell_1, textinput_cell_2, \
+        textinput_cell_3, textinput_cell_4, \
+        cell_all
     canvas:
         Color:
             rgb: 0.25,0.25,0.25
@@ -16,63 +18,63 @@
     RelativeLayout:
         Label:
             text: 'Selection of electrodes to measure:'
-            pos: 0,77
+            pos: 0,92
             bold: True
             color: 0.8,0.8,0.8
             font_size: 15
 
         Label:
             text: 'A'
-            pos: -115,50
+            pos: -115,62
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
 
         Label:
             text: 'B'
-            pos: -80,50
+            pos: -80,62
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
 
         Label:
             text: 'C'
-            pos: -45,50
+            pos: -45,62
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
 
         Label:
             text: 'D'
-            pos: -10,50
+            pos: -10,62
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
 
         Label:
             text: 'Cell 1:'
-            pos: -160,25
+            pos: -160,36
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
 
         Label:
             text: 'Cell 2:'
-            pos: -160,-5
+            pos: -160,4
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
 
         Label:
             text: 'Cell 3:'
-            pos: -160,-35
+            pos: -160,-28
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
 
         Label:
             text: 'Cell 4:'
-            pos: -160,-65
+            pos: -160,-60
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
@@ -82,116 +84,116 @@
             size_hint: None,None
             width: 12
             height: 12
-            pos: 144,102
+            pos: 144,130
 
         CheckBox:
             id: cell_1b
             size_hint: None,None
             width: 12
             height: 12
-            pos: 179,102
+            pos: 179,130
 
         CheckBox:
             id: cell_1c
             size_hint: None,None
             width: 12
             height: 12
-            pos: 214,102
+            pos: 214,130
 
         CheckBox:
             id: cell_1d
             size_hint: None,None
             width: 12
             height: 12
-            pos: 249,102
+            pos: 249,130
 
         CheckBox:
             id: cell_2a
             size_hint: None,None
             width: 12
             height: 12
-            pos: 144,73
+            pos: 144,98
 
         CheckBox:
             id: cell_2b
             size_hint: None,None
             width: 12
             height: 12
-            pos: 179,73
+            pos: 179,98
 
         CheckBox:
             id: cell_2c
             size_hint: None,None
             width: 12
             height: 12
-            pos: 214,73
+            pos: 214,98
 
         CheckBox:
             id: cell_2d
             size_hint: None,None
             width: 12
             height: 12
-            pos: 249,73
+            pos: 249,98
 
         CheckBox:
             id: cell_3a
             size_hint: None,None
             width: 12
             height: 12
-            pos: 144,44
+            pos: 144,66
 
         CheckBox:
             id: cell_3b
             size_hint: None,None
             width: 12
             height: 12
-            pos: 179,44
+            pos: 179,66
 
         CheckBox:
             id: cell_3c
             size_hint: None,None
             width: 12
             height: 12
-            pos: 214,44
+            pos: 214,66
 
         CheckBox:
             id: cell_3d
             size_hint: None,None
             width: 12
             height: 12
-            pos: 249,44
+            pos: 249,66
 
         CheckBox:
             id: cell_4a
             size_hint: None,None
             width: 12
             height: 12
-            pos: 144,15
+            pos: 144,34
 
         CheckBox:
             id: cell_4b
             size_hint: None,None
             width: 12
             height: 12
-            pos: 179,15
+            pos: 179,34
 
         CheckBox:
             id: cell_4c
             size_hint: None,None
             width: 12
             height: 12
-            pos: 214,15
+            pos: 214,34
 
         CheckBox:
             id: cell_4d
             size_hint: None,None
             width: 12
             height: 12
-            pos: 249,15
+            pos: 249,34
 
         Label:
             text: 'Name'
-            pos: 105,50
+            pos: 105,62
             bold: False
             color: 0.8,0.8,0.8
             font_size: 14
@@ -201,29 +203,50 @@
             size_hint: None,None
             width: 180
             height: 25
-            pos: 280,96
+            pos: 280,125
             font_size: 11
+            multiline: False
 
         TextInput:
             id: textinput_cell_2
             size_hint: None,None
             width: 180
             height: 25
-            pos: 280,67
+            pos: 280,93
             font_size: 11
+            multiline: False
 
         TextInput:
             id: textinput_cell_3
             size_hint: None,None
             width: 180
             height: 25
-            pos: 280,38
+            pos: 280,60
             font_size: 11
+            multiline: False
 
         TextInput:
             id: textinput_cell_4
             size_hint: None,None
             width: 180
             height: 25
-            pos: 280,9
+            pos: 280,28
             font_size: 11
+            multiline: False
+
+        CheckBox:
+            id: cell_all
+            size_hint: None,None
+            width: 12
+            height: 12
+            pos: 50,3
+            on_press:
+                if cell_all.active: root.select_all_electrodes()
+                else: root.deselect_all_electrodes()
+
+        Label:
+            text: 'Select all electrodes'
+            pos: -125,-90
+            bold: True
+            color: 0.8,0.8,0.8
+            font_size: 15

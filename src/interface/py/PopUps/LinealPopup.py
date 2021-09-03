@@ -13,7 +13,7 @@ class LinealPopup(Popup):
     id_lineal_popup = ObjectProperty(None)
     param_v_1_init = NumericProperty(0.0)
     param_v_2_init = NumericProperty(0.0)
-    param_points_init = NumericProperty(0.0)
+    param_points_init = NumericProperty(0)
     param_speed_init = NumericProperty(0.0)
     param_delay_init = NumericProperty(0.0)
     param_cmpl_init = NumericProperty(0.0)
@@ -55,6 +55,8 @@ class LinealPopup(Popup):
         for par in self.params_lineal_lst:
             the_reference = self.ids['param_' + par]
             params_lineal[par] = float(the_reference.text or 0)
+            if par == 'points':
+                params_lineal[par] = int(params_lineal[par])
             the_reference.text = the_reference.text
 
             if the_reference.text == '':
@@ -87,3 +89,11 @@ class LinealPopup(Popup):
 
             trigger = False
             self.dismiss()
+
+    def close(self):
+        """Save changes to parameters in the popup
+        without generating the dictionary."""
+        for par in self.params_lineal_lst:
+            the_reference = self.ids['param_' + par]
+            the_reference.text = the_reference.text
+        self.dismiss()
