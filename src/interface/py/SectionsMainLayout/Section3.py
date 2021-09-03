@@ -179,6 +179,7 @@ class Section3(BoxLayout):
         polarize = data['mode']['polarize']
         if polarize:
             measure = PolarizePopup()
+            measure.pass_arg(sequence)
             measure.open()
         else:
             measure = self.measure_popup
@@ -189,26 +190,26 @@ class Section3(BoxLayout):
                 error_warning_popup.open()
                 error_warning_popup.print_error_msg(self.msg)
 
-        self.sequence = sequence
-        self.basic_sequence = basic_sequence
-        self.repeat_electrode = repeat_electrode
-        self.repeat_all = repeat_all
-        self.wait = data['repeat']['wait']
-        self.program = []
+            self.sequence = sequence
+            self.basic_sequence = basic_sequence
+            self.repeat_electrode = repeat_electrode
+            self.repeat_all = repeat_all
+            self.wait = data['repeat']['wait']
+            self.program = []
 
-        for iteration in sequence:
-            cell_name = data['cells']['cell_' + iteration[0]]['name']
-            program = {'mode': str(data['mode']['name']),
-                       'cell_name': str(cell_name),
-                       'electrode': str(iteration[1]).upper(),
-                       'directory': str(data['saving_directory']),
-                       'config': str(data['mode']['config']),
-                       'keithley': self.keithley,
-                       'trigger_path': str(trigger_path),
-                       'param_path': str(param_path)}
-            self.program.append(program)
+            for iteration in sequence:
+                cell_name = data['cells']['cell_' + iteration[0]]['name']
+                program = {'mode': str(data['mode']['name']),
+                           'cell_name': str(cell_name),
+                           'electrode': str(iteration[1]).upper(),
+                           'directory': str(data['saving_directory']),
+                           'config': str(data['mode']['config']),
+                           'keithley': self.keithley,
+                           'trigger_path': str(trigger_path),
+                           'param_path': str(param_path)}
+                self.program.append(program)
 
-        Clock.schedule_once(self.run, 1)
+            Clock.schedule_once(self.run, 1)
 
     def run(self, *dt):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
