@@ -3,7 +3,7 @@
   "mode": {
     "name": "lineal",
     "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
-    "polarize": true
+    "polarize": false
   },
   "repeat": {
     "type": "no_repetition",
@@ -13,10 +13,7 @@
   "cells": {
     "cell_1": {
       "name": "",
-      "electrodes": [
-        "a",
-        "b"
-      ]
+      "electrodes": []
     },
     "cell_2": {
       "name": "",
@@ -24,11 +21,15 @@
     },
     "cell_3": {
       "name": "",
-      "electrodes": []
+      "electrodes": [
+        "b"
+      ]
     },
     "cell_4": {
       "name": "",
-      "electrodes": []
+      "electrodes": [
+        "d"
+      ]
     }
   }
 }

@@ -233,7 +233,7 @@ if __name__ == '__main__':
                                   keithley=program['keithley'])
         else:
             pv_param = {}
-        pv_param['name'] = program['cell_name'] + ' - '
+        pv_param['name'] = str(program['cell_id'])
         pv_param['name'] += program['electrode'].upper()
 
         param_path = Path(program['param_path']).resolve()

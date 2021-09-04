@@ -18,12 +18,10 @@ class CalibrationPopup(Popup):
         super(CalibrationPopup, self).__init__(**kwargs)
         self.calibration_msg = ' . . . '
         self.ids.button_calibration_accept.disabled = True
+        self.section3 = None
 
-    def pass_arduino_2(self, arduino_widget):
-        self.arduino = arduino_widget
-        print(self.arduino)
-        self.arduino.connect(self.arduino.search_ports()[0])
-        print(self.arduino.port)
+    def pass_arduino_2(self, section3):
+        self.section3 = section3
 
     def reset_popup(self):
         """Reset calibration popup attributes every time it is opened."""
@@ -36,17 +34,18 @@ class CalibrationPopup(Popup):
         """Wait 3 seconds before able 'Accept' button."""
         # print(my_arduino)
         self.event = Clock.schedule_interval(self.update_fit, 2)
-        Clock.schedule_once(self.able_button, 7)
+        self.able_button()
 
     def update_fit(self, dt):
-        msg = 'Cell: ' + str(random.randint(1,17)) \
+        msg = 'Cell: ' + str(random.randint(1, 17)) \
               + '.\n Slope: ' + str(random.random()) \
               + '.\n Y-intercept: ' + str(random.random()) \
               + '.\n r2: ' + str(random.random())
         self.ids.calibration_fit.text = msg
 
-    def able_button(self, dt):
+    def able_button(self):
         """Able 'Accept' button when the calibration has ended."""
+        # TODO: program here
         self.calibration_msg = 'Calibration has ended.'
         self.ids.button_calibration_accept.disabled = False
         self.event.cancel()

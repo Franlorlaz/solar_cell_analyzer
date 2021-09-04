@@ -208,17 +208,20 @@ class Section3(BoxLayout):
         checkbox_polarize = data['mode']['polarize']
         if checkbox_polarize:
             measure = PolarizePopup()
-            measure.pass_arg(sequence)
+            unique_sequence = list(set(sequence))
+            unique_sequence.sort()
+            measure.pass_arg(unique_sequence, self)
             measure.open()
         else:
             measure = self.measure_popup
             measure.reset_measure()
             measure.open()
-            if not trigger_check:
-                error_warning_popup = ErrorWarningPopup()
-                error_warning_popup.open()
-                error_warning_popup.print_error_msg(self.msg)
             Clock.schedule_once(self.run, 1)
+
+        if not trigger_check:
+            error_warning_popup = ErrorWarningPopup()
+            error_warning_popup.open()
+            error_warning_popup.print_error_msg(self.msg)
 
     def run(self, *dt):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
@@ -291,5 +294,4 @@ class Section3(BoxLayout):
     def press_calibrate(self):
         """Open the confirmation popup to start the calibration."""
         self.confirm_calibration_popup.open()
-        self.confirm_calibration_popup.pass_arduino_1(self.arduino)
-        print(self.arduino)
+        self.confirm_calibration_popup.pass_arduino_1(self)

@@ -1,5 +1,7 @@
 """Linear regression."""
 
+from numpy import polyfit, corrcoef, asarray
+
 
 def linear_regression(x, y):
     """Linear regression algorithm.
@@ -10,26 +12,14 @@ def linear_regression(x, y):
     :param y: Y data (list).
     :return: Regression parameters (a, b) of equation y=ax+b.
     """
-
-    if len(x) == len(y):
-        data = list(zip(x, y))
-    else:
+    if len(x) != len(y):
         raise ValueError('The length of `x` must be equal to the `y`.')
 
-    x = list(x)
-    y = list(y)
-    xy = []
-    xx = []
-    yy = []
-    for i in data:
-        xy.append(i[0] * i[1])
-        xx.append(i[0] ** 2)
-        yy.append(i[1] ** 2)
+    x = asarray(list(x))
+    y = asarray(list(y))
+    coeffs = list(polyfit(x, y, 1))
+    r2 = float((corrcoef(x, y)[0, 1])**2)
+    a = coeffs[0]
+    b = coeffs[1]
 
-    a = len(x) * sum(xy) - sum(x) * sum(y)
-    a /= len(x) * sum(xx) - sum(x) ** 2
-
-    b = sum(y) - sum(x)
-    b /= len(x)
-
-    return a, b
+    return a, b, r2
