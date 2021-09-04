@@ -13,6 +13,7 @@ from interface.py.PopUps.CalibrationPopup import CalibrationPopup
 from interface.py.PopUps.ConfirmCalibrationPopup import ConfirmCalibrationPopup
 from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
+from esp32 import ESP32, polarize
 
 
 class Section3(BoxLayout):
@@ -28,7 +29,7 @@ class Section3(BoxLayout):
         self.init_dir_clipped = '...' + self.init_dir[-33:]
         self.keithley = None
         self.arduino = Arduino(port=None)
-        self.esp32 = Arduino(port=None)
+        self.esp32 = ESP32(port=None)
 
         self.repeat_electrode = False
         self.repeat_all = False
@@ -124,6 +125,10 @@ class Section3(BoxLayout):
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
         mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
+        calibration_path = Path(__file__ +
+                                '/../../../../config/tmp/calibration.json')
+        polarization_path = Path(__file__ +
+                                 '/../../../../config/tmp/polarization.json')
 
         # Initialize param.json as empty file
         param_path = param_path.resolve()
@@ -138,6 +143,9 @@ class Section3(BoxLayout):
         trigger['measuring'] = False
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2)
+
+        # Initialize polarization.json to 0.0 volts
+        polarize(self.esp32, polarization_path, calibration_path, reset=True)
 
         # Initialize Stop button in measure popup
         self.measure_popup.ids.stop_button.text = 'Stop'
@@ -200,12 +208,14 @@ class Section3(BoxLayout):
             cell_name = data['cells']['cell_' + iteration[0]]['name']
             program = {'mode': str(data['mode']['name']),
                        'cell_name': str(cell_name),
+                       'cell_id': int(iteration[0]),
                        'electrode': str(iteration[1]).upper(),
                        'directory': str(data['saving_directory']),
                        'config': str(data['mode']['config']),
                        'keithley': self.keithley,
                        'trigger_path': str(trigger_path),
-                       'param_path': str(param_path)}
+                       'param_path': str(param_path),
+                       'polarization_path': str(polarization_path.resolve())}
             self.program.append(program)
 
         Clock.schedule_once(self.run, 1)
@@ -214,12 +224,20 @@ class Section3(BoxLayout):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+        calibration_path = Path(__file__ +
+                                '/../../../../config/tmp/calibration.json')
+        polarization_path = Path(__file__ +
+                                 '/../../../../config/tmp/polarization.json')
 
         wait = 2.0
         param_path = param_path.resolve()
         trigger_path = trigger_path.resolve()
+        calibration_path = calibration_path.resolve()
+        polarization_path = polarization_path.resolve()
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
+
+        polarize(self.esp32, polarization_path, calibration_path)
 
         if self.have_to_wait and not trigger['measuring']:
             trigger['measuring'] = True
@@ -261,9 +279,14 @@ class Section3(BoxLayout):
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
                 self.measure_popup.ids.stop_button.text = 'Go back'
+                polarize(self.esp32, polarization_path, calibration_path,
+                         reset=True)
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
+        else:
+            polarize(self.esp32, polarization_path, calibration_path,
+                     reset=True)
 
     def press_calibrate(self):
         """Open the confirmation popup to start the calibration."""

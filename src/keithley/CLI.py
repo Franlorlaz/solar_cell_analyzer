@@ -250,5 +250,14 @@ if __name__ == '__main__':
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2)
 
+        polarization_path = Path(program['polarization_path']).resolve()
+        with open(polarization_path, 'r') as f:
+            polarization = json.load(f)
+        elect = str(program['electrode'])
+        cell = str(program['cell_id'])
+        polarization[cell+elect] = float(pv_param['Vmax'])
+        with open(polarization_path, 'w') as f:
+            json.dump(polarization, f, indent=2)
+
     else:
         print(f'Unrecognized command: {args.action}')

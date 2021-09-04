@@ -53,14 +53,17 @@ def calculate_pv_param(data, area=0.14, light_power=0.1):
     if iVabmin > iIabmin:
         P = (-V[iIabmin:iVabmin + 1] * I[iIabmin:iVabmin + 1]) / A
         iP0 = iIabmin
+        voltages = V[iIabmin:iVabmin + 1]
 
     elif iIabmin > iVabmin:
         P = (-V[iVabmin:iIabmin + 1] * I[iVabmin:iIabmin + 1]) / A
         iP0 = iVabmin
+        voltages = V[iVabmin:iIabmin + 1]
 
     else:
         P = np.array([0, 1])
         iP0 = 0
+        voltages = V
         print('Error when calculating P (power).')
 
     iPmax = np.argmax(P)
@@ -68,8 +71,9 @@ def calculate_pv_param(data, area=0.14, light_power=0.1):
     iPmax = int(iPmax + iP0)
     FF = float(Pmax / (Voc * Jsc))
     PCE = float(Pmax / P_sol)
+    Vmax = float(voltages[iPmax])
 
     result = {'PCE': PCE, 'FF': FF, 'iPmax': iPmax, 'Pmax': Pmax,
-              'Jsc': Jsc, 'Voc': Voc, 'P_sol': P_sol, 'A': A}
+              'Jsc': Jsc, 'Voc': Voc, 'P_sol': P_sol, 'A': A, 'Vmax': Vmax}
 
     return result
