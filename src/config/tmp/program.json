@@ -1,10 +1,10 @@
 {
   "mode": "lineal",
   "cell_name": "",
-  "electrode": "B",
+  "electrode": "A",
   "directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
   "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
-  "keithley": "ASRL1::INSTR",
+  "keithley": null,
   "trigger_path": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\trigger.json",
   "param_path": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\param.json"
 }

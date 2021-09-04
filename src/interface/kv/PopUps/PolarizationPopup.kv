@@ -1,8 +1,9 @@
 <PolarizePopup>:
     id_polarize_popup:
-        continue_polarize
+        continue_polarize, \
+        polarization_title, polarization_description
     auto_dismiss: False
-    title: 'Polarization Menu'
+    title: 'Polarize Mode'
     size_hint: 0.7,0.6
     pos_hint: {'center_x':0.5, 'top':0.8}
 
@@ -14,19 +15,24 @@
 
         FloatLayout:
             Label:
-                text: 'Polarization'
+                id: polarization_title
+                text: root.title_msg
                 pos_hint:{'center_x':0.5,'center_y':0.95}
                 bold: True
                 font_size: 15
                 color: 0.8,0.8,0.8
 
             Label:
-                id: polarization_text
-                text: 'A'
-                pos_hint:{'center_x':0.5,'center_y':0.75}
+                id: polarization_description
+                text: root.description_msg
+                pos_hint:{'center_x':0.5,'center_y':0.7}
                 bold: False
                 font_size: 15
                 color: 0.8,0.8,0.8
+                multiline: True
+                text_size: self.parent.width-50, self.parent.height-10
+                halign: 'center'
+                valign: 'middle'
 
 
         BoxLayout:
@@ -42,7 +48,7 @@
                 on_press: root.stop_polarize()
 
             BoxLayout:
-                size_hint:0.2,0.75
+                size_hint:0.20,0.75
 
             MyButton:
                 id: continue_polarize
@@ -51,4 +57,4 @@
                 pos_hint:{'x':0.6,'center_y':0.5}
                 on_press:
                     if self.text == 'Continue': root.polarize_next_cell()
-                    else: root.end_polarize()
+                    else: root.start_measure()
