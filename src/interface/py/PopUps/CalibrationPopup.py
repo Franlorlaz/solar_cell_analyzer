@@ -1,5 +1,6 @@
 """"Popup to calibration."""
-
+# FIXME: random provisional
+import random
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
@@ -30,13 +31,22 @@ class CalibrationPopup(Popup):
         self.ids.button_calibration_accept.disabled = True
 
     # FIXME: Esta función está de prueba, la llamada a able_button
-    #  iría en Section3 cuando acabe la calibración
+    #  se sustituiria por la función que realiza la calibración
     def call_able_button(self):
         """Wait 3 seconds before able 'Accept' button."""
         # print(my_arduino)
-        Clock.schedule_once(self.able_button, 3)
+        self.event = Clock.schedule_interval(self.update_fit, 2)
+        Clock.schedule_once(self.able_button, 7)
+
+    def update_fit(self, dt):
+        msg = 'Cell: ' + str(random.randint(1,17)) \
+              + '.\n Slope: ' + str(random.random()) \
+              + '.\n Y-intercept: ' + str(random.random()) \
+              + '.\n r2: ' + str(random.random())
+        self.ids.calibration_fit.text = msg
 
     def able_button(self, dt):
         """Able 'Accept' button when the calibration has ended."""
         self.calibration_msg = 'Calibration has ended.'
         self.ids.button_calibration_accept.disabled = False
+        self.event.cancel()

@@ -183,20 +183,6 @@ class Section3(BoxLayout):
             self.check_params(sequence, self.arduino, self.keithley)
         # trigger_check = True
 
-        # Open Polarize or Measure Popup and run
-        polarize = data['mode']['polarize']
-        if polarize:
-            measure = PolarizePopup()
-            measure.open()
-        else:
-            measure = self.measure_popup
-            measure.reset_measure()
-            measure.open()
-            if not trigger_check:
-                error_warning_popup = ErrorWarningPopup()
-                error_warning_popup.open()
-                error_warning_popup.print_error_msg(self.msg)
-
         self.sequence = sequence
         self.basic_sequence = basic_sequence
         self.repeat_electrode = repeat_electrode
@@ -218,7 +204,21 @@ class Section3(BoxLayout):
                        'polarization_path': str(polarization_path.resolve())}
             self.program.append(program)
 
-        Clock.schedule_once(self.run, 1)
+        # Open Polarize or Measure Popup and run
+        checkbox_polarize = data['mode']['polarize']
+        if checkbox_polarize:
+            measure = PolarizePopup()
+            measure.pass_arg(sequence)
+            measure.open()
+        else:
+            measure = self.measure_popup
+            measure.reset_measure()
+            measure.open()
+            if not trigger_check:
+                error_warning_popup = ErrorWarningPopup()
+                error_warning_popup.open()
+                error_warning_popup.print_error_msg(self.msg)
+            Clock.schedule_once(self.run, 1)
 
     def run(self, *dt):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
