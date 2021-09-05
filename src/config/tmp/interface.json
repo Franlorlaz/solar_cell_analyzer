@@ -6,14 +6,16 @@
     "polarize": false
   },
   "repeat": {
-    "type": "no_repetition",
-    "times": 0,
-    "wait": 0.0
+    "type": "all_repetition",
+    "times": 3,
+    "wait": 5.0
   },
   "cells": {
     "cell_1": {
       "name": "",
-      "electrodes": []
+      "electrodes": [
+        "a"
+      ]
     },
     "cell_2": {
       "name": "",
@@ -21,9 +23,7 @@
     },
     "cell_3": {
       "name": "",
-      "electrodes": [
-        "c"
-      ]
+      "electrodes": []
     },
     "cell_4": {
       "name": "",

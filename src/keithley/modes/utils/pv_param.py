@@ -1,6 +1,10 @@
 """Managing PhotoVolatic parameters."""
 
+import os
+import csv
+import datetime
 import numpy as np
+
 from pathlib import Path
 
 
@@ -23,10 +27,41 @@ def save_pv_param(file_name, name, param):
     P_sol = param['P_sol']
     A = param['A']
 
+    now = datetime.datetime.now()
+    row = {'file': name,
+           'PCE': PCE,
+           'FF': FF,
+           'Pmax(W/cm2)': Pmax,
+           'Jsc(A/cm2)': Jsc,
+           'Voc(V)': Voc,
+           'P_sol(W/cm2)': P_sol,
+           'area(cm2)': A,
+           'datetime': str(now),
+           'delta_time(min)': 0}
+
     file_name = Path(file_name).resolve()
+    extension = file_name.suffix
+    items = []
+    if extension == '.csv' and os.path.exists(file_name):
+        with open(file_name, 'r') as file:
+            reader = csv.DictReader(file)
+            for item in reader:
+                items.append(item)
+    if len(items) > 0:
+        previous_time = items[-1]['datetime']
+        previous_time = datetime.datetime.strptime(previous_time,
+                                                   '%Y-%m-%d %H:%M:%S.%f')
+        delta_time = (now - previous_time).total_seconds()
+        row['delta_time(min)'] = delta_time/60
+
     with open(file_name, 'a') as file:
-        file.write('%17s     %8.6E   %8.6E   %8.6E   %8.6E   %8.6E   %8.6E'
-                   '   %8.6E\n' % (name, PCE, FF, Pmax, Jsc, Voc, P_sol, A))
+        if extension == '.txt':
+            file.write('%17s     %8.6E   %8.6E   %8.6E   %8.6E   %8.6E   %8.6E'
+                       '   %8.6E\n' % (name, PCE, FF, Pmax,
+                                       Jsc, Voc, P_sol, A))
+        elif extension == '.csv':
+            writer = csv.DictWriter(file, fieldnames=tuple(row.keys()))
+            writer.writerow(row)
 
 
 def calculate_pv_param(data, area=0.14, light_power=0.1):

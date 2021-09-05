@@ -1,8 +1,8 @@
 {
   "mode": "lineal",
   "cell_name": "",
-  "cell_id": 3,
-  "electrode": "C",
+  "cell_id": 1,
+  "electrode": "A",
   "directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
   "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
   "keithley": null,
