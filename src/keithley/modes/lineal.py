@@ -56,7 +56,7 @@ def lineal(cell_name, electrode, directory, config, keithley=None):
     base_dir = base_dir.joinpath(electrode).joinpath('lineal')
 
     file_data = base_dir.joinpath(today_now+'.txt')
-    file_pv_param = base_dir.joinpath(cell_name+'-lineal-'+electrode+'.txt')
+    file_pv_param = base_dir.joinpath(cell_name+'-lineal-'+electrode+'.csv')
 
     file_data = make_file(str(file_data), new=True, extension=None)
     file_pv_param = make_file(str(file_pv_param), header=True, extension=None)

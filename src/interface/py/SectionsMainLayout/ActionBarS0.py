@@ -16,9 +16,6 @@ class ActionBarS0(ActionBar):
         arduino_ports_lst = self.parent.ids.section3.arduino.search_ports()
         esp32_ports_lst = self.parent.ids.section3.esp32.search_ports()
         keithley_ports_lst = Keithley.search_ports()
-        # arduino_ports_lst = ['ardu one', 'ardu two', 'ardu three']
-        # esp32_ports_lst = ['esp32 alpha', 'esp32 beta']
-        # keithley_ports_lst = ['keithley w', 'keithley x', 'keithley y', 'keithley z']
 
         self.ids.arduino_port_1.text = '- - -'
         self.ids.arduino_port_2.text = arduino_ports_lst[0]

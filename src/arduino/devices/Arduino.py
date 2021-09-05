@@ -59,18 +59,25 @@ class Arduino:
         print('Arduino disconnected')
         return self.ser
 
-    def switch_relay(self, cell=1, electrode_id=1, switch_off=False):
+    def switch_relay(self, cell=1, electrode_id=1, switch_off=False,
+                     calibration=None):
         """Send open/close relay order to arduino.
 
         :param cell: Cell number (integer).
         :param electrode_id: Electrode number (integer).
         :param switch_off: Switch off all relays or not (boolean).
+        :param calibration: Switch on the calibration relay (boolean).
         :return: A dictionary with used parameters.
         """
         relay = 4 * (int(cell) - 1) + int(electrode_id)
         self.ser.write(b'\x00')  # switch off all
         if not switch_off:
             self.ser.write(relay.to_bytes(1, 'big'))
+        if calibration is not None:
+            if calibration:
+                self.ser.write(b'\xff')
+            else:
+                self.ser.write(b'\xfe')
 
         return {'cell': cell, 'electrode_id': electrode_id,
                 'switch_off': switch_off}

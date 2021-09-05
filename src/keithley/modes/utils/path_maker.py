@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+import csv
 
 
 def make_folder(folder, new=False):
@@ -58,23 +59,38 @@ def make_file(file, new=False, header=False, extension='.txt'):
             i += 1
             new_file = file + '_(%d)' % i + extension
         file = Path(new_file).resolve()
-        with open(file, 'w') as txt:
+        with open(file, 'w') as outfile:
             if header:
-                txt.write(
-                    '#       File        |   PCE        |   FF         '
-                    '| Pmax (W/cm2) |  Jsc (A/cm2) |  Voc (V)     '
-                    '| P_sol (W/cm2)|  area (cm2)   \n')
+                if extension == '.txt':
+                    outfile.write(
+                        '#       File        |   PCE        |   FF         '
+                        '| Pmax (W/cm2) |  Jsc (A/cm2) |  Voc (V)     '
+                        '| P_sol (W/cm2)|  area (cm2)   \n')
+                elif extension == '.csv':
+                    fieldnames = ('file', 'PCE', 'FF', 'Pmax(W/cm2)',
+                                  'Jsc(A/cm2)', 'Voc(V)', 'P_sol(W/cm2)',
+                                  'area(cm2)', 'datetime', 'delta_time(min)')
+                    writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+                    writer.writeheader()
 
     else:
         file += extension
         file = Path(file).resolve()
         if not os.path.exists(file):
-            with open(file, 'w') as txt:
+            with open(file, 'w') as outfile:
                 if header:
-                    txt.write(
-                        '#       File        |   PCE        |   FF         '
-                        '| Pmax (W/cm2) |  Jsc (A/cm2) |  Voc (V)     '
-                        '| P_sol (W/cm2)|  area (cm2)   \n')
+                    if extension == '.txt':
+                        outfile.write(
+                            '#       File        |   PCE        |   FF'
+                            '         | Pmax (W/cm2) |  Jsc (A/cm2) |  '
+                            'Voc (V)     | P_sol (W/cm2)|  area (cm2)   \n')
+                    elif extension == '.csv':
+                        fieldnames = ('file', 'PCE', 'FF', 'Pmax(W/cm2)',
+                                      'Jsc(A/cm2)', 'Voc(V)', 'P_sol(W/cm2)',
+                                      'area(cm2)', 'datetime',
+                                      'delta_time(min)')
+                        writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+                        writer.writeheader()
 
     return str(file)
 
