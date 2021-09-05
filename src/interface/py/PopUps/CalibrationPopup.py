@@ -5,6 +5,8 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
+from keithley import Keithley
+from esp32 import calibrate
 
 
 class CalibrationPopup(Popup):
@@ -34,7 +36,7 @@ class CalibrationPopup(Popup):
         """Wait 3 seconds before able 'Accept' button."""
         # print(my_arduino)
         self.event = Clock.schedule_interval(self.update_fit, 2)
-        self.able_button()
+        Clock.schedule_once(self.able_button, 1)
 
     def update_fit(self, dt):
         msg = 'Cell: ' + str(random.randint(1, 17)) \
@@ -43,9 +45,14 @@ class CalibrationPopup(Popup):
               + '.\n r2: ' + str(random.random())
         self.ids.calibration_fit.text = msg
 
-    def able_button(self):
+    def able_button(self, dt):
         """Able 'Accept' button when the calibration has ended."""
-        # TODO: program here
+        calib_path = self.section3.paths['calibration_path']
+        arduino = self.section3.arduino
+        esp32 = self.section3.esp32
+        keithley = Keithley(port=self.section3.keithley)
+        calibrate(esp32, arduino, keithley, calib_path)
+        keithley.close_resource()
         self.calibration_msg = 'Calibration has ended.'
         self.ids.button_calibration_accept.disabled = False
         self.event.cancel()

@@ -41,6 +41,17 @@ class Section3(BoxLayout):
         self.measure_popup = MeasurePopup()
         self.confirm_calibration_popup = ConfirmCalibrationPopup()
 
+        param_path = Path(__file__ + '/../../../../config/tmp/param.json')
+        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
+        calib_path = Path(__file__+'/../../../../config/tmp/calibration.json')
+        polar_path = Path(__file__+'/../../../../config/tmp/polarization.json')
+        self.paths = {'param_path': param_path.resolve(),
+                      'trigger_path': trigger_path.resolve(),
+                      'mode_path': mode_path.resolve(),
+                      'calibration_path': calib_path.resolve(),
+                      'polarization_path': polar_path.resolve()}
+
     def check_params(self, sequence, arduino, keithley):
         """Check that:
             a) An electrode has been selected to measure
@@ -122,13 +133,11 @@ class Section3(BoxLayout):
 
         """Start the measurement process."""
         # config files
-        param_path = Path(__file__ + '/../../../../config/tmp/param.json')
-        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
-        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
-        calibration_path = Path(__file__ +
-                                '/../../../../config/tmp/calibration.json')
-        polarization_path = Path(__file__ +
-                                 '/../../../../config/tmp/polarization.json')
+        param_path = self.paths['param_path']
+        trigger_path = self.paths['trigger_path']
+        mode_path = self.paths['mode_path']
+        calibration_path = self.paths['calibration_path']
+        polarization_path = self.paths['polarization_path']
 
         # Initialize param.json as empty file
         param_path = param_path.resolve()
@@ -145,6 +154,8 @@ class Section3(BoxLayout):
             json.dump(trigger, f, indent=2)
 
         # Initialize polarization.json to 0.0 volts
+        polarization_path = polarization_path.resolve()
+        calibration_path = calibration_path.resolve()
         polarize(self.esp32, polarization_path, calibration_path, reset=True)
 
         # Initialize Stop button in measure popup

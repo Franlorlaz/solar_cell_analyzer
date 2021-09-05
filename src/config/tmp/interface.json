@@ -22,14 +22,12 @@
     "cell_3": {
       "name": "",
       "electrodes": [
-        "b"
+        "c"
       ]
     },
     "cell_4": {
       "name": "",
-      "electrodes": [
-        "d"
-      ]
+      "electrodes": []
     }
   }
 }

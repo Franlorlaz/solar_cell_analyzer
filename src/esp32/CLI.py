@@ -12,6 +12,8 @@ $ python3 esp32/CLI.py connect --port <str>
 
 import cmd
 import argparse
+import json
+from pathlib import Path
 
 from devices.ESP32 import ESP32
 
@@ -109,6 +111,21 @@ class ESP32Shell(cmd.Cmd):
             a = float(args[1])
             b = float(args[2])
         self.esp32.polarize(float(args[0]), calibration={'a': a, 'b': b})
+
+    @staticmethod
+    def do_reset_calibration(arg):
+        cells = ['1', '2', '3', '4']
+        elects = ['A', 'B', 'C', 'D']
+        base_dir = Path(__file__ + '/../../config').resolve()
+        calib_path = base_dir.joinpath(arg).resolve()
+        with open(calib_path, 'r') as f:
+            calibration = json.load(f)
+        for cell in cells:
+            for elect in elects:
+                iteration = cell + elect
+                calibration[iteration] = {'a': 1, 'b': 0, 'r2': 0}
+        with open(calib_path.resolve(), 'w') as f:
+            json.dump(calibration, f, indent=2)
 
     def do_disconnect(self, arg):
         """Disconnect the device and exit the interactive session."""
