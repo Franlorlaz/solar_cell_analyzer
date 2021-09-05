@@ -8,7 +8,7 @@
   "repeat": {
     "type": "all_repetition",
     "times": 3,
-    "wait": 5.0
+    "wait": 0.1
   },
   "cells": {
     "cell_1": {

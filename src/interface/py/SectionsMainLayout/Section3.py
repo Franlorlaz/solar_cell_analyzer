@@ -38,6 +38,7 @@ class Section3(BoxLayout):
         self.sequence = []
         self.basic_sequence = []
         self.program = []
+        self.checkbox_polarize = False
         self.measure_popup = MeasurePopup()
         self.confirm_calibration_popup = ConfirmCalibrationPopup()
 
@@ -198,7 +199,7 @@ class Section3(BoxLayout):
         self.basic_sequence = basic_sequence
         self.repeat_electrode = repeat_electrode
         self.repeat_all = repeat_all
-        self.wait = data['repeat']['wait']
+        self.wait = float(data['repeat']['wait']) * 60
         self.program = []
 
         for iteration in sequence:
@@ -217,6 +218,7 @@ class Section3(BoxLayout):
 
         # Open Polarize or Measure Popup and run
         checkbox_polarize = data['mode']['polarize']
+        self.checkbox_polarize = checkbox_polarize
         if checkbox_polarize:
             measure = PolarizePopup()
             unique_sequence = list(set(sequence))
@@ -251,20 +253,22 @@ class Section3(BoxLayout):
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
 
-        polarize(self.esp32, polarization_path, calibration_path)
+        if self.checkbox_polarize:
+            polarize(self.esp32, polarization_path, calibration_path)
 
-        if self.have_to_wait and not trigger['measuring']:
+        with open(param_path, 'r') as f:
+            param = json.load(f)
+        if len(param) > 5:
+            param = param[::-1][0:5][::-1]
+        self.measure_popup.display_measure(param)
+
+        if self.have_to_wait and not trigger['measuring'] and self.sequence:
+            print('---\n--- HAVE TO WAIT\n---')
             trigger['measuring'] = True
             wait += self.wait
             self.have_to_wait = False
 
         if not trigger['measuring'] and not trigger['stop_button']:
-            with open(param_path, 'r') as f:
-                param = json.load(f)
-            if len(param) > 5:
-                param = param[::-1][0:5][::-1]
-            self.measure_popup.display_measure(param)
-
             if self.sequence:
                 electrodes = ['A', 'B', 'C', 'D']
                 iteration = self.sequence.pop(0)
@@ -290,6 +294,7 @@ class Section3(BoxLayout):
                 with open(trigger_path, 'w') as f:
                     json.dump(trigger, f, indent=2)
             else:
+                self.have_to_wait = False
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
                 self.measure_popup.ids.stop_button.text = 'Go back'
@@ -299,6 +304,7 @@ class Section3(BoxLayout):
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
         else:
+            self.have_to_wait = False
             polarize(self.esp32, polarization_path, calibration_path,
                      reset=True)
 
