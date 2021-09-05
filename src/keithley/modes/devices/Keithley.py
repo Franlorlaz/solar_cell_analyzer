@@ -22,6 +22,7 @@ keithley.save(file)
 import numpy as np
 import pyvisa as visa
 from pathlib import Path
+from random import random
 
 from .KeithleySimulator import KeithleySimulator, list_voltage_hysteresis
 
@@ -301,7 +302,7 @@ class Keithley:
             data = inst.query_ascii_values(':READ?', container=np.array)
         else:
             inst.write(':READ?')
-            data = [0.0]
+            data = [random()*10]
         data = float(data[0])
 
         inst.write(':OUTP OFF')  # Output off after measuring

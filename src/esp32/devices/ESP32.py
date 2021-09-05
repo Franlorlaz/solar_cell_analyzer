@@ -59,21 +59,17 @@ class ESP32:
         print('ESP32 disconnected')
         return self.ser
 
-    def switch_relay(self, cell=1, electrode_id=1, switch_off=False):
-        """Send open/close relay order to ESP32.
+    def set_channel(self, cell=1, electrode_id=1):
+        """Set output channel to ESP32.
 
         :param cell: Cell number (integer).
         :param electrode_id: Electrode number (integer).
-        :param switch_off: Switch off all relays or not (boolean).
         :return: A dictionary with used parameters.
         """
-        relay = 4 * int(cell) + int(electrode_id)
-        self.ser.write(b'\x00')  # switch off all
-        if not switch_off:
-            self.ser.write(b'c' + relay.to_bytes(1, 'big'))
+        channel = 4 * (int(cell) - 1) + int(electrode_id)
+        self.ser.write(b'c' + channel.to_bytes(1, 'big'))
 
-        return {'cell': cell, 'electrode_id': electrode_id,
-                'switch_off': switch_off}
+        return {'cell': cell, 'electrode_id': electrode_id}
 
     def polarize(self, voltage, calibration=None):
         """Send polarize order to ESP32.

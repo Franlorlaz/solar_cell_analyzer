@@ -1,10 +1,12 @@
 {
   "mode": "lineal",
   "cell_name": "",
+  "cell_id": 1,
   "electrode": "A",
-  "directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
-  "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
+  "directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
+  "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
   "keithley": null,
-  "trigger_path": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\trigger.json",
-  "param_path": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\param.json"
+  "trigger_path": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/trigger.json",
+  "param_path": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/param.json",
+  "polarization_path": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/polarization.json"
 }
