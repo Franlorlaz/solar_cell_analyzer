@@ -30,11 +30,8 @@ class CalibrationPopup(Popup):
         self.calibration_msg = ' . . . '
         self.ids.button_calibration_accept.disabled = True
 
-    # FIXME: Esta función está de prueba, la llamada a able_button
-    #  se sustituiria por la función que realiza la calibración
     def call_able_button(self):
         """Wait 3 seconds before able 'Accept' button."""
-        # print(my_arduino)
         self.event = Clock.schedule_interval(self.update_fit, 2)
         Clock.schedule_once(self.able_button, 1)
 
