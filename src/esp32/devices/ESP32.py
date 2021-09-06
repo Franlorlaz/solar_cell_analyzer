@@ -67,7 +67,8 @@ class ESP32:
         :return: A dictionary with used parameters.
         """
         channel = 4 * (int(cell) - 1) + int(electrode_id)
-        self.ser.write(b'c' + channel.to_bytes(1, 'big'))
+        order = 'c' + str(channel) + '\n'
+        self.ser.write(order.encode())
 
         return {'cell': cell, 'electrode_id': electrode_id}
 
@@ -94,6 +95,7 @@ class ESP32:
                 b = float(calibration['b'])
 
         voltage = int(a * voltage + b)
-        self.ser.write(b'd' + voltage.to_bytes(1, 'big'))
+        order = 'd' + str(voltage) + '\n'
+        self.ser.write(order.encode())
 
         return {'voltage': voltage, 'calibration': calibration}
