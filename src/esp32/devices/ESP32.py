@@ -1,5 +1,6 @@
 """ESP32 Main Class Definition."""
 
+import time
 import serial
 import serial.tools.list_ports
 from .ESP32Simulator import ESP32Simulator
@@ -12,6 +13,7 @@ class ESP32:
         """Initialize ESP32 object connecting to a port."""
         self.port = port
         self.ser = self.connect(port, disconnect_before=False)
+        self.wait = 0.2
 
     @staticmethod
     def search_ports():
@@ -66,8 +68,11 @@ class ESP32:
         :param electrode_id: Electrode number (integer).
         :return: A dictionary with used parameters.
         """
+        wait = 0.2
         channel = 4 * (int(cell) - 1) + int(electrode_id)
-        self.ser.write(b'c' + channel.to_bytes(1, 'big'))
+        order = 'c' + str(channel) + '\n'
+        self.ser.write(order.encode())
+        time.sleep(wait)
 
         return {'cell': cell, 'electrode_id': electrode_id}
 
@@ -80,6 +85,7 @@ class ESP32:
         the keys {'a', 'b'}. Equation: y = a*x + b
         :return: A dictionary with used parameters.
         """
+        wait = self.wait
         a = 1
         b = 0
 
@@ -94,6 +100,8 @@ class ESP32:
                 b = float(calibration['b'])
 
         voltage = int(a * voltage + b)
-        self.ser.write(b'd' + voltage.to_bytes(1, 'big'))
+        order = 'd' + str(voltage) + '\n'
+        self.ser.write(order.encode())
+        time.sleep(wait)
 
         return {'voltage': voltage, 'calibration': calibration}

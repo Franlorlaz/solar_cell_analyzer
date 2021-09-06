@@ -1,4 +1,5 @@
 import json
+import time
 from pathlib import Path
 from .regression import linear_regression
 
@@ -27,7 +28,7 @@ def polarize(esp32, path, calib_path, reset=False):
 def calibrate(esp32, arduino, keithley, calib_path, reset=False):
     cells = ['1', '2', '3', '4']
     elects = ['A', 'B', 'C', 'D']
-    y = list(range(0, 256, 1))  # duty_cycle
+    y = list(range(0, 256, 5))  # duty_cycle
     x = []  # real voltage
     calib_path = Path(calib_path).resolve()
     with open(calib_path, 'r') as f:
@@ -43,6 +44,7 @@ def calibrate(esp32, arduino, keithley, calib_path, reset=False):
                 esp32.polarize(duty_cycle)
                 voltage = keithley.voltmeter()
                 x.append(voltage)
+                time.sleep(0.2)
             esp32.polarize(0)
             if reset:
                 a = 1
