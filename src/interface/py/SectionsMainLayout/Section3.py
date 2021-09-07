@@ -13,6 +13,7 @@ from interface.py.PopUps.CalibrationPopup import CalibrationPopup
 from interface.py.PopUps.ConfirmCalibrationPopup import ConfirmCalibrationPopup
 from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
+from esp32 import ESP32, polarize
 
 
 class Section3(BoxLayout):
@@ -28,7 +29,7 @@ class Section3(BoxLayout):
         self.init_dir_clipped = '...' + self.init_dir[-33:]
         self.keithley = None
         self.arduino = Arduino(port=None)
-        self.esp32 = Arduino(port=None)
+        self.esp32 = ESP32(port=None)
 
         self.repeat_electrode = False
         self.repeat_all = False
@@ -37,8 +38,20 @@ class Section3(BoxLayout):
         self.sequence = []
         self.basic_sequence = []
         self.program = []
+        self.checkbox_polarize = False
         self.measure_popup = MeasurePopup()
         self.confirm_calibration_popup = ConfirmCalibrationPopup()
+
+        param_path = Path(__file__ + '/../../../../config/tmp/param.json')
+        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
+        calib_path = Path(__file__+'/../../../../config/tmp/calibration.json')
+        polar_path = Path(__file__+'/../../../../config/tmp/polarization.json')
+        self.paths = {'param_path': param_path.resolve(),
+                      'trigger_path': trigger_path.resolve(),
+                      'mode_path': mode_path.resolve(),
+                      'calibration_path': calib_path.resolve(),
+                      'polarization_path': polar_path.resolve()}
 
     def check_params(self, sequence, arduino, keithley):
         """Check that:
@@ -121,9 +134,11 @@ class Section3(BoxLayout):
 
         """Start the measurement process."""
         # config files
-        param_path = Path(__file__ + '/../../../../config/tmp/param.json')
-        trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
-        mode_path = Path(__file__ + '/../../../../config/tmp/mode.json')
+        param_path = self.paths['param_path']
+        trigger_path = self.paths['trigger_path']
+        mode_path = self.paths['mode_path']
+        calibration_path = self.paths['calibration_path']
+        polarization_path = self.paths['polarization_path']
 
         # Initialize param.json as empty file
         param_path = param_path.resolve()
@@ -138,6 +153,11 @@ class Section3(BoxLayout):
         trigger['measuring'] = False
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2)
+
+        # Initialize polarization.json to 0.0 volts
+        polarization_path = polarization_path.resolve()
+        calibration_path = calibration_path.resolve()
+        polarize(self.esp32, polarization_path, calibration_path, reset=True)
 
         # Initialize Stop button in measure popup
         self.measure_popup.ids.stop_button.text = 'Stop'
@@ -175,65 +195,80 @@ class Section3(BoxLayout):
             self.check_params(sequence, self.arduino, self.keithley)
         # trigger_check = True
 
+        self.sequence = sequence
+        self.basic_sequence = basic_sequence
+        self.repeat_electrode = repeat_electrode
+        self.repeat_all = repeat_all
+        self.wait = float(data['repeat']['wait']) * 60
+        self.program = []
+
+        for iteration in sequence:
+            cell_name = data['cells']['cell_' + iteration[0]]['name']
+            program = {'mode': str(data['mode']['name']),
+                       'cell_name': str(cell_name),
+                       'cell_id': int(iteration[0]),
+                       'electrode': str(iteration[1]).upper(),
+                       'directory': str(data['saving_directory']),
+                       'config': str(data['mode']['config']),
+                       'keithley': self.keithley,
+                       'trigger_path': str(trigger_path),
+                       'param_path': str(param_path),
+                       'polarization_path': str(polarization_path.resolve())}
+            self.program.append(program)
+
         # Open Polarize or Measure Popup and run
-        polarize = data['mode']['polarize']
-        if polarize:
+        checkbox_polarize = data['mode']['polarize']
+        self.checkbox_polarize = checkbox_polarize
+        if checkbox_polarize:
             measure = PolarizePopup()
-            measure.pass_arg(sequence)
+            unique_sequence = list(set(sequence))
+            unique_sequence.sort()
+            measure.pass_arg(unique_sequence, self)
             measure.open()
         else:
             measure = self.measure_popup
             measure.reset_measure()
             measure.open()
-            if not trigger_check:
-                error_warning_popup = ErrorWarningPopup()
-                error_warning_popup.open()
-                error_warning_popup.print_error_msg(self.msg)
-
-            self.sequence = sequence
-            self.basic_sequence = basic_sequence
-            self.repeat_electrode = repeat_electrode
-            self.repeat_all = repeat_all
-            self.wait = data['repeat']['wait']
-            self.program = []
-
-            for iteration in sequence:
-                cell_name = data['cells']['cell_' + iteration[0]]['name']
-                program = {'mode': str(data['mode']['name']),
-                           'cell_name': str(cell_name),
-                           'electrode': str(iteration[1]).upper(),
-                           'directory': str(data['saving_directory']),
-                           'config': str(data['mode']['config']),
-                           'keithley': self.keithley,
-                           'trigger_path': str(trigger_path),
-                           'param_path': str(param_path)}
-                self.program.append(program)
-
             Clock.schedule_once(self.run, 1)
+
+        if not trigger_check:
+            error_warning_popup = ErrorWarningPopup()
+            error_warning_popup.open()
+            error_warning_popup.print_error_msg(self.msg)
 
     def run(self, *dt):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
         trigger_path = Path(__file__ + '/../../../../config/tmp/trigger.json')
+        calibration_path = Path(__file__ +
+                                '/../../../../config/tmp/calibration.json')
+        polarization_path = Path(__file__ +
+                                 '/../../../../config/tmp/polarization.json')
 
         wait = 2.0
         param_path = param_path.resolve()
         trigger_path = trigger_path.resolve()
+        calibration_path = calibration_path.resolve()
+        polarization_path = polarization_path.resolve()
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
 
-        if self.have_to_wait and not trigger['measuring']:
+        if self.checkbox_polarize:
+            polarize(self.esp32, polarization_path, calibration_path)
+
+        with open(param_path, 'r') as f:
+            param = json.load(f)
+        if len(param) > 5:
+            param = param[::-1][0:5][::-1]
+        self.measure_popup.display_measure(param)
+
+        if self.have_to_wait and not trigger['measuring'] and self.sequence:
+            print('---\n--- HAVE TO WAIT\n---')
             trigger['measuring'] = True
             wait += self.wait
             self.have_to_wait = False
 
         if not trigger['measuring'] and not trigger['stop_button']:
-            with open(param_path, 'r') as f:
-                param = json.load(f)
-            if len(param) > 5:
-                param = param[::-1][0:5][::-1]
-            self.measure_popup.display_measure(param)
-
             if self.sequence:
                 electrodes = ['A', 'B', 'C', 'D']
                 iteration = self.sequence.pop(0)
@@ -259,15 +294,21 @@ class Section3(BoxLayout):
                 with open(trigger_path, 'w') as f:
                     json.dump(trigger, f, indent=2)
             else:
+                self.have_to_wait = False
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
                 self.measure_popup.ids.stop_button.text = 'Go back'
+                polarize(self.esp32, polarization_path, calibration_path,
+                         reset=True)
 
         if not trigger['stop_button']:
             Clock.schedule_once(self.run, wait)
+        else:
+            self.have_to_wait = False
+            polarize(self.esp32, polarization_path, calibration_path,
+                     reset=True)
 
     def press_calibrate(self):
         """Open the confirmation popup to start the calibration."""
         self.confirm_calibration_popup.open()
-        self.confirm_calibration_popup.pass_arduino_1(self.arduino)
-        print(self.arduino)
+        self.confirm_calibration_popup.pass_arduino_1(self)
