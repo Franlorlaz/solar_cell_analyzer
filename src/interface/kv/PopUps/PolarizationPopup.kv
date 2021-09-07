@@ -25,7 +25,7 @@
             Label:
                 id: polarization_description
                 text: root.description_msg
-                pos_hint:{'center_x':0.5,'center_y':0.7}
+                pos_hint:{'center_x':0.5,'center_y':0.5}
                 bold: False
                 font_size: 15
                 color: 0.8,0.8,0.8
@@ -57,4 +57,5 @@
                 pos_hint:{'x':0.6,'center_y':0.5}
                 on_press:
                     if self.text == 'Continue': root.polarize_next_cell()
+                    elif self.text == 'Close': root.stop_polarize()
                     else: root.start_measure()

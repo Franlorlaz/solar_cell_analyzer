@@ -88,7 +88,7 @@ class MainScreen(BoxLayout):
         trigger['stop_button'] = True
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2, sort_keys=True)
-        self.measure_popup.ids.stop_button.text = 'Go back'
+        self.measure_popup.ids.stop_button.text = 'Finish'
 
 
 from interface.py.SectionsMainLayout.ActionBarS0 import ActionBarS0

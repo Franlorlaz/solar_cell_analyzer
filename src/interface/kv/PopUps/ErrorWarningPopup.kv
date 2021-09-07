@@ -3,8 +3,8 @@
         layout_error_msg, error_msg, \
         ok_button
     auto_dismiss: False
-    title: 'Error / Warning'
-    size_hint: 0.65,0.6
+    title: 'Warning'
+    size_hint: 0.65,0.65
     pos_hint: {'center_x':0.5, 'top':0.82}
 
     BoxLayout:
@@ -13,9 +13,12 @@
         orientation: "vertical"
 
         BoxLayout:
+            size_hint_y: 0.05
+
+        BoxLayout:
             id: layout_error_msg
             orientation: 'vertical'
-            size_hint_y: 0.90
+            size_hint_y: 0.9
 
             Label:
                 id: error_msg
@@ -25,7 +28,7 @@
                 text: ' '
 
         BoxLayout:
-            size_hint_y: 0.10
+            size_hint_y: 0.1
 
             Button:
                 id: ok_button

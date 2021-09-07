@@ -50,7 +50,7 @@
 
                 Label:
                     bold: True
-                    text: 'Electrode'
+                    text: 'Cell'
                 Label:
                     bold: True
                     text: 'PCE'
@@ -187,7 +187,7 @@
                 id: stop_button
                 text: "Stop"
                 on_release:
-                    if stop_button.text == 'Stop': stop_button.text = 'Go back'
+                    if stop_button.text == 'Stop': stop_button.text = 'Finish'
                 on_press:
                     if stop_button.text == 'Stop': app.root.stop()
-                    if stop_button.text == 'Go back': root.dismiss()
+                    if stop_button.text == 'Finish': root.dismiss()
