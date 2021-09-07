@@ -1,7 +1,7 @@
 {
   "mode": "lineal",
-  "cell_name": "",
-  "electrode": "A",
+  "cell_name": "test",
+  "electrode": "C",
   "directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
   "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
   "keithley": null,

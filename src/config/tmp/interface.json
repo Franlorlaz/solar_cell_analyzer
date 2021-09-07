@@ -12,16 +12,17 @@
   },
   "cells": {
     "cell_1": {
-      "name": "",
+      "name": "fancy",
       "electrodes": [
         "a",
-        "b",
-        "c"
+        "b"
       ]
     },
     "cell_2": {
-      "name": "",
-      "electrodes": []
+      "name": "test",
+      "electrodes": [
+        "c"
+      ]
     },
     "cell_3": {
       "name": "",
