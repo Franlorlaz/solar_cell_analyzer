@@ -17,7 +17,7 @@
 
     RelativeLayout:
         Label:
-            text: 'Selection of electrodes to measure:'
+            text: 'Select electrodes:'
             pos: 0,92
             bold: True
             color: 0.8,0.8,0.8
@@ -239,14 +239,16 @@
             size_hint: None,None
             width: 12
             height: 12
-            pos: 50,3
+            pos: 210,3
+            halign: 'center'
             on_press:
                 if cell_all.active: root.select_all_electrodes()
                 else: root.deselect_all_electrodes()
 
         Label:
-            text: 'Select all electrodes'
-            pos: -125,-90
+            text: 'Select all'
+            pos: 0,-90
+            halign: 'center'
             bold: True
             color: 0.8,0.8,0.8
             font_size: 15

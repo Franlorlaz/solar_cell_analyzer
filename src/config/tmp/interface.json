@@ -1,8 +1,8 @@
 {
-  "saving_directory": "D:\\Proyectos\\solar_cell_analyzer\\src\\measures",
+  "saving_directory": "/home/franciss/projects/solar_cell_analyzer/src/measures",
   "mode": {
     "name": "lineal",
-    "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
+    "config": "/home/franciss/projects/solar_cell_analyzer/src/config/tmp/mode.json",
     "polarize": false
   },
   "repeat": {
@@ -14,7 +14,8 @@
     "cell_1": {
       "name": "",
       "electrodes": [
-        "a"
+        "a",
+        "b"
       ]
     },
     "cell_2": {

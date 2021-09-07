@@ -7,6 +7,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 from kivy.clock import Clock
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
 from interface.py.PopUps.MeasurePopup import MeasurePopup
 from interface.py.PopUps.PolarizePopup import PolarizePopup
 from interface.py.PopUps.CalibrationPopup import CalibrationPopup
@@ -25,6 +27,11 @@ class Section3(BoxLayout):
     def __init__(self, **kwargs):
         """Initialize attributes."""
         super(Section3, self).__init__(**kwargs)
+        self.initializing_popup = Popup(title='',
+                                        content=Label(text='Initializing...'),
+                                        size_hint=(None, None),
+                                        size=(300, 200))
+
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.init_dir_clipped = '...' + self.init_dir[-33:]
         self.msg = ''
@@ -74,17 +81,11 @@ class Section3(BoxLayout):
         if not sequence:
             self.msg += 'No electrode selected. \n\n'
         if arduino.port is None:
-            self.msg += ('A port has not been selected for arduino '
-                         '(default port = None will simulate a successful '
-                         'connection but no measurements will be made). \n\n')
+            self.msg += 'No port selected for Arduino.\n\n'
         if esp32.port is None:
-            self.msg += ('A port has not been selected for esp32 '
-                         '(default port = None will simulate a successful '
-                         'connection but no measurements will be made). \n\n')
+            self.msg += 'No port selected for ESP32.\n\n'
         if keithley is None:
-            self.msg += ('A port has not been selected for keithley '
-                         '(default port = None will simulate a successful '
-                         'connection but no measurements will be made). \n\n')
+            self.msg += 'No port selected for Keithley.\n\n'
 
         if self.msg != '':
             return False
@@ -158,11 +159,6 @@ class Section3(BoxLayout):
         trigger['measuring'] = False
         with open(trigger_path, 'w') as f:
             json.dump(trigger, f, indent=2)
-
-        # Initialize polarization.json to 0.0 volts
-        polarization_path = polarization_path.resolve()
-        calibration_path = calibration_path.resolve()
-        polarize(self.esp32, polarization_path, calibration_path, reset=True)
 
         # Initialize Stop button in measure popup
         self.measure_popup.ids.stop_button.text = 'Stop'
@@ -241,6 +237,17 @@ class Section3(BoxLayout):
             error_warning_popup.open()
             error_warning_popup.print_error_msg(self.msg)
 
+        self.initializing_popup.open()
+        Clock.schedule_once(self.initial_polarization, 0.1)
+
+    def initial_polarization(self, dt):
+        # Initialize polarization.json to 0.0 volts
+        calibration_path = self.paths['calibration_path'].resolve()
+        polarization_path = self.paths['polarization_path'].resolve()
+        polarize(self.esp32, polarization_path, calibration_path,
+                 reset=True)
+        self.initializing_popup.dismiss()
+
     def run(self, *dt):
         program_path = Path(__file__ + '/../../../../config/tmp/program.json')
         param_path = Path(__file__ + '/../../../../config/tmp/param.json')
@@ -302,7 +309,7 @@ class Section3(BoxLayout):
                 self.have_to_wait = False
                 self.arduino.switch_relay(switch_off=True)
                 trigger['stop_button'] = True
-                self.measure_popup.ids.stop_button.text = 'Go back'
+                self.measure_popup.ids.stop_button.text = 'Finish'
                 polarize(self.esp32, polarization_path, calibration_path,
                          reset=True)
 
@@ -320,17 +327,11 @@ class Section3(BoxLayout):
 
         msg = ''
         if self.arduino.port is None:
-            msg += ('A port has not been selected for arduino (default port ='
-                    ' None will simulate a successful connection but no '
-                    'measurements will be made). \n\n')
+            msg += 'No port selected for Arduino.\n\n'
         if self.esp32.port is None:
-            msg += ('A port has not been selected for esp32 (default port ='
-                    ' None will simulate a successful connection but no '
-                    'measurements will be made). \n\n')
+            msg += 'No port selected for ESP32.\n\n'
         if self.keithley is None:
-            msg += ('A port has not been selected for keithley (default '
-                    'port = None will simulate a successful connection '
-                    'but no measurements will be made). \n\n')
+            msg += 'No port selected for Keithley.\n\n'
 
         if msg != '':
             error_warning_popup = ErrorWarningPopup()

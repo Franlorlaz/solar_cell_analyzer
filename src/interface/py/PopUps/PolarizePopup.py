@@ -31,8 +31,7 @@ class PolarizePopup(Popup):
             self.description_msg = "Press 'Close' to go back."
             self.ids.continue_polarize.text = 'Close'
         else:
-            self.title_msg = 'All electrodes covered except ' \
-                             + str(self.sequence[0]).upper()
+            self.title_msg = 'Electrode: ' + str(self.sequence[0]).upper()
             self.description_msg = "Press 'Continue' to start the measure."
 
     #TODO: ¿Que cierre cosas antes de cerrar el popup?
@@ -85,18 +84,15 @@ class PolarizePopup(Popup):
         actual_value = self.ids.polarization_title.text[-2:].lower()
         ref = self.sequence.index(actual_value)
         description = self.ids.polarization_description
-        description.text = 'Measure done. \n'\
-                           + 'Voltage at maximun power calculated. \n\n'
-        if ref != len(self.sequence) - 1:
-            description.text += "Press 'Continue' to go to the next cell: " \
-                                + str(self.sequence[ref + 1]).upper() + '.\n'
-        else:
-            self.ids.polarization_title.text = 'Initial voltages calculated.'
-            description.text = "Initial voltages at maximun power " \
-                               "calculated for all electrodes. \n\n Press " \
-                               "'Start' to start the measure applying " \
-                               "polarization."
+        if ref == len(self.sequence) - 1:
+            self.ids.polarization_title.text = 'Initial voltages calculated'
+            description.text = "Press 'Start' to start the measure"
             self.ids.continue_polarize.text = 'Start'
+        else:
+            self.title_msg = 'Electrode: ' + str(
+                self.sequence[ref + 1]).upper()
+            description = self.ids.polarization_description
+            description.text = "Press 'Continue' to start the measure."
         self.ids.continue_polarize.disabled = False
 
     def start_measure(self):
