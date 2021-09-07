@@ -1,5 +1,6 @@
 """Arduino Main Class Definition."""
 
+import time
 import serial
 import serial.tools.list_ports
 from .ArduinoSimulator import ArduinoSimulator
@@ -12,6 +13,7 @@ class Arduino:
         """Initialize Arduino object connecting to a port."""
         self.port = port
         self.ser = self.connect(port, disconnect_before=False)
+        self.wait = 1
 
     @staticmethod
     def search_ports():
@@ -59,18 +61,30 @@ class Arduino:
         print('Arduino disconnected')
         return self.ser
 
-    def switch_relay(self, cell=1, electrode_id=1, switch_off=False):
+    def switch_relay(self, cell=1, electrode_id=1, switch_off=False,
+                     calibration=None):
         """Send open/close relay order to arduino.
 
         :param cell: Cell number (integer).
         :param electrode_id: Electrode number (integer).
         :param switch_off: Switch off all relays or not (boolean).
+        :param calibration: Switch on the calibration relay (boolean).
         :return: A dictionary with used parameters.
         """
+        wait = self.wait
         relay = 4 * (int(cell) - 1) + int(electrode_id)
         self.ser.write(b'\x00')  # switch off all
+        time.sleep(wait)
         if not switch_off:
             self.ser.write(relay.to_bytes(1, 'big'))
+            time.sleep(wait)
+        if calibration is not None:
+            if calibration:
+                self.ser.write(b'\xff')
+                time.sleep(wait)
+            else:
+                self.ser.write(b'\xfe')
+                time.sleep(wait)
 
         return {'cell': cell, 'electrode_id': electrode_id,
                 'switch_off': switch_off}

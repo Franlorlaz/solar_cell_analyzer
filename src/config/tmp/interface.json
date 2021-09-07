@@ -3,7 +3,7 @@
   "mode": {
     "name": "lineal",
     "config": "D:\\Proyectos\\solar_cell_analyzer\\src\\config\\tmp\\mode.json",
-    "polarize": true
+    "polarize": false
   },
   "repeat": {
     "type": "no_repetition",
@@ -14,9 +14,7 @@
     "cell_1": {
       "name": "",
       "electrodes": [
-        "a",
-        "b",
-        "c"
+        "a"
       ]
     },
     "cell_2": {
