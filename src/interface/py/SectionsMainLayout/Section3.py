@@ -27,6 +27,7 @@ class Section3(BoxLayout):
         super(Section3, self).__init__(**kwargs)
         self.init_dir = str(Path(__file__ + '/../../../../measures').resolve())
         self.init_dir_clipped = '...' + self.init_dir[-33:]
+        self.msg = ''
         self.keithley = None
         self.arduino = Arduino(port=None)
         self.esp32 = ESP32(port=None)
@@ -53,14 +54,16 @@ class Section3(BoxLayout):
                       'calibration_path': calib_path.resolve(),
                       'polarization_path': polar_path.resolve()}
 
-    def check_params(self, sequence, arduino, keithley):
+    def check_params(self, sequence, arduino, esp32, keithley):
         """Check that:
             a) An electrode has been selected to measure
             b) A port has been selected for the arduino
-            c) A port has been selected for the keithley
+            c) A port has been selected for the esp32
+            d) A port has been selected for the keithley
 
         :param sequence: A list that contains electrode sequence to measure.
         :param arduino: An object that contains information about arduino.
+        :param esp32: An object that contains information about esp32.
         :param keithley: An object that contains information about keithley.
 
         :return: True, if there is any error;
@@ -71,13 +74,17 @@ class Section3(BoxLayout):
         if not sequence:
             self.msg += 'No electrode selected. \n\n'
         if arduino.port is None:
-            self.msg += ('A port has not been selected for arduino (default port ='
-                    ' None will simulate a successful connection but no '
-                    'measurements will be made). \n\n')
+            self.msg += ('A port has not been selected for arduino '
+                         '(default port = None will simulate a successful '
+                         'connection but no measurements will be made). \n\n')
+        if esp32.port is None:
+            self.msg += ('A port has not been selected for esp32 '
+                         '(default port = None will simulate a successful '
+                         'connection but no measurements will be made). \n\n')
         if keithley is None:
-            self.msg += ('A port has not been selected for keithley (default '
-                    'port = None will simulate a successful connection '
-                    'but no measurements will be made). \n\n')
+            self.msg += ('A port has not been selected for keithley '
+                         '(default port = None will simulate a successful '
+                         'connection but no measurements will be made). \n\n')
 
         if self.msg != '':
             return False
@@ -130,8 +137,6 @@ class Section3(BoxLayout):
         return interface
 
     def start_button(self):
-        # print('Arduino conectado al puerto: ', self.arduino.port)
-
         """Start the measurement process."""
         # config files
         param_path = self.paths['param_path']
@@ -192,8 +197,8 @@ class Section3(BoxLayout):
 
         # Check params
         trigger_check = \
-            self.check_params(sequence, self.arduino, self.keithley)
-        # trigger_check = True
+            self.check_params(sequence, self.arduino,
+                              self.esp32, self.keithley)
 
         self.sequence = sequence
         self.basic_sequence = basic_sequence
@@ -312,3 +317,22 @@ class Section3(BoxLayout):
         """Open the confirmation popup to start the calibration."""
         self.confirm_calibration_popup.open()
         self.confirm_calibration_popup.pass_arduino_1(self)
+
+        msg = ''
+        if self.arduino.port is None:
+            msg += ('A port has not been selected for arduino (default port ='
+                    ' None will simulate a successful connection but no '
+                    'measurements will be made). \n\n')
+        if self.esp32.port is None:
+            msg += ('A port has not been selected for esp32 (default port ='
+                    ' None will simulate a successful connection but no '
+                    'measurements will be made). \n\n')
+        if self.keithley is None:
+            msg += ('A port has not been selected for keithley (default '
+                    'port = None will simulate a successful connection '
+                    'but no measurements will be made). \n\n')
+
+        if msg != '':
+            error_warning_popup = ErrorWarningPopup()
+            error_warning_popup.open()
+            error_warning_popup.print_error_msg(msg)
