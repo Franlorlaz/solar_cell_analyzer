@@ -13,9 +13,10 @@ class InfoPopup(Popup):
     def __init__(self, **kwargs):
         """Initialize popup."""
         super(InfoPopup, self).__init__(**kwargs)
-        self.msg1 = 'A desktop application for researchers to measure ' \
-                    'and analyze solar cells.'
-        self.msg2 = 'Created by: Franciss and Laura.'
+        self.msg1 = ('A desktop application for researchers to measure '
+                     'and analyze solar cells.')
+        self.msg2 = ('\n\nFrancisco Lorenzo Lázaro\n'
+                     '    Laura Garrido Regife')
 
     @staticmethod
     def open_repository():

@@ -32,7 +32,7 @@ class CalibrationPopup(Popup):
 
     def call_able_button(self):
         """Wait 3 seconds before able 'Accept' button."""
-        self.event = Clock.schedule_interval(self.update_fit, 2)
+        # self.event = Clock.schedule_interval(self.update_fit, 2)
         Clock.schedule_once(self.able_button, 1)
 
     def update_fit(self, dt):
@@ -52,4 +52,4 @@ class CalibrationPopup(Popup):
         keithley.close_resource()
         self.calibration_msg = 'Calibration has ended.'
         self.ids.button_calibration_accept.disabled = False
-        self.event.cancel()
+        # self.event.cancel()

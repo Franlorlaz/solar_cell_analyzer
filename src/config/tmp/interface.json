@@ -6,15 +6,16 @@
     "polarize": false
   },
   "repeat": {
-    "type": "all_repetition",
-    "times": 3,
-    "wait": 0.1
+    "type": "no_repetition",
+    "times": 0,
+    "wait": 0.0
   },
   "cells": {
     "cell_1": {
       "name": "",
       "electrodes": [
-        "a"
+        "a",
+        "b"
       ]
     },
     "cell_2": {
