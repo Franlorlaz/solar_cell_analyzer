@@ -221,6 +221,10 @@ class Section3(BoxLayout):
         checkbox_polarize = data['mode']['polarize']
         self.checkbox_polarize = checkbox_polarize
         if checkbox_polarize:
+            # Initialize temporal file containing zero time for degradation parameter
+            degrad0time_path = Path(__file__ + '/../../../../config/tmp/DegradationZeroTime.txt')
+            with open(degrad0time_path.resolve(), 'w') as f:
+                f.write('0')
             measure = PolarizePopup()
             unique_sequence = list(set(sequence))
             unique_sequence.sort()
