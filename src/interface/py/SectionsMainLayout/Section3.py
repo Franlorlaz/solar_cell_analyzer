@@ -16,7 +16,7 @@ from interface.py.PopUps.ConfirmCalibrationPopup import ConfirmCalibrationPopup
 from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
 from esp32 import ESP32, polarize
-
+import datetime
 
 class Section3(BoxLayout):
     """Section 3 (save path configuration and run) class."""
@@ -227,6 +227,11 @@ class Section3(BoxLayout):
             measure.pass_arg(unique_sequence, self)
             measure.open()
         else:
+            # References zero time for degradation. Deeper changes should be done here
+            degrad0time_path = Path(__file__ + '/../../../../config/tmp/DegradationZeroTime.txt')
+            now = datetime.datetime.now()
+            with open(degrad0time_path.resolve(), 'w') as f:
+                f.write(str(now))
             measure = self.measure_popup
             measure.reset_measure()
             measure.open()
