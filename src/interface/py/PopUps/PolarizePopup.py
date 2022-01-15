@@ -8,7 +8,7 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
-
+import datetime
 
 class PolarizePopup(Popup):
     """Polarization popup class."""
@@ -96,8 +96,13 @@ class PolarizePopup(Popup):
         self.ids.continue_polarize.disabled = False
 
     def start_measure(self):
-        """Close the popup and start the measure applying voltage at
+        """Reference current time as zero time for degradation.
+        Close the popup and start the measure applying voltage at
         maximun power."""
+        degrad0time_path = Path(__file__ + '/../../../../config/tmp/DegradationZeroTime.txt')
+        now = datetime.datetime.now()
+        with open(degrad0time_path.resolve(), 'w') as f:
+            f.write(str(now))
         self.dismiss()
         measure = self.section3.measure_popup
         measure.reset_measure()
