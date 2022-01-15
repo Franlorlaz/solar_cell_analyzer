@@ -19,9 +19,9 @@ def polarize(esp32, path, calib_path, reset=False):
             polarization[key] = 0.0
             esp32.polarize(0)
             
-            # only update json file is needed when resetting. If not, some issues due to parallel execution have been noticed
+            # update of json file is only needed when resetting. If not, some issues due to parallel execution have been noticed
             with open(path, 'w') as f:
-            json.dump(polarization, f, indent=2)
+                json.dump(polarization, f, indent=2)
         else:
             esp32.polarize(value, calib[key])
 
