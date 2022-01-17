@@ -274,8 +274,7 @@ class Section3(BoxLayout):
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
 
-        if self.checkbox_polarize:
-            polarize(self.esp32, polarization_path, calibration_path)
+        polarize(self.esp32, polarization_path, calibration_path)
 
         with open(param_path, 'r') as f:
             param = json.load(f)
