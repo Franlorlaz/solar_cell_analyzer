@@ -241,7 +241,7 @@ if __name__ == '__main__':
             param = json.load(f)
         #Avoid issues with too big files
         if len(param) > 5:
-            delete param[0:(len(param)-5)]
+            del param[0:(len(param)-5)]
         param.append(pv_param)
         with open(param_path, 'w') as f:
             json.dump(param, f, indent=2)
