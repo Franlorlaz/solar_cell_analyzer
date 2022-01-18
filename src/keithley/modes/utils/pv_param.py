@@ -47,8 +47,10 @@ def save_pv_param(file_name, name, param):
             reader = csv.DictReader(file)
             for item in reader:
                 items.append(item)
-    if len(items) > 0:
-        previous_time = items[-1]['datetime']
+    degrad0time_path = Path(__file__ + '/../../../../config/tmp/DegradationZeroTime.txt')
+    with open(degrad0time_path.resolve(), 'r') as f:
+        previous_time = f.read()
+    if not previous_time == "0":
         previous_time = datetime.datetime.strptime(previous_time,
                                                    '%Y-%m-%d %H:%M:%S.%f')
         delta_time = (now - previous_time).total_seconds()

@@ -18,11 +18,12 @@ def polarize(esp32, path, calib_path, reset=False):
         if reset:
             polarization[key] = 0.0
             esp32.polarize(0)
+            
+            # update of json file is only needed when resetting. If not, some issues due to parallel execution have been noticed
+            with open(path, 'w') as f:
+                json.dump(polarization, f, indent=2)
         else:
             esp32.polarize(value, calib[key])
-
-    with open(path, 'w') as f:
-        json.dump(polarization, f, indent=2)
 
 
 def calibrate(esp32, arduino, keithley, calib_path, reset=False):

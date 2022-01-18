@@ -16,7 +16,7 @@ from interface.py.PopUps.ConfirmCalibrationPopup import ConfirmCalibrationPopup
 from interface.py.PopUps.ErrorWarningPopup import ErrorWarningPopup
 from arduino import Arduino
 from esp32 import ESP32, polarize
-
+import datetime
 
 class Section3(BoxLayout):
     """Section 3 (save path configuration and run) class."""
@@ -221,12 +221,21 @@ class Section3(BoxLayout):
         checkbox_polarize = data['mode']['polarize']
         self.checkbox_polarize = checkbox_polarize
         if checkbox_polarize:
+            # Initialize temporal file containing zero time for degradation parameter
+            degrad0time_path = Path(__file__ + '/../../../../config/tmp/DegradationZeroTime.txt')
+            with open(degrad0time_path.resolve(), 'w') as f:
+                f.write('0')
             measure = PolarizePopup()
             unique_sequence = list(set(sequence))
             unique_sequence.sort()
             measure.pass_arg(unique_sequence, self)
             measure.open()
         else:
+            # References zero time for degradation. Deeper changes should be done here
+            degrad0time_path = Path(__file__ + '/../../../../config/tmp/DegradationZeroTime.txt')
+            now = datetime.datetime.now()
+            with open(degrad0time_path.resolve(), 'w') as f:
+                f.write(str(now))
             measure = self.measure_popup
             measure.reset_measure()
             measure.open()
@@ -265,8 +274,7 @@ class Section3(BoxLayout):
         with open(trigger_path, 'r') as f:
             trigger = json.load(f)
 
-        if self.checkbox_polarize:
-            polarize(self.esp32, polarization_path, calibration_path)
+        polarize(self.esp32, polarization_path, calibration_path)
 
         with open(param_path, 'r') as f:
             param = json.load(f)
